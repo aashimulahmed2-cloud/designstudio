@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fabrics Design Studio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<style>
+:root{color-scheme:light;--bg:#fff;--sf:#fff;--fg:#1C1526;--mu:#6A6076;--ln:#E4DFEC;--ac:#7B2FA0;--ai:#fff;--as:#F0E5F7;--ok:#17703F;--wn:#B4500A;--nl:#fff;--nd:rgba(150,134,172,.32);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 'Hind Siliguri',system-ui,sans-serif;padding:0 max(14px,env(safe-area-inset-left,0px)) calc(110px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.w{max-width:980px;margin:0 auto}h1,h2,h3{margin:0}
+header{padding:16px 0 8px}h1{font-size:24px;color:var(--ac)}header p{color:var(--mu);font-size:13px}
+nav#nav{position:fixed;z-index:8;left:max(12px,calc(50% - 480px));right:max(12px,calc(50% - 480px));bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding:10px 8px;background:var(--bg);border-radius:26px;box-shadow:-6px -6px 14px var(--nl),7px 7px 16px var(--nd)}
+nav#nav::-webkit-scrollbar{display:none}
+nav#nav button{flex:1 0 62px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px 6px;border:0;border-radius:18px;background:transparent;color:var(--mu);font:inherit;font-size:11px;line-height:1.2;white-space:nowrap;cursor:pointer;transition:box-shadow .2s,color .2s;-webkit-tap-highlight-color:transparent}
+nav#nav button svg{width:24px;height:24px;fill:var(--ic,currentColor);fill-opacity:.16;stroke:var(--ic,currentColor);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav#nav button.on{color:var(--ic,var(--ac));font-weight:600;box-shadow:inset 3px 3px 7px var(--nd),inset -3px -3px 7px var(--nl)}
+.b{border:1px solid var(--ln);background:var(--sf);color:var(--fg);border-radius:999px;padding:7px 14px;font:inherit;white-space:nowrap;cursor:pointer}
+
+.b.p,.b.on{background:var(--ac);color:var(--ai);border-color:var(--ac)}
+.pg{display:none}.pg.on{display:block}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:18px;padding:14px;margin:10px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.tile{text-align:left;border:1px solid var(--ln);background:var(--sf);color:var(--fg);border-radius:16px;padding:14px;font:inherit;cursor:pointer}
+.tile b{display:block;color:var(--ac)}.g4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}.g4 .tile{text-align:center;padding:16px 8px}.g4 .tile b{color:var(--fg);font-size:17px}.tile.on{border-color:var(--ac);background:var(--as)}.tile span{font-size:12px;color:var(--mu)}
+.tb{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.tb .b{padding:6px 11px;font-size:14px}
+.cv{background:#fff;border:1px solid var(--ln);border-radius:14px;aspect-ratio:3/4;width:min(100%,calc(88vh*.75));margin:0 auto;overflow:hidden}
+@media(max-width:700px){.cv:not([style]){width:calc(100% + 28px);max-width:none;margin:0 -14px;border-radius:0;border-left:0;border-right:0}}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:10px}
+label{font-size:13px;color:var(--mu);display:block}
+input[type=number],input[type=text],select,textarea{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:7px}
+input[type=range]{width:100%;accent-color:var(--ac)}
+.th{position:relative;border:1px solid var(--ln);border-radius:14px;padding:8px;background:var(--sf)}
+.th img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:var(--bg);display:block;margin:6px 0}
+.th .r{display:flex;gap:6px}.th .b{padding:3px 10px;font-size:12px}
+.note{font-size:13px;color:var(--wn)}.ok{color:var(--ok)}.mu{color:var(--mu);font-size:13px}
+.two{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+#toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 16px;border-radius:999px;opacity:0;transition:.3s;pointer-events:none;z-index:20}
+header{background:#0B0A0F;border-radius:20px;padding:22px 18px 20px;margin:6px 0 14px;box-shadow:0 6px 18px rgba(0,0,0,.25)}header h1{background:linear-gradient(90deg,#D8A8F0,#FF7DB0);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;margin:0 0 6px}header p{color:#F4B6CF;font-weight:500;margin:0}
+#steps{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none}#steps::-webkit-scrollbar{display:none}#steps .st{position:relative;flex:0 0 84px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px 8px;border:1px solid var(--ln);border-radius:16px;background:var(--sf);color:var(--fg);font:inherit}#steps .si{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:21px;box-shadow:0 3px 8px rgba(0,0,0,.18)}#steps .sn{font-size:11px;line-height:1.25;text-align:center;font-weight:600}#steps .st i{position:absolute;top:5px;right:6px;font-style:normal;font-size:10px;min-width:16px;height:16px;border-radius:8px;background:#E4DFEC;color:#555;display:grid;place-items:center}#steps .st.ok{border-color:#2E7D32}#steps .st.ok i{background:#2E7D32;color:#fff}
+.tile.hm{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:4px;padding:18px 8px 16px;border-radius:20px;border:1px solid var(--ln);background:linear-gradient(160deg,var(--sf),color-mix(in srgb,var(--c1) 9%,var(--sf)));box-shadow:0 6px 16px rgba(0,0,0,.08);transition:transform .15s}.tile.hm:active{transform:scale(.96)}.tile.hm::after{content:'';position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--c1),var(--c2))}.tile.hm i{font-style:normal;width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:27px;margin-bottom:6px;background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 8px 16px color-mix(in srgb,var(--c1) 40%,transparent)}.tile.hm b{font-size:16px}#home>.grid:first-child{grid-template-columns:1fr 1fr}
+.tile.ct{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 6px 12px}.tile.ct .ci{width:80px;height:90px;border-radius:18px;display:grid;place-items:center;margin-bottom:4px}.tile.ct b{font-size:15px;color:var(--fg)}
+.hn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hn .tile{background:linear-gradient(160deg,#16367A,#0B1D45);color:#fff;border:0;display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 8px 14px;border-radius:16px;box-shadow:0 6px 14px rgba(11,29,69,.28);text-align:center}
+.hn .tile svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.hn .tile b{color:#fff;font-size:14px}.hn .tile span{color:#B9C6E4;font-size:11px;line-height:1.3}
+.rl{display:grid;gap:8px}
+.rp{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid var(--ln);background:var(--sf);color:var(--fg);border-radius:16px;padding:8px 12px 8px 8px;font:inherit;cursor:pointer}
+.rp .ri{flex:0 0 52px;height:64px;border-radius:12px;background:var(--as);display:grid;place-items:center;overflow:hidden}
+.rp .ri svg{width:40px!important;height:52px!important}
+.rp .rt{flex:1;min-width:0}.rp .rt b{display:block;font-size:15px}.rp .rt span{display:block;color:var(--mu);font-size:12px}
+.rp .bd{font-size:11px;font-weight:600;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.mrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--ln);color:var(--fg);font-size:15px}
+.mrow .mi{display:flex;align-items:center;gap:6px;width:120px}.mrow .mi em{font-style:normal;color:var(--mu);font-size:13px}
+.ft{width:100%;border-collapse:collapse;margin-top:8px}.ft th{text-align:left;font-size:12px;color:var(--mu);border-bottom:2px solid var(--ln);padding:6px 4px}.ft td{padding:7px 4px;border-bottom:1px solid var(--ln);font-size:14px}.ft td:nth-child(n+2),.ft th:nth-child(n+2){text-align:right}
+.ft tr.tt td{font-weight:700;border-bottom:0}
+.xr{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid var(--ln);background:var(--sf);color:var(--fg);border-radius:14px;padding:10px 12px;font:inherit;cursor:pointer;margin-top:8px}
+.xr i{flex:0 0 38px;height:38px;border-radius:10px;display:grid;place-items:center;font-style:normal;font-size:19px;background:var(--as)}.xr b{display:block;font-size:14px}.xr span{display:block;color:var(--mu);font-size:12px}
+.ar{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--ln);cursor:pointer}.ar.auto{cursor:default}
+.ar .ck{flex:0 0 24px;height:24px;border-radius:50%;border:2px solid var(--ln);display:grid;place-items:center;color:transparent;font-size:14px;font-weight:700}.ar .ck.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.ar small{display:block;color:var(--wn);font-size:12px}
+.b.big{background:#0B1D45;color:#fff;border-color:#0B1D45;width:100%;padding:12px;border-radius:12px;font-weight:600}.b.big[disabled]{opacity:.4;cursor:not-allowed}
+.b.wide{width:100%;padding:11px;border-radius:12px;margin-top:8px}
+.stage{position:relative}
+#ek .cv,#es .cv{width:min(100%,calc(94vh*.75))}
+.rail{position:absolute;left:8px;top:8px;z-index:5;display:flex;flex-direction:column;align-items:flex-start;gap:8px;max-height:calc(100% - 16px);pointer-events:none}
+.rail>*{pointer-events:auto}
+.rmain{flex:0 0 auto;width:54px;height:54px;border-radius:16px;border:0;background:#0B1D45;color:#fff;box-shadow:0 6px 16px rgba(11,29,69,.38);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font:inherit;font-size:10px;line-height:1.1;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rmain i{font-style:normal;font-size:20px;line-height:1}
+.rtools{display:flex;flex-direction:column;gap:4px;padding:6px;background:rgba(255,255,255,.97);border:1px solid var(--ln);border-radius:16px;box-shadow:0 8px 22px rgba(0,0,0,.2);overflow-y:auto;min-height:0;transform:translateX(-72px);opacity:0;visibility:hidden;transition:transform .25s ease,opacity .2s,visibility .25s}
+.rail.open .rtools{transform:none;opacity:1;visibility:visible}
+.rtools button{flex:0 0 auto;width:54px;padding:6px 2px;border:0;border-radius:12px;background:transparent;color:var(--fg);font:inherit;font-size:10px;line-height:1.15;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rtools button i{font-style:normal;font-size:19px;line-height:1.1}
+.rtools button.on{background:#0B1D45;color:#fff}
+.rtools hr{flex:0 0 auto;width:70%;margin:2px auto;border:0;border-top:1px solid var(--ln)}
+.fsx{display:none}
+.stage.fs{position:fixed;inset:0;z-index:40;margin:0!important;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.stage.fs .cv{width:min(100vw,calc((100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))*.75))!important;margin:0!important;border-radius:0;border:0}
+.stage.fs .rail{top:calc(8px + env(safe-area-inset-top,0px))}
+.stage.fs .fsx{display:block;position:absolute;top:calc(8px + env(safe-area-inset-top,0px));right:8px;z-index:6;border:0;border-radius:999px;background:#0B1D45;color:#fff;padding:8px 14px;font:inherit;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.3);cursor:pointer}
+@media(max-width:700px){.stage{margin:0 -14px}.stage .cv:not([style]){width:100%;margin:0}}
+.spanel{position:absolute;left:74px;top:8px;z-index:4;width:min(270px,calc(100% - 86px));max-height:calc(100% - 16px);display:flex;flex-direction:column;background:rgba(255,255,255,.95);border:1px solid var(--ln);border-radius:16px;box-shadow:0 8px 22px rgba(0,0,0,.2);transform:translateX(-24px);opacity:0;visibility:hidden;transition:transform .25s ease,opacity .2s,visibility .25s}
+.spanel.show{transform:none;opacity:1;visibility:visible}
+.sph{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding:8px 8px 8px 14px;border-bottom:1px solid var(--ln);font-size:14px}
+.spx{border:0;background:transparent;font-size:18px;color:var(--mu);cursor:pointer;padding:2px 8px}
+.spb{overflow-y:auto;padding:6px 14px 14px;min-height:0}
+.spb .f{grid-template-columns:1fr;gap:8px;margin-top:8px}
+.spb p.mu{margin:12px 0 0;font-size:12px}
+.ptt{font-size:20px;font-weight:700;margin:16px 2px 4px;color:var(--fg)}
+.pt{border-radius:22px;overflow:hidden;border:1px solid var(--ln);background:#FBFAF8;box-shadow:0 8px 22px rgba(11,29,69,.14);margin-top:10px}
+.ptabs{display:flex;background:linear-gradient(180deg,#0E2F66,#0A2250)}.ptabs button{position:relative;padding:14px 26px;border:0;background:transparent;color:#C9D5EE;font:inherit;font-weight:600;cursor:pointer}.ptabs button.on{background:rgba(255,255,255,.08);color:#fff}.ptabs button.on::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:#F2B24A}
+.pbody{padding:12px}.pbody[hidden]{display:none}
+.pmain{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:start}
+.prail{display:flex;flex-direction:column;gap:8px}
+.prail button{width:44px;height:44px;padding:0;border:1px solid var(--ln);border-radius:12px;background:#fff;color:#2A3A5C;display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 5px rgba(11,29,69,.06)}
+.prail button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.prail button.on,.prail button:active{background:#0B2A5B;color:#fff;border-color:#0B2A5B}
+.pcan{background:#fff;border:1px solid var(--ln);border-radius:14px;overflow:hidden;aspect-ratio:3/4;max-height:80vh;touch-action:none}
+.pcan svg{width:100%;height:100%;display:block;touch-action:none;user-select:none}
+.pdet{grid-column:1/-1;border:1px solid var(--ln);border-radius:14px;background:#fff;overflow:hidden}
+.pdh{padding:12px 16px;font-weight:700;font-size:16px;background:#F3F4F7;border-bottom:1px solid var(--ln)}.pdh small{font-weight:400;color:var(--mu);margin-left:6px;font-size:12px}
+.pdb{padding:12px 16px 8px;display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.pdb>label{display:grid;gap:5px;color:#2A3040;font-size:14px}
+.sl{position:relative;display:block}.sl select{-webkit-appearance:none;appearance:none;padding:10px 46px 10px 12px;border-radius:10px;font-size:15px;background:#fff}
+.sl::after{content:"";position:absolute;right:0;top:1px;bottom:1px;width:38px;border-left:1px solid var(--ln);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232A3A5C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/16px no-repeat;pointer-events:none}
+.sw{display:flex;align-items:center;gap:10px;color:var(--fg);font-size:14px;cursor:pointer}.pdb .sw{grid-column:1/-1;padding:9px 0;border-top:1px solid var(--ln)}
+.sw input{display:none}.sw i{flex:0 0 42px;height:24px;border-radius:999px;background:#C9CFDD;position:relative;transition:.2s}.sw i::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}.sw input:checked+i{background:#1F5BB5}.sw input:checked+i::after{left:21px}
+.pbar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:14px}
+.padd{border:0;border-radius:12px;background:#0B2A5B;color:#fff;padding:12px 22px;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(11,42,91,.28)}
+.pauto{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#1B2A4A;cursor:pointer}.pauto input{position:absolute;opacity:0;width:0;height:0}
+.pbox{width:28px;height:28px;border-radius:8px;border:1.5px solid #9AA6C0;color:#9AA6C0;display:grid;place-items:center}.pbox svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.pauto input:checked+.pbox{border-color:#0B2A5B;color:#0B2A5B;background:#E7EEFB}
+.seg{display:flex;border:1px solid var(--ln);border-radius:12px;overflow:hidden;margin-left:auto;background:#fff}.seg button{border:0;background:#fff;color:var(--fg);padding:11px 22px;font:inherit;cursor:pointer}.seg button.on{background:#0B2A5B;color:#fff}
+@media(min-width:760px){.pmain{grid-template-columns:44px minmax(0,1fr) 290px}.pdet{grid-column:auto}.pdb{grid-template-columns:1fr}}
+</style></head><body><div class="w">
+<header><h1>Fabrics Design Studio</h1><p>আঙুলে কামিজ ও সালোয়ারের কাটিং আঁকুন, ফেব্রিক ও লেস সাজান, এআই প্রিভিউয়ের জন্য প্রস্তুত করুন</p></header>
+<nav id="nav"></nav>
+<div class="tb" id="steps" style="margin:6px 0"></div>
+
+<section class="pg on" id="home">
+<div class="hn">
+<button class="tile" id="newBtn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><b>নতুন ডিজাইন</b><span>ক্যাটালগ থেকে শুরু</span></button>
+<button class="tile" data-go="saved"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><b>আমার ডিজাইন</b><span>খুলুন, কপি, রিনেম</span></button>
+<button class="tile" data-go="gallery"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg><b>ফেব্রিক ও লেস</b><span>কাপড়, লেস আপলোড</span></button>
+<button class="tile" data-go="ai"><svg viewBox="0 0 24 24"><path d="M12 3l2 5.5L19.5 10 14 12l-2 5.5L10 12 4.5 10 10 8.5z"/><path d="M19 16v4M17 18h4"/></svg><b>এআই মডেল প্রিভিউ</b><span>নির্দেশনা ও মাস্ক</span></button>
+<button class="tile" data-go="measure"><svg viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="8" rx="1.5"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/></svg><b>মাপ প্রোফাইল</b><span>সাইজ ও শরীরের মাপ</span></button>
+<button class="tile" data-go="saved"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><b>টেকনিক্যাল ফাইল</b><span>PDF ও প্রজেক্ট ফাইল</span></button>
+<button class="tile" data-go="final"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2"/></svg><b>কাপড় খরচ ও এক্সপোর্ট</b><span>হিসাব, CSV, ছবি</span></button>
+<button class="tile" data-go="final"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg><b>ফাইনাল অ্যাপ্রুভাল</b><span>চেকলিস্ট ও অনুমোদন</span></button>
+</div>
+<h3 style="margin:16px 0 8px;font-size:16px">সাম্প্রতিক প্রজেক্ট</h3><div class="rl" id="recent"></div>
+<div class="card" style="margin-top:12px"><p class="note" style="margin-top:10px">এটি ফ্যাশন ভিজ্যুয়ালাইজেশন টুল। এখানকার স্কেচ যাচাইকৃত বা সেলাইয়ের জন্য প্রস্তুত প্যাটার্ন নয়।</p></div>
+</section>
+
+<section class="pg" id="catalog"><h2>কাটিং ক্যাটালগ</h2><p class="mu">ক্যাটাগরি থেকে পোশাকের স্টাইল বেছে নিন। প্রতিটি ক্যাটাগরিতে "কাস্টম ডিজাইন" আছে, যেখানে ফাঁকা ক্যানভাসে নিজের মতো আঁকা যায়।</p><div id="catList"></div><div class="card"><b>প্রতিটি স্টাইলে যা পাবেন</b><div class="mu" style="margin-top:6px">১. ক্যাটাগরি ও স্টাইল নির্বাচন<br>২. একাধিক ফেব্রিক ও লেস আপলোড<br>৩. আঙুলে টেনে ফেব্রিক বসানো<br>৪. কাটিং আঁকা, মাপ বদল, Undo/Redo<br>৫. এআই মডেল প্রিভিউ<br>৬. ডিজাইন সংরক্ষণ ও ছবি এক্সপোর্ট</div><p class="note" style="margin-top:8px">স্টাইলগুলো কামিজ বা সালোয়ার টেমপ্লেটের ওপর মাপের প্রিসেট। এটি ভিজ্যুয়াল স্কেচ, সেলাইয়ের উপযোগী প্যাটার্ন নয়।</p></div></section>
+<section class="pg" id="kameez"><h2>কামিজ কাটিং এডিটর</h2><p class="mu" id="selK"></p><p class="mu">দর্জির কাটিং লেআউট: বামে বডি (মাঝের ড্যাশ লাইন = কাপড়ের ভাঁজ), ডানে আলাদা হাতা, তীর = গ্রেইন লাইন। গোল বিন্দু টেনে মাপ বদলান।</p><div class="card" id="ek"></div></section>
+<section class="pg" id="salwar"><h2>সালোয়ার কাটিং এডিটর</h2><p class="mu" id="selS"></p><div class="tb" id="szT"></div><p class="mu">কোমর, ক্রচ কার্ভ, দুই পায়ের বাইরের ও ভেতরের সিম, গোড়ালি ও হেম আঁকুন।</p><div class="card" id="es"></div></section>
+
+<section class="pg" id="gallery"><h2>গ্যালারি আপলোড</h2><p class="mu">JPG, PNG বা WebP। ছবি আপনার ডিভাইসেই থাকে।</p><div class="grid" id="slots"></div></section>
+
+<section class="pg" id="place"><h2>ফেব্রিক ও লেস সাজান</h2>
+<div class="two"><div class="card">
+<label>গার্মেন্ট অংশ<select id="pArea"><option value="kameez">কামিজ</option><option value="salwar">সালোয়ার</option></select></label>
+<label>ফেব্রিক ছবি<select id="pFab"></select></label>
+<label>প্যাটার্ন স্কেল <input type="range" id="pSc" min="10" max="200" value="60"></label>
+<label>রোটেশন <input type="range" id="pRot" min="0" max="360" value="0"></label>
+<label>অবস্থান X <input type="range" id="pX" min="-300" max="300" value="0"></label>
+<label>অবস্থান Y <input type="range" id="pY" min="-300" max="300" value="0"></label>
+<h3 style="margin-top:12px;font-size:16px">লেস</h3>
+<label><input type="checkbox" id="lN" checked> নেকলাইন লেস</label>
+<label><input type="checkbox" id="lS"> হাতার লেস</label>
+<label><input type="checkbox" id="lH" checked> হেম লেস</label>
+<label>লেসের প্রস্থ <input type="range" id="lW" min="6" max="60" value="22"></label>
+<label>লেস অবস্থান (ওপর-নিচ) <input type="range" id="lO" min="-30" max="30" value="0"></label>
+<label>লেস স্কেল <input type="range" id="lZ" min="20" max="200" value="100"></label>
+<label>লেস রোটেশন <input type="range" id="lR" min="0" max="360" value="0"></label>
+<p class="mu">প্রিভিউয়ের ওপর আঙুল টেনে ফেব্রিক সরান।</p><p class="mu">আসল আপলোড করা ছবি অপরিবর্তিত রেফারেন্স হিসেবে থাকে।</p></div>
+<div class="card"><div class="cv" style="width:min(100%,calc(60vh*.75))"><canvas id="pv"></canvas></div></div></div></section>
+
+<section class="pg" id="ai"><h2>এআই মডেল প্রিভিউ ও এডিট</h2>
+<div class="two"><div class="card"><h3 style="font-size:16px">ইনপুট</h3><div id="chk"></div>
+<label style="margin-top:10px">আপনার নির্দেশনা<textarea id="prompt" rows="3" placeholder="যেমন: Keep the fabric print unchanged."></textarea></label>
+<div class="tb" style="margin-top:8px" id="chips"></div>
+<div class="tb"><button class="b p" id="gen">মডেল প্রিভিউ তৈরি</button><button class="b" id="cpj">রিকোয়েস্ট JSON কপি</button></div>
+<label style="margin-top:8px">এআই সার্ভার URL (ঐচ্ছিক) <input type="text" id="aiUrl" placeholder="https://your-server/api/preview"></label>
+<p class="note" id="aiMsg">এআই সার্ভার সংযুক্ত নেই। নিরাপত্তার জন্য এআই কল সার্ভার-সাইড API দিয়ে হতে হবে, ব্রাউজারে API key রাখা যাবে না।</p></div>
+<div class="card"><h3 style="font-size:16px">মূল ডিজাইন বনাম এআই মডেল</h3><div class="tb" style="align-items:flex-start"><div style="flex:1;min-width:130px"><div class="mu">মূল কাটিং ডিজাইন</div><img id="cmpA" style="width:100%;border-radius:10px;background:#fff" alt=""></div><div style="flex:1;min-width:130px"><div class="mu">এআই মডেল প্রিভিউ</div><img id="cmpB" style="width:100%;border-radius:10px;background:#2a2234;min-height:120px" alt=""></div></div><div class="tb" id="rs" style="display:none;margin-top:8px"><button class="b p" id="acc">✓ গ্রহণ</button><button class="b" id="rej">✕ বাতিল</button></div><p class="note">এআই ছবি কাটিংয়ের ছবি রেফারেন্স হিসেবে পায়; সিলুয়েট হুবহু মিলবে এমন নিশ্চয়তা নেই। কাটিং বদলে আবার তৈরি করুন। এটি ভিজ্যুয়াল রেফারেন্স, সেলাইয়ের উপযোগী প্যাটার্ন নয়।</p></div>
+<div class="card"><h3 style="font-size:16px">এডিটের জায়গা আঁকুন (মাস্ক)</h3>
+<div class="tb" id="areas"></div>
+<div class="cv" style="width:min(100%,calc(55vh*.75))"><canvas id="mk"></canvas></div>
+<div class="tb" style="margin-top:8px"><button class="b" id="mkU">Undo</button><button class="b" id="mkC">মাস্ক মুছুন</button><button class="b p" id="apply">Apply Changes</button></div></div></div></section>
+
+<section class="pg" id="saved"><h2>সংরক্ষিত ডিজাইন</h2>
+<div class="card"><b>ড্রেস টেকনিক্যাল ফাইল</b><p class="mu">PDF + এডিটেবল প্রজেক্ট ফাইল। ডিজাইন চূড়ান্ত হলে তৈরি করুন।</p><div class="f"><label>কামিজের দৈর্ঘ্য (ইঞ্চি)<input type="number" id="tkL" value="40"></label><label>সালোয়ারের দৈর্ঘ্য (ইঞ্চি)<input type="number" id="tsL" value="38"></label><label>কাপড়ের প্রস্থ (ইঞ্চি)<input type="number" id="tfw" value="44"></label></div><div class="tb" style="margin-top:8px"><button class="b p" id="tkPdf">টেকনিক্যাল ফাইল (PDF/প্রিন্ট)</button><button class="b" id="tkJson">প্রজেক্ট ফাইল (.json)</button><label class="b" style="cursor:pointer">ফাইল খুলুন<input type="file" accept=".json,application/json" hidden id="tkIn"></label></div></div>
+<div class="card"><label>প্রজেক্টের নাম<input type="text" id="pname"></label>
+<div class="tb" style="margin-top:8px"><button class="b p" id="saveP">প্রজেক্ট সংরক্ষণ</button><button class="b" id="dlPng">PNG ডাউনলোড</button><button class="b" id="dlJpg">JPG ডাউনলোড</button></div></div>
+<div id="list"></div></section>
+<section class="pg" id="measure"><h2>মাপ প্রোফাইল</h2><p class="mu">সাইজ বেছে নিন বা নিজের মাপ লিখুন (ইঞ্চিতে)।</p>
+<div class="card"><b>সাইজ নির্বাচন</b><div class="tb" id="mSizes" style="margin-top:8px"></div></div>
+<div class="card"><b>শরীরের মাপ</b><div id="mFields"></div>
+<label style="margin-top:12px">প্রোফাইলের নাম<input type="text" id="mName" placeholder="যেমন: আমার মাপ"></label>
+<button class="b big" id="mSave" style="margin-top:10px">প্রোফাইল সংরক্ষণ</button>
+<p class="mu" style="margin-top:8px">সংরক্ষণ করলে কামিজের দৈর্ঘ্য, হাতার দৈর্ঘ্য ও কাঁধের মাপ কাটিংয়ে বসে যাবে।</p></div>
+<h3 style="margin:14px 0 4px;font-size:16px">সংরক্ষিত প্রোফাইল</h3><div id="mList"></div></section>
+
+<section class="pg" id="final"><h2>ফাইনাল</h2>
+<div class="card"><b>কাপড় খরচের হিসাব</b><div id="fTab"></div>
+<label style="margin-top:10px">ওড়নার কাপড় (গজ, ০ = নেই)<input type="number" step="0.25" min="0" id="fDup"></label>
+<button class="b wide" id="fCalc">আবার হিসাব করুন</button>
+<p class="note" style="margin-top:8px">কাপড়ের প্রস্থ, প্যাটার্ন মিলানো ও কাটিং লেআউটের ওপর আসল খরচ কমবেশি হতে পারে।</p></div>
+<div class="card"><b>ডাউনলোড ও এক্সপোর্ট</b><div id="xList"></div></div>
+<div class="card"><b>ডিজাইন অ্যাপ্রুভাল চেকলিস্ট</b><div id="aList" style="margin-top:6px"></div>
+<button class="b big" id="aOk" style="margin-top:12px">ফাইনাল ডিজাইন অনুমোদন</button>
+<button class="b wide" id="aBack">এডিটিংয়ে ফিরুন</button></div></section>
+<section class="pg" id="pattern"><h2 class="ptt">6. Cutting Pattern &amp; Measurements</h2>
+<div class="pt">
+<div class="ptabs"><button class="on" data-pt="p">Pattern</button><button data-pt="m">Measurements</button></div>
+<div class="pbody" id="ptP">
+<div class="pmain"><div class="prail" id="pRail"></div>
+<div class="pcan"><svg id="pSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80"><defs><pattern id="pgrid" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M6 0H0V6" fill="none" stroke="#E3E8F3" stroke-width=".08"/></pattern></defs><rect x="-1000" y="-1000" width="2000" height="2000" fill="url(#pgrid)"/><g id="pg"></g></svg></div>
+<div class="pdet" id="pDet"></div></div>
+<div class="pbar"><button class="padd" id="pAdd" type="button">Add Piece</button><label class="pauto"><input type="checkbox" id="pAuto"><span class="pbox"><svg viewBox="0 0 24 24"><path d="M5 20V4h8a4 4 0 0 1 0 8H5"/></svg></span>Auto Seam Allowance</label><div class="seg" id="pUnit"><button data-u="in">Inch</button><button data-u="cm">cm</button></div></div>
+</div>
+<div class="pbody" id="ptM" hidden></div>
+</div>
+<p style="margin:10px 2px"><button class="b" id="pSvgDl" type="button">Download SVG</button></p></section>
+</div><div id="toast"></div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),W=600,H=800;
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.opacity=0,2200)};
+const ls={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){toast('জায়গা কম, সংরক্ষণ হয়নি');return false}}};
+const blank=()=>({name:'নতুন ডিজাইন',kameez:{strokes:[],set:{}},salwar:{strokes:[],set:{}},mats:{},place:{area:'kameez',fab:'main',sc:60,rot:0,x:0,y:0,n:1,s:0,h:1,lw:22}});
+let S=blank(),E={},imgs={};
+/* pages */
+const PG=[['home','হোম'],['catalog','কাটিং'],['kameez','কামিজ'],['salwar','সালোয়ার'],['measure','মাপ'],['gallery','গ্যালারি'],['place','ম্যাটেরিয়াল'],['ai','এআই প্রিভিউ'],['final','ফাইনাল'],['saved','সংরক্ষিত']];
+const nav=$('#nav');const ICC={home:'#2E9B4F',catalog:'#E5392F',kameez:'#D81B7A',salwar:'#3F51D6',gallery:'#0A9C8C',place:'#F08A00',ai:'#7C4DFF',saved:'#1E88E5',measure:'#C2185B',final:'#17703F',pattern:'#0B5FA5'};
+const IC={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',catalog:'<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12"/>',kameez:'<path d="M8 3l-5 4 3 3 2-1v12h8V9l2 1 3-3-5-4a4 4 0 0 1-8 0z"/>',salwar:'<path d="M6 3h12l1.5 18h-5L12 10l-2.5 11h-5z"/>',gallery:'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',place:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',ai:'<path d="M12 3l2 5.5L19.5 10 14 12l-2 5.5L10 12 4.5 10 10 8.5z"/><path d="M19 16v4M17 18h4"/>',saved:'<path d="M6 3h12v18l-6-4-6 4z"/>',measure:'<rect x="2" y="8" width="20" height="8" rx="1.5"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/>',final:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',pattern:'<path d="M4 3h7v9H4zM14 3h6v6h-6zM4 15h7v6H4zM14 12h6v9h-6z"/>'};
+PG.forEach(([id,t])=>{const b=document.createElement('button');b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(IC[id]||'')+'</svg><span>'+t+'</span>';b.dataset.go=id;b.style.setProperty('--ic',ICC[id]||'');nav.append(b)});
+function go(id){document.querySelectorAll('.pg').forEach(p=>p.classList.toggle('on',p.id===id));nav.querySelectorAll('button').forEach(b=>{const on=b.dataset.go===id;b.classList.toggle('on',on);if(on)b.scrollIntoView({inline:'center',block:'nearest'})});scrollTo(0,0);setTimeout(()=>{Object.values(E).forEach(e=>e.fit());drawPv();drawMk();checks();list();if(id=='ai')$('#cmpA').src=snapPng()},30)}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
+/* editor */
+const cu=(a,b,c,d,n=14)=>{const o=[];for(let i=0;i<=n;i++){const t=i/n,u=1-t;o.push([0,1].map(k=>u*u*u*a[k]+3*u*u*t*b[k]+3*u*t*t*c[k]+t*t*t*d[k]))}return o};
+const cl=v=>Math.round(Math.min(400,Math.max(20,v*100)));
+function tplPaths(key,H){const s=S[key].set,g=k=>(s[k]??100)/100,X=key=='kameez'?210:300,m=p=>[2*X-p[0],p[1]],P=[];let half;
+ if(key=='kameez'){const y0=90,sh=70*g('sh'),nw=32*g('nw')*((s.nt=='boat')?1.6:1),nd=45*g('neck'),c=80*g('wid'),y1=y0+430*g('len'),hh=c*(.7+.5*g('flare')),wa=c*.9,tip=[X-sh,y0+18],ab=[X-c,y0+115],wp=[X-wa,y0+240],hp=[X-hh,y1],sk=s.st||'straight',nt=s.nt||'round',cap=42*g('sw'),ww=cap*(sk=='bell'?1.3:sk=='tight'?.5:.8),SX=505,sy=y0+50,sl=190*g('sl'),sb=[SX-cap,sy+45],wb=[SX-ww,sy+45+sl],m2=p=>[2*SX-p[0],p[1]],dn=nt=='v'?1.3:nt=='boat'?.4:1;
+  const dash=(x,ya,yb)=>{const o=[];for(let y=ya;y<yb;y+=14)o.push([[x,y],[x,Math.min(y+8,yb)]]);return o},grain=(x,ya,yb)=>[[[x,ya],[x,yb]],[[x-5,ya+10],[x,ya],[x+5,ya+10]],[[x-5,yb-10],[x,yb],[x+5,yb-10]]];
+  /* বডি (ভাঁজের ওপর কাটা, অর্ধেক আঁকা + মিরর) */
+  half=[nt=='v'?[[X-nw,y0],[X,y0+nd*1.3]]:nt=='square'?[[X-nw,y0],[X-nw,y0+nd],[X,y0+nd]]:nt=='boat'?cu([X-nw,y0],[X-nw*.6,y0+nd*.35],[X-nw*.3,y0+nd*.4],[X,y0+nd*.4]):cu([X-nw,y0],[X-nw,y0+nd*.8],[X-nw*.5,y0+nd],[X,y0+nd]),[[X-nw,y0],tip],cu(tip,[tip[0]+16,y0+45],[ab[0]+18,y0+85],ab),cu(ab,[wp[0],y0+175],wp,wp,8).concat(cu(wp,[wp[0],wp[1]+80],[hp[0]+10,y1-80],hp))];
+  P.push(cu(hp,[hp[0]+hh*.7,y1+(s.hs=='straight'?0:s.hs=='round'?34:16)],[2*X-hp[0]-hh*.7,y1+(s.hs=='straight'?0:s.hs=='round'?34:16)],m(hp)));
+  dash(X,y0+nd*dn+8,y1+8).forEach(d=>P.push(d));grain(X+45,y0+170,y0+330).forEach(d=>P.push(d));
+  /* হাতা (আলাদা টুকরো: ক্যাপ কার্ভ + কব্জির হেম) */
+  const cl1=cu(sb,[sb[0]+4,sy+14],[SX-cap*.55,sy],[SX,sy]),sw=[[sb,wb]],hm=cu(wb,[wb[0]+ww*.6,wb[1]+8],[SX+ww*.6,wb[1]+8],m2(wb));
+  P.push(cl1,cl1.map(m2).reverse(),sw[0],sw[0].map(m2),hm);grain(SX,sy+62,Math.max(sy+90,sy+sl-8)).forEach(d=>P.push(d));
+  const LB=[...half[0].slice().reverse(),...half[1],...half[2],...half[3]];P.body=[...LB,...P[0],...LB.map(m).reverse()];P.sleeve=[...cl1,...cl1.map(m2).reverse(),m2(sb),m2(wb),...hm.slice().reverse(),wb];P.neck=[half[0],half[0].map(m)];P.hem=[P[0]];P.sh=[hm];
+  H&&H.push({p:[X,y1],f:(x,y)=>s.len=cl((y-y0)/430)},{p:ab,f:x=>s.wid=cl((X-x)/80)},{p:hp,f:x=>s.flare=cl(((X-x)/c-.7)/.5)},{p:[X,y0+nd*dn],f:(x,y)=>s.neck=cl((y-y0)/(45*dn))},{p:[X-nw,y0],f:x=>s.nw=cl((X-x)/32/(nt=='boat'?1.6:1))},{p:tip,f:x=>s.sh=cl((X-x)/70)},{p:wb,f:(x,y)=>s.sl=cl((y-sy-45)/190)},{p:sb,f:x=>s.sw=cl((SX-x)/42)})}
+ else{const y0=100,w=90*g('wid'),hw=w*1.15,cy=y0+230*g('cr'),ye=y0+570*g('len'),ai=18,ao=ai+30+40*g('flare'),my=(cy+ye)/2;
+  half=[cu([X-w,y0],[X-hw-8,y0+90],[X-ao-12,my],[X-ao,ye]),[[X-ao,ye],[X-ai,ye]],cu([X-ai,ye],[X-ai-4,my],[X-8,cy+30],[X-4,cy])];
+  P.push([[X-w,y0],[X+w,y0]],cu([X-4,cy],[X-2,cy-14],[X+2,cy-14],[X+4,cy],6));H&&H.push({p:[X-w,y0],f:x=>s.wid=cl((X-x)/90)},{p:[X,cy],f:(x,y)=>s.cr=cl((y-y0)/230)},{p:[X-ao,ye],f:(x,y)=>{s.len=cl((y-y0)/570);s.flare=cl((X-x-ai-30)/40)}})}
+ half.forEach(p=>{P.push(p);P.push(p.map(m))});return P}
+function Editor(key,host,hint,FL){
+ const st=()=>S[key];let tool='shape',hs=[],drag=null,hist=[],fut=[],cur=null,v={s:1,x:0,y:0},pan=null,ptr=new Map(),pd=0,base=1;
+ host.innerHTML=`<div class="g4"><button class="tile" data-t="draw"><b>✏️ Draw</b><span>আঙুল দিয়ে আঁকা</span></button><button class="tile" data-t="erase"><b>🧽 Erase</b><span>মুছে ফেলা</span></button><button class="tile" data-a="undo"><b>↶ Undo</b><span>আগের অবস্থায় ফেরা</span></button><button class="tile" data-a="save"><b>💾 Save</b><span>কাটিং সংরক্ষণ</span></button></div><div class="tb">${[['shape','↔ আকার টানুন'],['pan','✋ প্যান']].map(a=>`<button class="b" data-t="${a[0]}">${a[1]}</button>`).join('')}<button class="b" data-a="redo">↷ Redo</button><button class="b" data-a="zi">＋</button><button class="b" data-a="zo">－</button><button class="b" data-a="clr">Clear</button></div>
+ <div class="cv"><canvas></canvas></div>
+ <div class="tb" style="margin-top:8px"><button class="b" data-a="load">Load Previous</button><button class="b" data-a="svg">SVG</button></div>
+ <div class="tb" style="margin-top:10px"><button class="b" data-a="tpl">তৈরি কাটিং দেখান/লুকান</button><button class="b" data-a="rst">আকার রিসেট</button><button class="b" data-a="cnv">স্ট্রোকে রূপান্তর</button></div>${key=='kameez'?`<div class="f"><label>নেকলাইনের ধরন<select data-s="nt"><option value="round">গোল</option><option value="v">V শেপ</option><option value="boat">বোট</option><option value="square">চৌকা</option></select></label><label>হাতার ধরন<select data-s="st"><option value="straight">সোজা</option><option value="bell">ঘণ্টা (বেল)</option><option value="tight">টাইট</option></select></label><label>নিচের পাড়ের আকৃতি<select data-s="hs"><option value="curve">হালকা বাঁকা</option><option value="straight">সোজা</option><option value="round">গোল</option></select></label></div>`:''}<div class="f">${FL.map(([k,t])=>`<label>${t} <b data-v="${k}"></b><input type="range" min="50" max="150" value="100" data-k="${k}"></label>`).join('')}</div><p class="mu">${hint}</p>`;
+ const cv=$('canvas',host),c=cv.getContext('2d');
+ const snap=()=>{hist.push(JSON.stringify(st().strokes));fut=[];if(hist.length>80)hist.shift()};
+ function fit(){const r=cv.parentElement.getBoundingClientRect();if(!r.width)return;const d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;base=r.width/W*d;render()}
+ function render(){c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);const k=base*v.s;c.setTransform(k,0,0,k,v.x*(devicePixelRatio||1),v.y*(devicePixelRatio||1));
+  c.fillStyle='#fff';c.fillRect(0,0,W,H);c.strokeStyle='#eee';c.lineWidth=1/k;for(let i=0;i<=W;i+=50){c.beginPath();c.moveTo(i,0);c.lineTo(i,H);c.stroke()}for(let i=0;i<=H;i+=50){c.beginPath();c.moveTo(0,i);c.lineTo(W,i);c.stroke()}
+  hs=[];if(!st().hide){c.lineCap=c.lineJoin='round';c.strokeStyle='#7B2FA0';c.lineWidth=3.5;tplPaths(key,hs).forEach(p=>{c.beginPath();p.forEach((q,i)=>i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]));c.stroke()})}
+  c.lineCap=c.lineJoin='round';c.strokeStyle='#1C1526';c.lineWidth=3;st().strokes.forEach(p=>{c.beginPath();p.forEach((q,i)=>i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]));if(p.length==1)c.lineTo(p[0][0]+.1,p[0][1]);c.stroke()});if(tool=='shape')hs.forEach(h=>{const d=devicePixelRatio||1;c.beginPath();c.arc(h.p[0],h.p[1],12*d/k,0,7);c.fillStyle='#fff';c.fill();c.strokeStyle='#7B2FA0';c.lineWidth=3*d/k;c.stroke()})}
+ const wp=e=>{const r=cv.getBoundingClientRect(),k=r.width/W*v.s;return[(e.clientX-r.left-v.x)/k,(e.clientY-r.top-v.y)/k]};
+ const er=p=>{const n=st().strokes.length;st().strokes=st().strokes.filter(s=>!s.some(q=>Math.hypot(q[0]-p[0],q[1]-p[1])<16));return n!=st().strokes.length};
+ const zoom=(f,cx,cy)=>{const r=cv.getBoundingClientRect();cx??=r.width/2;cy??=r.height/2;const n=Math.min(5,Math.max(.5,v.s*f)),q=n/v.s;v.x=cx-(cx-v.x)*q;v.y=cy-(cy-v.y)*q;v.s=n;render()};
+ cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,e);if(ptr.size==2){cur=null;{const[a,b]=[...ptr.values()];pd=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)}return}
+  if(tool=='shape'){let b=null,bd=28;const r=cv.getBoundingClientRect(),q=r.width/W*v.s;hs.forEach(h=>{const d=Math.hypot(h.p[0]*q+v.x+r.left-e.clientX,h.p[1]*q+v.y+r.top-e.clientY);if(d<bd){bd=d;b=h}});if(b)drag=b;else pan={x:e.clientX,y:e.clientY,vx:v.x,vy:v.y}}else if(tool=='pan'){pan={x:e.clientX,y:e.clientY,vx:v.x,vy:v.y}}else if(tool=='draw'){snap();cur=[wp(e)];st().strokes.push(cur);render()}else{snap();pan=0;cur='e';er(wp(e));render()}});
+ cv.addEventListener('pointermove',e=>{if(!ptr.has(e.pointerId))return;ptr.set(e.pointerId,e);
+  if(ptr.size==2){const [a,b]=[...ptr.values()],d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);if(pd){const r=cv.getBoundingClientRect();zoom(d/pd,(a.clientX+b.clientX)/2-r.left,(a.clientY+b.clientY)/2-r.top)}pd=d;return}
+  if(drag){const q=wp(e);drag.f(q[0],q[1]);sync();render();return}if(pan){v.x=pan.vx+e.clientX-pan.x;v.y=pan.vy+e.clientY-pan.y;render()}else if(cur=='e'){er(wp(e));render()}else if(cur){(e.getCoalescedEvents?.()||[e]).forEach(x=>cur.push(wp(x)));render()}});
+ const up=e=>{ptr.delete(e.pointerId);pd=0;if(!ptr.size){pan=null;cur=null;drag=null}};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+ cv.addEventListener('wheel',e=>{e.preventDefault();const r=cv.getBoundingClientRect();zoom(e.deltaY<0?1.15:.87,e.clientX-r.left,e.clientY-r.top)},{passive:false});
+ const svg=()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${st().strokes.map(p=>`<path d="M${p.map(q=>q.map(n=>n.toFixed(1)).join(' ')).join('L')}"/>`).join('')}</svg>`;
+ host.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.t){tool=t.dataset.t;host.querySelectorAll('[data-t]').forEach(b=>b.classList.toggle('on',b==t))}
+  const a=t.dataset.a;if(a=='undo'&&hist.length){fut.push(JSON.stringify(st().strokes));st().strokes=JSON.parse(hist.pop());render()}
+  if(a=='redo'&&fut.length){hist.push(JSON.stringify(st().strokes));st().strokes=JSON.parse(fut.pop());render()}
+  if(a=='zi')zoom(1.25);if(a=='zo')zoom(.8);
+  if(a=='clr'&&st().strokes.length){snap();st().strokes=[];render()}
+  if(a=='tpl'){st().hide=!st().hide;render()}if(a=='rst'){st().set={};sync();render()}if(a=='cnv'&&!st().hide){snap();st().strokes.push(...tplPaths(key));st().hide=true;render()}if(a=='save'){ls.set('cut_'+key,st())&&toast('কাটিং সংরক্ষিত')}
+  if(a=='load'){const d=ls.get('cut_'+key);if(d){snap();S[key]=d;sync();render();toast('লোড হয়েছে')}else toast('আগের কাটিং নেই')}
+  if(a=='svg'){const l=document.createElement('a');l.href=URL.createObjectURL(new Blob([svg()],{type:'image/svg+xml'}));l.download=key+'.svg';l.click()}});
+ host.querySelectorAll('[data-s]').forEach(i=>i.onchange=()=>{st().set[i.dataset.s]=i.value;render()});const lab=i=>{host.querySelector('[data-v='+i.dataset.k+']').textContent=i.value+'%'};host.querySelectorAll('[data-k]').forEach(i=>i.oninput=()=>{st().set[i.dataset.k]=+i.value;lab(i);render()});
+ function sync(){host.querySelectorAll('[data-s]').forEach(i=>i.value=st().set[i.dataset.s]||i.options[0].value);host.querySelectorAll('[data-k]').forEach(i=>{i.value=st().set[i.dataset.k]??100;lab(i)})}
+ host.querySelector('[data-t=shape]').classList.add('on');sync();new ResizeObserver(fit).observe(cv.parentElement);
+ return{fit,render,sync,reset(){hist=[];fut=[];v={s:1,x:0,y:0};sync();render()}}}
+E.kameez=Editor('kameez',$('#ek'),'পিঞ্চ করে জুম করুন, প্যান টুলে সরান। আঁকার সময় পেজ স্ক্রল হয় না। গোল বিন্দুগুলো টেনে কাটিং বড়-ছোট করুন (ফাঁকা জায়গায় টানলে প্যান)। নতুন কিছু যোগ করতে আঁকুন টুল নিন।',[['len','দৈর্ঘ্য'],['wid','বুক/শরীরের প্রস্থ'],['flare','ঘের (ফ্লেয়ার)'],['neck','গলার গভীরতা'],['nw','গলার প্রস্থ'],['sh','কাঁধ'],['sl','হাতার দৈর্ঘ্য'],['sw','হাতার প্রস্থ']]);
+E.salwar=Editor('salwar',$('#es'),'কামিজ ও সালোয়ার আলাদা সংরক্ষণ করা যায়, প্রজেক্টে একসাথে থাকে। গোল বিন্দু টেনে কোমর, দৈর্ঘ্য, পায়ের ঘের ও ক্রচ বদলান।',[['len','দৈর্ঘ্য'],['wid','কোমরের প্রস্থ'],['flare','পায়ের ঘের'],['cr','ক্রচ গভীরতা']]);
+/* gallery */
+const SL=[['main','মূল ফেব্রিক'],['kameez','কামিজ ফেব্রিক'],['sleevef','হাতার ফেব্রিক'],['salwar','সালোয়ার ফেব্রিক'],['dupatta','দোপাট্টা ফেব্রিক'],['neck','নেকলাইন লেস'],['sleeve','হাতার লেস'],['hem','হেম লেস'],['cut','কাটিং রেফারেন্স'],['model','মডেল রেফারেন্স']];
+function shrink(f){return new Promise(res=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const m=Math.min(1,700/Math.max(i.width,i.height)),k=document.createElement('canvas');k.width=i.width*m;k.height=i.height*m;k.getContext('2d').drawImage(i,0,0,k.width,k.height);res(k.toDataURL('image/jpeg',.82))};i.src=r.result};r.readAsDataURL(f)})}
+function loadImgs(){imgs={};Object.entries(S.mats).forEach(([k,u])=>{const i=new Image();i.onload=()=>{drawPv();drawMk()};i.src=u;imgs[k]=i})}
+function slots(){const g=$('#slots');g.innerHTML='';SL.forEach(([k,t])=>{const d=document.createElement('div');d.className='th';const u=S.mats[k];d.innerHTML=`<b>${t}</b>${u?`<img src="${u}" alt="${t}">`:'<div class="mu" style="padding:30px 0;text-align:center">ছবি নেই</div>'}<div class="r"><label class="b" style="color:var(--fg);cursor:pointer">${u?'বদলান':'আপলোড'}<input type="file" accept="image/jpeg,image/png,image/webp" hidden></label>${u?'<button class="b" data-rm>মুছুন</button>':''}</div>`;
+ $('input',d).onchange=async e=>{const f=e.target.files[0];if(!f)return;S.mats[k]=await shrink(f);loadImgs();slots();fabOpts();checks()};
+ const rm=$('[data-rm]',d);if(rm)rm.onclick=()=>{delete S.mats[k];loadImgs();slots();fabOpts();checks()};g.append(d)})}
+/* placement */
+const fabOpts=()=>{const s=$('#pFab'),c=s.value||S.place.fab;s.innerHTML=SL.slice(0,5).map(([k,t])=>`<option value="${k}" ${!S.mats[k]?'disabled':''}>${t}${S.mats[k]?'':' (নেই)'}</option>`).join('');s.value=S.mats[c]?c:(SL.slice(0,5).find(a=>S.mats[a[0]])||[''])[0];drawPv()};
+const P={};['Sc:sc','Rot:rot','X:x','Y:y'].forEach(a=>{const[i,k]=a.split(':');P[k]=$('#p'+i)});P.lw=$('#lW');P.lo=$('#lO');P.lz=$('#lZ');P.lr=$('#lR');
+function pget(){const p=S.place;p.area=$('#pArea').value;p.fab=$('#pFab').value;['sc','rot','x','y','lw','lo','lz','lr'].forEach(k=>p[k]=+P[k].value);p.n=+$('#lN').checked;p.s=+$('#lS').checked;p.h=+$('#lH').checked}
+function bbox(a){const pts=S[a].strokes.concat(S[a].hide?[]:tplPaths(a)).flat();if(!pts.length)return a=='kameez'?[60,60,585,560]:[190,470,410,760];const x=pts.map(p=>p[0]),y=pts.map(p=>p[1]);return[Math.min(...x),Math.min(...y),Math.max(...x),Math.max(...y)]}
+function paint(cv,withLace=true){const c=cv.getContext('2d'),r=cv.parentElement.getBoundingClientRect(),d=devicePixelRatio||1;if(!r.width)return;cv.width=r.width*d;cv.height=r.height*d;const k=r.width/W*d;c.setTransform(k,0,0,k,0,0);c.fillStyle='#fff';c.fillRect(0,0,W,H);
+ ['kameez','salwar'].forEach(a=>{const[x0,y0,x1,y1]=bbox(a),mine=S.place.area==a,T=S[a].hide?null:tplPaths(a),pt=q=>{c.beginPath();q.forEach((v,i)=>i?c.lineTo(v[0],v[1]):c.moveTo(v[0],v[1]))};
+  const fill=(fk,poly,lace)=>{const im=imgs[S.mats[fk]?fk:(S.mats[a]?a:'main')];c.save();if(poly){pt(poly);c.closePath()}else{c.beginPath();c.rect(x0,y0,x1-x0,y1-y0)}c.clip();
+   if(im&&im.complete&&im.naturalWidth){const q=c.createPattern(im,'repeat'),p=mine?S.place:{sc:60,rot:0,x:0,y:0};q.setTransform(new DOMMatrix().translate(x0+p.x,y0+p.y).rotate(p.rot).scale(p.sc/100*(300/im.naturalWidth)));c.fillStyle=q}else c.fillStyle='#EEE6F4';c.fillRect(x0,y0,x1-x0,y1-y0);
+   if(lace&&withLace&&T&&T.neck){const pl=S.place,lw=pl.lw,lo=pl.lo||0,lz=(pl.lz||100)/100,lr=pl.lr||0,E=(k,paths)=>{const li=imgs[k];c.save();c.translate(0,lo);c.lineWidth=lw*2;c.lineCap=c.lineJoin='round';if(li&&li.complete&&li.naturalWidth){const q=c.createPattern(li,'repeat');q.setTransform(new DOMMatrix().rotate(lr).scale(lz*100/li.naturalWidth));c.strokeStyle=q}else c.strokeStyle='#C58BE6';paths.forEach(q=>{pt(q);c.stroke()});c.restore()};
+    if(pl.n)E('neck',T.neck);if(pl.h)E('hem',T.hem);if(pl.s)E('sleeve',T.sh)}
+   c.restore()};
+  if(a=='kameez'&&T&&T.body){fill('kameez',T.body,true);fill('sleevef',T.sleeve,false)}else fill(a,null,a=='kameez')});
+ c.lineCap=c.lineJoin='round';c.strokeStyle='#1C1526';c.lineWidth=3;['kameez','salwar'].forEach(a=>S[a].strokes.concat(S[a].hide?[]:tplPaths(a)).forEach(p=>{c.beginPath();p.forEach((q,i)=>i?c.lineTo(...q):c.moveTo(...q));c.stroke()}))}
+const drawPv=()=>{if($('#place').classList.contains('on'))paint($('#pv'))};
+document.querySelectorAll('#place input,#place select').forEach(i=>i.oninput=()=>{pget();drawPv()});
+/* AI + mask */
+const AR=['গলার ডিজাইন','হাতার ডিজাইন','লেসের অবস্থান','কামিজের ঘের','ওড়না','কাস্টম ব্রাশ'],EX=['Change only the neckline to a V shape.','Place the uploaded lace around the neckline.','Make the sleeves three-quarter length.','Increase the kameez flare.','Keep the fabric print unchanged.','Change only the salwar design.'];
+let area=AR[0],mh=[],mc=null;
+$('#areas').innerHTML=AR.map((a,i)=>`<button class="b ${i?'':'on'}">${a}</button>`).join('');
+$('#areas').onclick=e=>{const b=e.target.closest('button');if(!b)return;area=b.textContent;$('#areas').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b))};
+$('#chips').innerHTML=EX.map(t=>`<button class="b" style="font-size:12px">${t}</button>`).join('');
+$('#chips').onclick=e=>{if(e.target.closest('button'))$('#prompt').value=e.target.textContent};
+const mk=$('#mk'),mctx=()=>mk.getContext('2d');let strokes=[],mcur=null;
+function drawMk(){if(!$('#ai').classList.contains('on'))return;paint(mk);const c=mctx(),k=mk.width/W;c.setTransform(k,0,0,k,0,0);c.strokeStyle='rgba(220,40,120,.5)';c.lineWidth=26;c.lineCap=c.lineJoin='round';strokes.forEach(s=>{c.beginPath();s.forEach((q,i)=>i?c.lineTo(...q):c.moveTo(...q));c.stroke()})}
+const mp=e=>{const r=mk.getBoundingClientRect();return[(e.clientX-r.left)/r.width*W,(e.clientY-r.top)/r.height*H]};
+mk.onpointerdown=e=>{mk.setPointerCapture(e.pointerId);mcur=[mp(e)];strokes.push(mcur);drawMk()};
+mk.onpointermove=e=>{if(mcur){mcur.push(mp(e));drawMk()}};mk.onpointerup=mk.onpointercancel=()=>mcur=null;
+$('#mkU').onclick=()=>{strokes.pop();drawMk()};$('#mkC').onclick=()=>{strokes=[];drawMk()};
+function checks(){steps();recent();const it=[['কামিজ কাটিং',!S.kameez.hide||S.kameez.strokes.length],['সালোয়ার কাটিং',!S.salwar.hide||S.salwar.strokes.length],['মূল/কামিজ ফেব্রিক',S.mats.main||S.mats.kameez],['লেস ছবি',S.mats.neck||S.mats.sleeve||S.mats.hem],['মডেল রেফারেন্স (ঐচ্ছিক)',S.mats.model]];$('#chk').innerHTML=it.map(([t,o])=>`<div class="${o?'ok':'mu'}">${o?'✓':'○'} ${t}</div>`).join('')}
+const payload=()=>({project:S.name,area:strokes.length?area:null,maskStrokes:strokes.length,instruction:$('#prompt').value,design:{kameez:S.kameez.set,salwar:S.salwar.set,placement:S.place},materials:Object.keys(S.mats),fabricTypes:Object.fromEntries(Object.entries(S.ft||{}).map(([k,v])=>[k,(ftBy(v)||[])[2]])),cutting:{kameez:S.kameez.strokes.length,salwar:S.salwar.strokes.length}});
+const noAI=()=>{$('#aiMsg').textContent='এআই সার্ভার সংযুক্ত নেই, তাই ছবি তৈরি বা এডিট হয়নি। সংযোগ দিলে মাস্কড-এডিট সাপোর্টেড মডেল লাগবে, নইলে লোকাল এডিট সীমিত হবে।';toast('এআই সংযুক্ত নেই')};
+$('#aiUrl').value=ls.get('ads_url','');$('#aiUrl').onchange=()=>ls.set('ads_url',$('#aiUrl').value.trim());
+const runAI=async()=>{const u=$('#aiUrl').value.trim();$('#cmpA').src=snapPng();if(!u)return noAI();$('#aiMsg').textContent='তৈরি হচ্ছে...';try{const mask=document.createElement('canvas');const r=await fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload(),design:snapPng(),materials:S.mats})});if(!r.ok)throw 0;const j=await r.json(),im=j.image||j.url||(j.b64&&'data:image/png;base64,'+j.b64);if(!im)throw 0;$('#cmpB').src=im;$('#rs').style.display='flex';gen=1;steps();$('#aiMsg').textContent='প্রিভিউ তৈরি হয়েছে। কাটিং বদলে আবার চেষ্টা করতে পারেন।'}catch(e){$('#aiMsg').textContent='সার্ভার থেকে ছবি পাওয়া যায়নি। URL ও সার্ভারের উত্তর ({image:...}) দেখুন।'}};
+$('#acc').onclick=()=>{const a=document.createElement('a');a.href=$('#cmpB').src;a.download=(S.name||'design')+'-model.jpg';a.target='_blank';a.click();toast('গ্রহণ করা হয়েছে')};$('#rej').onclick=()=>{$('#cmpB').removeAttribute('src');$('#rs').style.display='none';gen=0;steps();toast('বাতিল করা হয়েছে')};
+$('#gen').onclick=runAI;$('#apply').onclick=runAI;
+$('#cpj').onclick=()=>navigator.clipboard?.writeText(JSON.stringify(payload(),null,1)).then(()=>toast('কপি হয়েছে'),()=>toast('কপি করা যায়নি'));
+/* catalog */
+const K='k',Z='s',CAT=[['১. দেশি পোশাক','🧵',[['থ্রি-পিস','Three-Piece',K,{}],['সালোয়ার কামিজ','Salwar Kameez',K,{len:105}],['অনারকলি','Anarkali Suit',K,{flare:150,len:140,wid:105}],['এ-লাইন কামিজ','A-Line Kameez',K,{flare:130,len:115}],['কুর্তি ও টপস','Kurti & Tops',K,{len:65,flare:90}],['পাঞ্জাবি স্যুট','Punjabi Suit',K,{len:110}]]],
+['২. পার্টি ও উৎসবের পোশাক','✨',[['পার্টি গাউন','Party Gown',K,{len:150,flare:150,sl:60}],['লেহেঙ্গা','Lehenga',Z,{len:115,flare:150,cr:50}],['শাড়ি ও ব্লাউজ','Saree & Blouse',K,{len:55,wid:90}],['শারারা/গারারা','Sharara / Gharara',Z,{flare:150}],['জ্যাকেট স্টাইল','Jacket Style Dress',K,{len:120,wid:115}],['ম্যাক্সি ড্রেস','Maxi Dress',K,{len:150,flare:140}]]],
+['৩. মডেস্ট ও ইসলামিক','🕌',[['আবায়া','Abaya',K,{len:150,wid:130,flare:120,sl:150,st:'bell'}],['বোরকা','Burqa',K,{len:150,wid:140,flare:130,sl:150}],['হিজাব আউটফিট','Hijab Outfit',K,{len:130,wid:110,sl:150}],['ওপেন আবায়া','Open Abaya',K,{len:150,wid:130,flare:110,sl:150}]]],
+['৪. ওয়েস্টার্ন ও ক্যাজুয়াল','👚',[['ওয়েস্টার্ন ড্রেস','Western Dress',K,{len:100,flare:120,sl:60}],['কো-অর্ড সেট','Co-Ord Set',K,{len:70,wid:110}],['টিউনিক ও প্যান্ট','Tunic & Pants',K,{len:90}],['স্কার্ট ও টপ','Skirt & Top',Z,{len:80,flare:140}],['শার্ট ড্রেস','Shirt Dress',K,{len:115,sl:100}],['জাম্পস্যুট','Jumpsuit',Z,{len:120,flare:80,cr:80}]]],
+['৫. বিশেষ ও কাস্টম','🎀',[['ম্যাটারনিটি ড্রেস','Maternity Dress',K,{wid:140,len:115,flare:130}],['কিডস ড্রেস','Kids Dress',K,{len:60,wid:70,flare:120,sl:60}],['অফিস ওয়্যার','Office Wear',K,{len:100,sl:100,flare:80}]]]];
+CAT.forEach(c=>c[2].push(['কাস্টম ডিজাইন','Custom Design','c',{}]));
+function pick(ci,si){const c=CAT[ci],[bn,en,t,pre]=c[2][si],g=t==Z?'salwar':'kameez',o=S[g];o.set={...pre};o.hide=t=='c';if(t=='c')o.strokes=[];S.cat={c:c[0],s:bn,t:g};E[g].reset();$('#selK').textContent=$('#selS').textContent='নির্বাচিত: '+c[0]+' › '+bn+(t=='c'?' (ফাঁকা ক্যানভাস, আঁকুন টুল নিন)':'');go(g)}
+let dIc=0;const CC=[['#7B2FA0','#E0408A'],['#EF6C00','#F4B62A'],['#00897B','#2BC4D8'],['#1565C0','#8E5BD8'],['#C2185B','#F48FB1']];
+function dIcon(ci,pre,ty,nm){const[c1,c2]=CC[ci],id='di'+(dIc++),F=`url(#${id})`,sk='#F2C9A5',W='#fff',has=s=>nm.includes(s),
+ K=(hem,fl,sv)=>{const s=sv=='l'?[41,36,37,36.5]:sv=='q'?[40,27,35.5,28]:[39,17,34,19];return`M19 5L24 9L29 5L35 9L${s[0]} ${s[1]}L${s[2]} ${s[3]}L31 17L${24+fl} ${hem}H${24-fl}L17 17L${48-s[2]} ${s[3]}L${48-s[0]} ${s[1]}L13 9Z`},
+ P=(y0,a,b,y1)=>`M${24-a} ${y0}H${24+a}L${24+b} ${y1}H${25.2}L24 ${y0+7}L${22.8} ${y1}H${24-b}Z`,
+ hj=(bq)=>`<path d="M24 1.5C31 1.5 33 8 33 12L35 19C30 16 18 16 13 19L15 12C15 8 17 1.5 24 1.5Z" fill="${c2}"/>`+(bq?`<ellipse cx="24" cy="9.5" rx="4" ry="5" fill="#222"/><path d="M21 9H27" stroke="${sk}" stroke-width="1.6" stroke-linecap="round"/>`:`<ellipse cx="24" cy="9.5" rx="3.6" ry="4.4" fill="${sk}"/>`),
+ p=(d,f)=>`<path d="${d}" fill="${f||F}"/>`,ln=(d,c,w,x)=>`<path d="${d}" stroke="${c}" stroke-width="${w||1.4}" fill="none" stroke-linecap="round" ${x||''}/>`;
+ let g='';
+ if(ty=='c'){g=`<g opacity=".4">${p(K(46,10,'s'))}${p(P(46,8,6,60))}</g><circle cx="24" cy="31" r="9" fill="#fff"/>${ln('M24 26V36M19 31H29',c1,2.4)}`}
+ else if(has('থ্রি-পিস'))g=p(P(40,7,5,60),c2)+p(K(46,9,'q'))+ln('M14 10Q20 26 34 34L36 46',c2,3.2,'opacity=".95"')+ln('M14 10Q20 26 34 34',W,.8,'stroke-dasharray="1.5 2" opacity=".7"');
+ else if(has('সালোয়ার কামিজ'))g=p(P(42,8,5.5,60),c2)+p(K(46,9,'s'))+ln('M24 9V20',W,1,'opacity=".7"');
+ else if(has('অনারকলি'))g=p('M19 5L24 9L29 5L35 9L41 36L37 36.5L31 17L30 26L44 58Q24 63 4 58L18 26L17 17L11 36.5L7 36L13 9Z')+ln('M18 26H30',c2,2.4)+ln('M4.8 56Q24 61 43.2 56',c2,2.4)+ln('M14 40L10 56M34 40L38 56M24 30V58',W,.7,'opacity=".45"');
+ else if(has('এ-লাইন'))g=p(P(52,4,3.5,60),c2)+p(K(52,14,'s'))+ln('M17 24H31',c2,2);
+ else if(has('কুর্তি'))g=p(P(36,7,6,60),c2)+p(K(36,9,'s'))+ln('M20 9L24 14L28 9',W,1.2,'opacity=".8"');
+ else if(has('পাঞ্জাবি'))g=p(P(48,6,3.6,60),c2)+p(K(48,8,'l'))+ln('M24 9V30',W,1.3,'stroke-dasharray="1 3" opacity=".9"')+ln('M16 48L17 38M32 48L31 38',W,.8,'opacity=".6"');
+ else if(has('পার্টি গাউন'))g=p('M15 12Q24 16 33 12L31 28Q40 40 44 58Q24 64 4 58Q8 40 17 28Z')+ln('M16 27H32',c2,2.6)+p('M38 5l1.2 3.2 3.2 1.2-3.2 1.2L38 14l-1.2-3.2-3.2-1.2 3.2-1.2z',c2)+p('M8 26l.9 2.2 2.2.9-2.2.9L8 33l-.9-2.2-2.2-.9 2.2-.9z',c2)+ln('M14 40L10 56M34 40L38 56M24 32V60',W,.7,'opacity=".4"');
+ else if(has('লেহেঙ্গা'))g=p('M19 5L24 9L29 5L35 9L39 17L34 19L31 17V22H17V17L14 19L9 17L13 9Z',c2)+p('M17 22H31V28H17Z',sk)+p('M15 28H33L44 58Q24 63 4 58Z')+ln('M5 54Q24 59 43 54',c2,2.4)+ln('M13 32L9 52M24 29V57M35 32L39 52',W,.8,'opacity=".5"');
+ else if(has('শাড়ি'))g=p('M19 5L24 9L29 5L35 9L38 16L33 18L31 16V23H17V16L15 18L10 16L13 9Z',c2)+p('M15 23H33L36 60H12Z')+p('M13 9L19 7L39 42L33 47Z',c2)+ln('M16 12L35 44',W,1,'stroke-dasharray="1.5 2" opacity=".8"');
+ else if(has('শারারা'))g=p(P(34,7,14,60),c2)+p(K(34,9,'s'))+ln('M18 40L13 58M30 40L35 58',W,.8,'opacity=".5"')+ln('M17 25H31',c2,2);
+ else if(has('জ্যাকেট'))g=p('M19 5L24 9L29 5L33 9L31 46H17L15 9Z',c2)+p(K(52,11,'l'))+p('M21 9L24 12L27 9L28 52H20Z',c2)+ln('M22 8L18 24M26 8L30 24',W,1.3,'opacity=".9"');
+ else if(has('ম্যাক্সি'))g=ln('M18 3V12M30 3V12',c1,1.6)+p('M16 12Q24 16 32 12L30 26L43 60Q24 64 5 60L18 26Z')+ln('M18 26H30',c2,3)+ln('M17 38L12 58M31 38L36 58M24 30V60',W,.7,'opacity=".4"');
+ else if(has('আবায়া')||has('বোরকা')){const o=has('ওপেন');g=p('M18 15Q24 18 30 15L38 19L46 58H2L10 19Z')+(o?p('M21 17L24 20L27 17L29 58H19Z',c2):'')+ln('M2.8 56H45.2',c2,2.4)+hj(has('বোরকা'))+ln('M14 24L7 54M34 24L41 54',W,.7,'opacity=".4"')}
+ else if(has('হিজাব'))g=p(P(46,8,6,60),c2)+p(K(48,10,'l'))+hj(false)+ln('M24 17V48',W,.8,'opacity=".5"');
+ else if(has('ওয়েস্টার্ন'))g=p('M18 4L24 10L30 4L33 10L31 24L42 48Q24 52 6 48L17 24L15 10Z')+ln('M17 24H31',c2,2.6)+ln('M20 36L14 48M28 36L34 48',W,.7,'opacity=".4"');
+ else if(has('কো-অর্ড'))g=p('M19 6L24 10L29 6L34 10L36 16L31 18V26H17V18L12 16L14 10Z')+p('M17 26H31V30H17Z',sk)+p('M16 30H32L35 60H25.2L24 42L22.8 60H13Z')+ln('M16 31H32',c2,2.4)+ln('M17 25H31',c2,1.6);
+ else if(has('টিউনিক'))g=p(P(34,7,6.5,60),c2)+p(K(34,9,'q'));
+ else if(has('স্কার্ট'))g=p('M19 6L24 10L29 6L35 10L38 18L33 20L31 18V30H17V18L15 20L10 18L13 10Z',c2)+p('M17 28H31L40 48Q24 52 8 48Z')+p('M19 49H22.5V60H19ZM25.5 49H29V60H25.5Z',sk);
+ else if(has('শার্ট'))g=p(K(46,11,'s'))+ln('M24 14V46',W,1.3,'stroke-dasharray="1 3" opacity=".9"')+p('M19 4L24 14L29 4L27 3L24 8L21 3Z',W)+ln('M13 28H35',c2,3);
+ else if(has('জাম্পস্যুট'))g=p('M18 4L24 9L30 4L33 10L31 24H17L15 10Z')+p('M17 24H31L41 60H26L24 38L22 60H7Z')+ln('M16.5 26H31.5',c2,3);
+ else if(has('ম্যাটারনিটি'))g=p('M19 5L24 9L29 5L35 9L39 16L34 18L31 17Q40 36 43 54Q24 58 5 54Q8 36 17 17L14 18L9 16L13 9Z')+ln('M17 20Q24 24 31 20',c2,2.6)+'<ellipse cx="24" cy="37" rx="8" ry="7" fill="#fff" opacity=".25"/>';
+ else if(has('কিডস'))g=`<g transform="translate(3.6 9) scale(.85)"><circle cx="11" cy="14" r="5.5" fill="${F}"/><circle cx="37" cy="14" r="5.5" fill="${F}"/>${p('M17 6L24 10L31 6L31 16L41 44Q24 48 7 44L17 16Z')}${p('M24 12L18 8V16ZM24 12L30 8V16Z',c2)}${ln('M16 34H32',c2,2.4)}</g>`;
+ else if(has('অফিস'))g=p('M17 31H31L30 54H18Z',c2)+p('M19 54H22.5V60H19ZM25.5 54H29V60H25.5Z',sk)+p('M18 5L24 9L30 5L35 9L40 36L35.5 37L31 18V32H17V18L12.5 37L8 36L13 9Z')+ln('M22 8L24 24L26 8',W,1.4,'opacity=".9"');
+ else g=p(K(46,10,'s'));
+ return`<svg viewBox="0 0 48 62" style="width:56px;height:72px;display:block"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>${g}</svg>`}
+$('#catList').innerHTML=CAT.map((c,ci)=>`<h3 style="margin:14px 0 8px;font-size:16px">${c[1]} ${c[0]}</h3><div class="grid">${c[2].map((x,si)=>`<button class="tile ct" data-p="${ci},${si}" ${x[2]=='c'?'style="border-style:dashed"':''}><span class="ci" style="background:color-mix(in srgb,${CC[ci][0]} 11%,transparent)">${dIcon(ci,x[3],x[2],x[0])}</span><b>${x[0]}</b><span>${x[1]}</span></button>`).join('')}</div>`).join('');
+$('#catList').onclick=e=>{const b=e.target.closest('[data-p]');if(b)pick(...b.dataset.p.split(',').map(Number))};
+/* finger drag fabric */
+{const pv=$('#pv');let dg=null;pv.onpointerdown=e=>{pv.setPointerCapture(e.pointerId);dg={x:e.clientX,y:e.clientY,px:+P.x.value,py:+P.y.value}};pv.onpointermove=e=>{if(!dg)return;const k=W/pv.getBoundingClientRect().width,f=v=>Math.max(-300,Math.min(300,v));P.x.value=f(dg.px+(e.clientX-dg.x)*k);P.y.value=f(dg.py+(e.clientY-dg.y)*k);pget();drawPv()};pv.onpointerup=pv.onpointercancel=()=>dg=null}
+/* stepper, recent, salwar types, technical file */
+let gen=0;const ST=[['কাপড় নির্বাচন','gallery',()=>S.mats.main||S.mats.kameez||S.mats.salwar],['কাটিং ও লেস','catalog',()=>S.cat||S.kameez.strokes.length||S.salwar.strokes.length],['AI ড্রেস তৈরি','ai',()=>gen],['নিজের মতো পরিবর্তন','ai',()=>strokes.length],['ফাইনাল ছবি','saved',()=>S.id]];
+function steps(){const IC=[['🧵','#7B2FA0'],['✂️','#E53935'],['✨','#F9A825'],['🎨','#00897B'],['🖼️','#1565C0']];$('#steps').innerHTML=ST.map((t,i)=>{const d=!!t[2]();return `<button class="st${d?' ok':''}" data-go="${t[1]}"><span class="si" style="background:${IC[i][1]}">${IC[i][0]}</span><span class="sn">${t[0]}</span><i>${d?'✓':i+1}</i></button>`}).join('')}
+function recent(){const r=$('#recent');r.innerHTML='';const l=L();if(!l.length)r.innerHTML='<p class="mu">এখনো কোনো প্রজেক্ট নেই।</p>';l.slice(0,3).forEach(o=>{const b=document.createElement('button'),t=document.createElement('b'),m=document.createElement('span');b.className='tile';t.textContent=o.name;m.textContent=o.date;b.append(t,m);b.onclick=()=>{S=JSON.parse(JSON.stringify(o.data));S.id=o.id;sync();go('kameez')};r.append(b)})}
+const SZ=[['স্ট্রেইট',{flare:60}],['চুড়িদার',{flare:50,len:105}],['পালাজ্জো',{flare:150,wid:110}],['ঘেরওয়ালা',{flare:130}],['নিজের হাতে আঁকা',null]];
+$('#szT').innerHTML=SZ.map((x,i)=>`<button class="b" data-z="${i}">${x[0]}</button>`).join('');
+$('#szT').onclick=e=>{const b=e.target.closest('[data-z]');if(!b)return;const x=SZ[+b.dataset.z];S.salwar.set={...(x[1]||{})};S.salwar.hide=!x[1];S.cat={c:'সালোয়ার',s:x[0],t:'salwar'};$('#selS').textContent='নির্বাচিত: সালোয়ার › '+x[0];E.salwar.reset()};
+const plen=p=>{let t=0;for(let i=1;i<p.length;i++)t+=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1]);return t},ext=a=>{const x=a.map(q=>q[0]),y=a.map(q=>q[1]);return[Math.max(...x)-Math.min(...x),Math.max(...y)-Math.min(...y)]};
+function techHTML(){pget();const fw=+$('#tfw').value||44,kL=+$('#tkL').value||40,sL=+$('#tsL').value||38,yd=i=>(i/36).toFixed(2),f1=n=>n.toFixed(1),R=[],F=[],esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const SN={straight:'সোজা',bell:'ঘণ্টা',tight:'টাইট'},K=S.kameez.hide?null:tplPaths('kameez'),Z=S.salwar.hide?null:tplPaths('salwar');
+ if(K){const k=S.kameez,g=n=>(k.set[n]??100)/100,pp=ext(K.body)[1]/kL,[sw,sh]=ext(K.sleeve),c=80*g('wid'),hh=c*(.7+.5*g('flare'));
+  R.push(['কামিজ দৈর্ঘ্য',kL],['সামনের টুকরোর বুকের প্রস্থ',f1(2*c/pp)],['কাঁধের প্রস্থ',f1(2*70*g('sh')/pp)],['গলার প্রস্থ',f1(2*32*g('nw')/pp)],['গলার গভীরতা (সামনে)',f1(45*g('neck')/pp)],['হেমের প্রস্থ (সামনের টুকরো)',f1(2*hh/pp)],['হাতার দৈর্ঘ্য',f1(sh/pp)],['হাতার ওপরের প্রস্থ',f1(sw/pp)]);
+  F.push(['কামিজ ('+(SN[k.set.st]||'সোজা')+' হাতা)',((2*(kL+4)+sh/pp+2)*(1+Math.max(0,g('flare')-1)/1.5)/36).toFixed(2)+' গজ']);
+  if(S.place.n)F.push(['নেকলাইন লেস (সামনে)',yd(K.neck.reduce((a,q)=>a+plen(q),0)/pp*1.05)+' গজ']);if(S.place.h)F.push(['হেম লেস (সামনে+পেছনে)',yd(plen(K.hem[0])*2/pp*1.05)+' গজ']);if(S.place.s)F.push(['হাতার লেস (দুই হাতা)',yd(plen(K.sh[0])*2/pp*1.05)+' গজ'])}
+ if(Z){const z=S.salwar,g=n=>(z.set[n]??100)/100,pp=ext(Z.flat())[1]/sL;R.push(['সালোয়ার দৈর্ঘ্য',sL],['কোমরের প্রস্থ (সামনে)',f1(2*90*g('wid')/pp)],['ক্রচ গভীরতা',f1(230*g('cr')/pp)],['এক পায়ের মুখের প্রস্থ',f1((30+40*g('flare'))/pp)]);F.push(['সালোয়ার',(2*(sL+4)*(1+Math.max(0,g('flare')-1)/1.5)/36).toFixed(2)+' গজ'])}
+ if(S.mats.dupatta)F.push(['দোপাট্টা','2.50 গজ (প্রচলিত মাপ)']);
+ const T=a=>'<table>'+a.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')+'</table>';
+ return `<!doctype html><meta charset="utf-8"><title>${esc(S.name)}</title><style>body{font-family:sans-serif;margin:24px;color:#111}h1{font-size:22px}table{border-collapse:collapse;width:100%;margin:8px 0}td{border:1px solid #999;padding:6px 8px}img{max-width:320px;border:1px solid #ccc}.n{font-size:12px;color:#555}</style><h1>Dress Technical File</h1><p>${esc(S.name)} · ${new Date().toLocaleDateString('bn-BD')}<br>${S.cat?esc(S.cat.c+' › '+S.cat.s):''}</p><h2>১. ফাইনাল ড্রেস ডিজাইন</h2><img src="${snapPng()}"><h2>২. কাটিংয়ের আনুমানিক মাপ (ইঞ্চি)</h2>${R.length?T(R):'<p>কোনো টেমপ্লেট কাটিং নেই।</p>'}<h2>৩. কাপড় ও লেসের আনুমানিক হিসাব (কাপড়ের প্রস্থ ${fw}")</h2>${F.length?T(F):'<p>হিসাবের জন্য কাটিং লাগবে।</p>'}<p class="n">নোট: মাপগুলো স্কেচের অনুপাত ও আপনার দেওয়া দৈর্ঘ্য থেকে আনুমানিক। সিম অ্যালাউন্স, আসল শরীরের মাপ ও ফিটিং যাচাই করে দর্জিকে চূড়ান্ত প্যাটার্ন করতে হবে। এটি সেলাইয়ের উপযোগী প্যাটার্ন নয়।</p><script>onload=()=>setTimeout(()=>print(),500)<\/script>`}
+$('#tkPdf').onclick=()=>{const u=URL.createObjectURL(new Blob([techHTML()],{type:'text/html'}));window.open(u,'_blank')||toast('পপআপ ব্লক হয়েছে, অনুমতি দিন')};
+$('#tkJson').onclick=()=>{pget();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'ai-dress-studio',version:1,project:S})],{type:'application/json'}));a.download=(S.name||'design')+'.json';a.click()};
+$('#tkIn').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result).project;if(!j||!j.kameez||!j.salwar)throw 0;S=Object.assign(blank(),j);delete S.id;sync();go('kameez');toast('প্রজেক্ট খোলা হয়েছে')}catch(x){toast('ফাইলটি সঠিক নয়')}};r.readAsText(f);e.target.value=''};
+/* projects */
+function sync(){E.kameez.reset();E.salwar.reset();$('#pname').value=S.name;const p=S.place;$('#pArea').value=p.area;P.sc.value=p.sc;P.rot.value=p.rot;P.x.value=p.x;P.y.value=p.y;P.lw.value=p.lw;P.lo.value=p.lo||0;P.lz.value=p.lz||100;P.lr.value=p.lr||0;$('#lN').checked=!!p.n;$('#lS').checked=!!p.s;$('#lH').checked=!!p.h;loadImgs();slots();fabOpts();if(S.mats[p.fab])$('#pFab').value=p.fab;checks()}
+const L=()=>ls.get('ads_list',[]);
+$('#saveP').onclick=()=>{pget();S.name=$('#pname').value||'নামহীন';const l=L(),id=S.id||(S.id=Date.now()),i=l.findIndex(x=>x.id==id),d=new Date().toLocaleString('bn-BD'),o={id,name:S.name,date:d,data:S,v:(i<0?[]:(l[i].v||[])).concat([{date:d,data:JSON.parse(JSON.stringify(S))}]).slice(-10)};i<0?l.unshift(o):l[i]=o;ls.set('ads_list',l)&&(toast('প্রজেক্ট সংরক্ষিত'),list())};
+function list(){const l=L();$('#list').innerHTML=l.length?'':'<p class="mu">কোনো সংরক্ষিত ডিজাইন নেই।</p>';l.forEach(o=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<b>${o.name}</b> <span class="mu">${o.date}</span><div class="tb" style="margin-top:8px"><button class="b p" data-o>খুলুন</button><button class="b" data-d>কপি</button><button class="b" data-r>রিনেম</button><button class="b" data-v>সংস্করণ (${(o.v||[]).length})</button><button class="b" data-x>মুছুন</button></div>`;
+ $('[data-o]',d).onclick=()=>{S=JSON.parse(JSON.stringify(o.data));S.id=o.id;sync();go('kameez')};
+ $('[data-d]',d).onclick=()=>{const n=JSON.parse(JSON.stringify(o));n.id=Date.now();n.name+=' (কপি)';n.data.id=n.id;n.data.name=n.name;ls.set('ads_list',[n,...L()]);list()};
+ $('[data-r]',d).onclick=()=>{const n=prompt('নতুন নাম',o.name);if(n){const q=L();const t=q.find(x=>x.id==o.id);t.name=t.data.name=n;ls.set('ads_list',q);list()}};
+ $('[data-v]',d).onclick=()=>{const v=o.v||[];if(!v.length)return toast('আগের সংস্করণ নেই');const n=+prompt('কোন সংস্করণ খুলবেন?\n'+v.map((x,i)=>(i+1)+') '+x.date).join('\n'),v.length);if(n>=1&&n<=v.length){S=JSON.parse(JSON.stringify(v[n-1].data));S.id=o.id;sync();go('kameez')}};
+ $('[data-x]',d).onclick=()=>{ls.set('ads_list',L().filter(x=>x.id!=o.id));list()};$('#list').append(d)})}
+const exp=(t,e)=>{const k=document.createElement('canvas');k.width=W;k.height=H;const w=document.createElement('div');w.style.cssText='position:fixed;left:-9999px;width:600px;height:800px';w.append(k);document.body.append(w);pget();paint(k);const a=document.createElement('a');a.href=k.toDataURL(t,.92);a.download=(S.name||'design')+'.'+e;a.click();w.remove()};$('#dlPng').onclick=()=>exp('image/png','png');$('#dlJpg').onclick=()=>exp('image/jpeg','jpg');
+const snapPng=()=>{const k=document.createElement('canvas'),w=document.createElement('div');w.style.cssText='position:fixed;left:-9999px;width:600px;height:800px';w.append(k);document.body.append(w);pget();paint(k);const u=k.toDataURL('image/jpeg',.8);w.remove();return u};
+$('#newBtn').onclick=()=>{S=blank();sync();go('catalog')};
+sync();go('home');
+/* ===== v2 add-on ===== */
+(()=>{
+const SLN={main:'পুরো ড্রেস (মূল)',kameez:'কামিজ',sleevef:'হাতা',salwar:'সালোয়ার',dupatta:'দোপাট্টা'},cl2=v=>Math.round(Math.min(400,Math.max(20,v)));
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const off=(pts,d)=>{const n=pts.length,f=A=>pts.map((p,i)=>{const a=pts[(i+n-1)%n],b=pts[(i+1)%n],l=Math.hypot(b[0]-a[0],b[1]-a[1])||1;return[p[0]+A*(b[1]-a[1])/l*d,p[1]-A*(b[0]-a[0])/l*d]}),w=q=>{const x=q.map(p=>p[0]);return Math.max(...x)-Math.min(...x)},o=f(1),r=w(o)>=w(pts)?o:f(-1);return[...r,r[0]]};
+const ppK=()=>430/(+$('#tkL').value||40),ppS=()=>570/(+$('#tsL').value||38);
+/* ১. ছবির মতো প্যাটার্ন: সিম অ্যালাউন্সসহ কাটিং লাইন + ডার্ট */
+const _tp=tplPaths;
+tplPaths=function(key,Hh){const P=_tp(key,Hh);if(!Hh)return P;const pp=key=='kameez'?ppK():ppS(),d=.75*pp,s=S[key].set,g=n=>(s[n]??100)/100,X=key=='kameez'?210:300,m=p=>[2*X-p[0],p[1]],ex=a=>P.push(a);
+ if(key=='kameez'){if(P.body){ex(off(P.body,d));ex(off(P.sleeve,d))}const y0=90,c=80*g('wid'),dt=(x,a,b)=>{const q=(a+b)/2;return[[x,a],[x-7,q],[x,b],[x+7,q],[x,a]]},a=dt(X-c*.5,y0+150,y0+265),t=[[X-c,y0+112],[X-c*.4,y0+132],[X-c,y0+132]];ex(a);ex(a.map(m));ex(t);ex(t.map(m))}
+ else if(P.length>7){const t=P[0][0][1];ex(off([...P[2],...P[4],...P[6],[X,t]],d));ex(off([...P[3],...P[5],...P[7],[X,t]],d))}
+ return P};
+/* ২. অটো মাপ (ইঞ্চি) */
+function calc(){const kL=+$('#tkL').value||40,sL=+$('#tsL').value||38,pk=ppK(),ps=ppS(),R={kameez:[],salwar:[],F:{kameez:[],salwar:[]}},
+ lin=(arr,key,pp,rows)=>{const st=S[key];arr.forEach(([t,k,b])=>rows.push({t,v:(st.set[k]??100)/100*b/pp,set:v=>{st.set[k]=cl2(v*pp/b*100)}}))},fy=x=>x.toFixed(2)+' গজ';
+ if(!S.kameez.hide){const k=S.kameez,g=n=>(k.set[n]??100)/100,c=80*g('wid'),T=tplPaths('kameez'),pl=S.place;
+  lin([['কামিজের দৈর্ঘ্য','len',430],['বুকের প্রস্থ (সামনের টুকরো)','wid',160],['কাঁধের প্রস্থ','sh',140],['গলার প্রস্থ','nw',64],['গলার গভীরতা','neck',45],['হাতার দৈর্ঘ্য','sl',190],['হাতার ওপরের প্রস্থ','sw',84]],'kameez',pk,R.kameez);
+  R.kameez.splice(2,0,{t:'নিচের ঘের (হেমের প্রস্থ)',v:2*c*(.7+.5*g('flare'))/pk,set:v=>{k.set.flare=cl2(((v*pk/2)/c-.7)/.5*100)}});
+  R.F.kameez.push(['কামিজ ও হাতার কাপড়',fy((2*(kL*g('len')+4)+190*g('sl')/pk+2)*(1+Math.max(0,g('flare')-1)/1.5)/36)]);
+  if(pl.n)R.F.kameez.push(['নেকলাইন লেস',fy(T.neck.reduce((a,q)=>a+plen(q),0)/pk*1.05/36)]);if(pl.h)R.F.kameez.push(['হেম লেস (সামনে+পেছনে)',fy(plen(T.hem[0])*2/pk*1.05/36)]);if(pl.s)R.F.kameez.push(['হাতার লেস (দুই হাতা)',fy(plen(T.sh[0])*2/pk*1.05/36)])}
+ if(!S.salwar.hide){const z=S.salwar,g=n=>(z.set[n]??100)/100;lin([['সালোয়ারের দৈর্ঘ্য','len',570],['কোমরের প্রস্থ (সামনে)','wid',180],['ক্রচ গভীরতা','cr',230]],'salwar',ps,R.salwar);
+  R.salwar.push({t:'পায়ের মুখের প্রস্থ (নিচের অংশ)',v:(30+40*g('flare'))/ps,set:v=>{z.set.flare=cl2((v*ps-30)/40*100)}});
+  R.F.salwar.push(['সালোয়ারের কাপড়',fy(2*(sL*g('len')+4)*(1+Math.max(0,g('flare')-1)/1.5)/36)])}
+ return R}
+function updMeas(){['kameez','salwar'].forEach(key=>{const host=$(key=='kameez'?'#ek':'#es');if(!host)return;let d=$('#m_'+key);
+ if(!d){d=document.createElement('div');d.id='m_'+key;d.style.marginTop='12px';host.append(d);d.onchange=e=>{const i=e.target.dataset.i;if(i==null)return;calc()[key][+i].set(+e.target.value||0);E[key].sync();E[key].render();updMeas()}}
+ const R=calc(),rows=R[key],hide=S[key].hide,sig=key+rows.length+hide;
+ if(d.dataset.sig!=sig){d.dataset.sig=sig;d.innerHTML=hide?'<p class="mu">কাস্টম আঁকা ক্যানভাসে অটো মাপ নেই। "তৈরি কাটিং দেখান" চাপলে মাপ আসবে।</p>':`<b>📏 অটো মাপ (ইঞ্চি)</b><p class="mu">ঘরে সংখ্যা লিখলে কাটিং নিজে বড়-ছোট হবে। যত খুশি বড় করা যায়।</p><table style="width:100%;border-collapse:collapse">${rows.map((r,i)=>`<tr><td style="padding:4px 0;border-bottom:1px solid var(--ln)">${r.t}</td><td style="width:90px"><input type="number" step="0.5" min="0" data-i="${i}"></td></tr>`).join('')}</table><div class="mu" data-f style="margin-top:8px"></div><div class="tb" style="margin-top:8px"><button class="b p" data-dl>📄 ডিজাইন ফাইল (.html)</button></div>`;const b=$('[data-dl]',d);if(b)b.onclick=dlFile}
+ if(!hide){d.querySelectorAll('input[data-i]').forEach(i=>{if(document.activeElement!==i)i.value=rows[+i.dataset.i].v.toFixed(1)});$('[data-f]',d).innerHTML=R.F[key].map(x=>x[0]+': <b>'+x[1]+'</b>').join('<br>')}})}
+let q=0;const sch=()=>{if(!q){q=1;requestAnimationFrame(()=>{q=0;updMeas()})}};
+['#ek','#es'].forEach(s=>['input','pointermove','pointerup','click'].forEach(ev=>$(s).addEventListener(ev,sch)));['#tkL','#tsL','#tfw'].forEach(s=>$(s).addEventListener('input',sch));
+const _ck=checks;checks=function(){_ck();updMeas()};
+/* ৩. যত খুশি বড় করা: স্লাইডার ২০%–৩০০% */
+document.querySelectorAll('#ek input[data-k],#es input[data-k]').forEach(i=>{i.min=20;i.max=300});
+/* ৪. রঙের প্যালেট */
+const solid=h=>{const k=document.createElement('canvas');k.width=k.height=64;const c=k.getContext('2d');c.fillStyle=h;c.fillRect(0,0,64,64);return k.toDataURL('image/png')};
+const COL=[['#E53935','লাল'],['#D81B60','গোলাপি'],['#8E24AA','বেগুনি'],['#3949AB','নীল'],['#1E88E5','আকাশি'],['#00897B','টিল'],['#43A047','সবুজ'],['#0B3D2E','বোতল সবুজ'],['#FDD835','হলুদ'],['#FB8C00','কমলা'],['#6D4C41','বাদামি'],['#800020','মেরুন'],['#F8BBD0','হালকা গোলাপি'],['#FFE0B2','পিচ'],['#B2DFDB','পুদিনা'],['#C9A227','সোনালি'],['#FFFFFF','সাদা'],['#212121','কালো']];
+const pal=document.createElement('div');pal.className='card';pal.innerHTML=`<b>🎨 রং দিয়ে কাপড়</b><p class="mu">কাপড়ের ছবি না থাকলে রং বেছে নিন।</p><label>কোথায় লাগাবেন<select id="cTg">${Object.entries(SLN).map(([k,t])=>`<option value="${k}">${t}</option>`).join('')}</select></label><div class="tb" style="margin-top:8px">${COL.map(([h,n])=>`<button class="b" data-c="${h}" title="${n}" aria-label="${n}" style="width:38px;height:38px;padding:0;background:${h}"></button>`).join('')}<label class="b" style="cursor:pointer">+ নিজের রং<input type="color" id="cCu" value="#7B2FA0" hidden></label></div>`;
+$('#slots').before(pal);
+
+/* ৬. ফেব্রিক টাইপ */
+const FT=[
+['cotton','সুতি','Cotton','নরম, ঘাম শোষে, ত্বকে আরামদায়ক। সহজে ভাঁজ পড়ে, ধোয়ায় সামান্য ছোট হতে পারে।','মাঝারি','গরম/বর্ষা','রোজকার কামিজ, সালোয়ার, বাচ্চাদের পোশাক','ধোয়া সহজ, আগে একবার ভিজিয়ে নেওয়া ভালো'],
+['poplin','পপলিন','Poplin','মসৃণ, ঘন বুনন, হালকা চকচকে ভাব। ভাঁজ কম, সেলাই পরিষ্কার ওঠে।','মাঝারি সোজা','সব ঋতু','অফিস কামিজ, সালোয়ার','মেশিনে ধোয়া যায়, ইস্ত্রি সহজ'],
+['voile','ভয়েল','Voile','পাতলা, হালকা ও স্বচ্ছভাব। বাতাস চলাচল ভালো, গরমে খুব আরামদায়ক।','হালকা, নরম','গরম','গ্রীষ্মের কামিজ, ওড়না','হাতে আলতো ধোয়া, আস্তর লাগালে ভালো'],
+['linen','লিনেন','Linen','শক্ত, ঠান্ডা, টেকসই। খুব ভাঁজ পড়ে, তবে সেটাই এর স্টাইল। ধোয়ায় নরম হয়।','শক্ত, কিছুটা সোজা','গরম','সাদামাটা ফরমাল কামিজ, প্যালাজো','ইস্ত্রি দরকার, কড়া রোদে না শুকানো'],
+['khadi','খাদি','Khadi','হাতে বোনা, খসখসে টেক্সচার, দেশি ও আর্টিসান লুক। ঘাম শোষে ভালো।','মাঝারি, একটু ঘন','গরম/শীতের আগে','কটি, কুর্তি, দেশি ডিজাইন','কড়া সাবান এড়ান, আলাদা ধোয়া ভালো'],
+['georgette','জর্জেট','Georgette','হালকা, দানাদার ক্রেপের মতো ফিনিশ, সুন্দর ঝুল। সেলাইয়ের সময় পিছলে যায়, তাই আস্তর বা ব্যাকিং লাগে।','চমৎকার ঝুল','সব ঋতু','পার্টি কামিজ, ওড়না, ঘেরওয়ালা কামিজ','ড্রাই ক্লিন বা হাতে ধোয়া ভালো'],
+['chiffon','শিফন','Chiffon','অতি পাতলা, স্বচ্ছ ও ভেসে চলা ভাব। ছিঁড়ে যাওয়া ও সুতো টানার ঝুঁকি আছে।','খুব হালকা, ভাসমান','গরম','ওড়না, ওভারকোট স্টাইল কামিজ, পার্টি','ড্রাই ক্লিন, জোরে নিংড়াবেন না'],
+['silk','খাঁটি সিল্ক','Silk','চকচকে, নরম, দামি দেখায়। তাপমাত্রা ঠিক রাখে। পানির দাগ পড়তে পারে।','মসৃণ ও পিছলা','সব ঋতু','বিয়ে, উৎসব, ভারী কামিজ','ড্রাই ক্লিন, সরাসরি রোদ এড়ান'],
+['katan','কাতান','Katan','ভারী, ঘন ও জমকালো, প্রায়ই জরির কাজ থাকে। শক্ত ঝুল, টেকসই।','ভারী ও শক্ত','শীত/উৎসব','বিয়ে, ঈদ, বিশেষ অনুষ্ঠান','ড্রাই ক্লিন, একই ভাঁজে বেশিদিন রাখবেন না'],
+['muslin','মসলিন','Muslin','অত্যন্ত মিহি ও হালকা, ঐতিহ্যবাহী বাংলার কাপড়। ঠান্ডা ও স্বচ্ছভাব।','খুব নরম, হালকা','গরম','সৌখিন কামিজ, ওড়না','হাতে ধুয়ে ছায়ায় শুকান'],
+['jamdani','জামদানি','Jamdani','হাতে বোনা নকশা, বিশেষ বুনন, ঐতিহ্যবাহী ও দামি। হালকা অথচ ঘন নকশা।','মাঝারি, কিছুটা শক্ত','গরম/উৎসব','কামিজ প্যানেল, দোপাট্টা, উৎসবের পোশাক','ড্রাই ক্লিন বা হালকা হাতে ধোয়া'],
+['satin','সাটিন','Satin','একদিক চকচকে মসৃণ, ঝলমলে লুক। পিছলে যায়, সুতো টানার ঝুঁকি আছে।','তরল ঝুল','শীত/পার্টি','পার্টি কামিজ, সালোয়ার, লাইনিং','ঠান্ডা পানিতে ধোয়া, কম ইস্ত্রি'],
+['velvet','ভেলভেট','Velvet','নরম, ঘন পাইল, শীতের জন্য উষ্ণ ও রাজকীয়। ভারী, সেলাইয়ে সাবধানতা লাগে।','ভারী, ঘন','শীত','শীতের বিয়ে, ভারী কামিজ, জ্যাকেট','ড্রাই ক্লিন, চাপ দিয়ে ইস্ত্রি নয়'],
+['net','নেট/অর্গানজা','Net/Organza','জালির মতো বা মচমচে স্বচ্ছ, ফোলা ও স্ট্রাকচার্ড লুক। ওড়না, হাতা ও লেসের কাজে ভালো।','ফোলা, শক্ত স্বচ্ছ','সব ঋতু','ওড়না, হাতা, ওভারলে','ড্রাই ক্লিন, ভেতরে আস্তর লাগে'],
+['crepe','ক্রেপ','Crepe','হালকা দানাদার, ভাঁজ কম পড়ে, ঝুল সুন্দর ও আরামদায়ক।','চমৎকার ঝুল','সব ঋতু','অফিস কামিজ, সালোয়ার, গাউন','সহজ যত্ন, ইস্ত্রি কম'],
+['rayon','রেয়ন/ভিসকস','Rayon/Viscose','সিল্কের মতো নরম ও ঝুলন্ত, দাম কম। ভেজা অবস্থায় দুর্বল, ধোয়ায় ছোট হতে পারে।','নরম ঝুল','গরম','রোজকার ও প্রিন্টের কামিজ','ঠান্ডা পানিতে ধোয়া, ঝুলিয়ে শুকানো'],
+['poly','পলিয়েস্টার','Polyester','টেকসই, ভাঁজ কম, রং ধরে রাখে, দাম কম। বাতাস কম চলে, গরমে অস্বস্তি হতে পারে।','মাঝারি','শীত/বর্ষা','বাচ্চাদের ও দৈনিক ব্যবহার, প্রিন্ট ডিজাইন','মেশিনে ধোয়া যায়, তাপ কম দিন']
+];
+const ftBy=k=>FT.find(f=>f[0]==k);
+const fc=document.createElement('div');fc.className='card';
+fc.innerHTML=`<b>🧵 ফেব্রিক টাইপ</b><p class="mu">কোন অংশে কী কাপড়, সেটা বেছে নিন। বৈশিষ্ট্য নিচে দেখাবে, আর এআই-কে কাপড়ের ধরনও জানানো হবে।</p><label>কোন অংশের জন্য<select id="fTg">${Object.entries(SLN).map(([k,t])=>`<option value="${k}">${t}</option>`).join('')}</select></label><label>ফেব্রিক টাইপ<select id="fTy"><option value="">— বাছাই করা নেই —</option>${FT.map(f=>`<option value="${f[0]}">${f[1]} (${f[2]})</option>`).join('')}</select></label><div id="fInfo" class="mu" style="margin-top:8px"></div><details style="margin-top:8px"><summary style="cursor:pointer;color:var(--ac)">সব ফেব্রিকের তালিকা দেখুন</summary><div id="fAll"></div></details>`;
+pal.before(fc);
+$('#fAll').innerHTML=FT.map(f=>`<div style="border-top:1px solid var(--ln);padding:8px 0"><b>${f[1]}</b> <span class="mu">${f[2]}</span><br><span style="font-size:13.5px">${f[3]}</span><br><span class="mu">ঝুল: ${f[4]} · ঋতু: ${f[5]}<br>মানানসই: ${f[6]}<br>যত্ন: ${f[7]}</span></div>`).join('');
+const ftRender=()=>{const k=$('#fTg').value,t=ftBy((S.ft||{})[k]);$('#fTy').value=t?t[0]:'';$('#fInfo').innerHTML=t?`<b style="color:var(--fg)">${t[1]}</b> (${t[2]})<br>${t[3]}<br>ঝুল: ${t[4]}<br>ঋতু: ${t[5]}<br>মানানসই: ${t[6]}<br>যত্ন: ${t[7]}`:'কোনো ফেব্রিক টাইপ বাছাই করা হয়নি।'};
+$('#fTg').onchange=ftRender;
+$('#fTy').onchange=()=>{const k=$('#fTg').value;S.ft=S.ft||{};if($('#fTy').value)S.ft[k]=$('#fTy').value;else delete S.ft[k];ftRender()};
+const _go=go;go=function(id){_go(id);if(id=='place')ftRender()};
+ftRender();
+const setCol=h=>{const k=$('#cTg').value;S.mats[k]=solid(h);(S.cols=S.cols||{})[k]=h;loadImgs();slots();fabOpts();checks();toast('রং বসানো হয়েছে')};
+pal.onclick=e=>{const b=e.target.closest('[data-c]');if(b)setCol(b.dataset.c)};$('#cCu').onchange=e=>setCol(e.target.value);
+/* ৫. প্রতিটি ডিজাইনের আলাদা ফাইল */
+const SETN={len:'দৈর্ঘ্য',wid:'প্রস্থ',flare:'ঘের',neck:'গলার গভীরতা',nw:'গলার প্রস্থ',sh:'কাঁধ',sl:'হাতার দৈর্ঘ্য',sw:'হাতার প্রস্থ',cr:'ক্রচ গভীরতা'},OPN={round:'গোল',v:'V শেপ',boat:'বোট',square:'চৌকা',straight:'সোজা',bell:'ঘণ্টা',tight:'টাইট',curve:'হালকা বাঁকা'};
+function patSVG(key,label){const P=tplPaths(key,[]),nb=_tp(key).length,pp=key=='kameez'?ppK():ppS(),pts=P.flat(),xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]),x0=Math.min(...xs)-20,y0=Math.min(...ys)-30,x1=Math.max(...xs)+20,y1=Math.max(...ys)+40,
+ dd=p=>'M'+p.map(v=>v[0].toFixed(1)+' '+v[1].toFixed(1)).join('L');
+ return `<svg viewBox="${x0} ${y0} ${x1-x0} ${y1-y0}" width="${Math.min(520,(x1-x0)*.9)}" fill="none" stroke-linecap="round" stroke-linejoin="round"><defs><pattern id="g${key}" width="${pp}" height="${pp}" patternUnits="userSpaceOnUse"><path d="M${pp} 0H0V${pp}" stroke="#d9d9e2" stroke-width=".6"/></pattern></defs><rect x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="url(#g${key})"/>${P.map((p,i)=>`<path d="${dd(p)}" stroke="${i>=nb&&p.length>20?'#888':'#1C1526'}" stroke-width="${i>=nb&&p.length>20?1.2:2}"/>`).join('')}<text x="${(x0+x1)/2}" y="${y1-12}" text-anchor="middle" font-size="15" fill="#333" stroke="none">${esc(label)}</text></svg>`}
+techHTML=function(noPrint){pget();const R=calc(),T=(a,h)=>a.length?`<table><tr><th>${h[0]}</th><th>${h[1]}</th></tr>${a.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</table>`:'<p>নেই</p>',mr=rows=>rows.map(r=>[r.t,r.v.toFixed(1)+' ইঞ্চি']),fw=+$('#tfw').value||44,hasK=!S.kameez.hide,hasZ=!S.salwar.hide,
+ col=Object.keys(S.mats).map(k=>{const u=S.mats[k],c=S.cols&&S.cols[k]&&u.startsWith('data:image/png')?S.cols[k]:'',n=SLN[k]||(SL.find(a=>a[0]==k)||[,k])[1];return `<div class="sw"><div class="bx" style="background:${c||'#fff'}">${c?'':`<img src="${u}">`}</div>${esc(n)}<br><small>${c||'ছবি'}</small></div>`}).join('')||'<p>কোনো কাপড় বা রং নেওয়া হয়নি।</p>',
+ opt=hasK?[['নেকলাইন',OPN[S.kameez.set.nt||'round']],['হাতার ধরন',OPN[S.kameez.set.st||'straight']],['হেমের আকৃতি',OPN[S.kameez.set.hs||'curve']]]:[],
+ pct=[['কামিজ',S.kameez.set],['সালোয়ার',S.salwar.set]].flatMap(([t,s])=>Object.entries(s).filter(([k])=>SETN[k]).map(([k,v])=>[t+' · '+SETN[k],v+'%']));
+ return `<!doctype html><html lang="bn"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(S.name)}</title><style>body{font-family:'Hind Siliguri',system-ui,sans-serif;margin:20px;color:#111;max-width:940px}h1{font-size:22px;margin:0}h2{font-size:17px;margin:22px 0 6px;border-bottom:2px solid #7B2FA0;padding-bottom:3px}h3{font-size:15px;margin:10px 0 0}table{border-collapse:collapse;width:100%;margin:6px 0}td,th{border:1px solid #999;padding:5px 8px;text-align:left}th{background:#f0e5f7}img.m{max-width:320px;border:1px solid #ccc}.g{display:flex;flex-wrap:wrap;gap:14px}.sw{font-size:13px;width:96px}.bx{width:96px;height:96px;border:1px solid #999;border-radius:8px;overflow:hidden}.bx img{width:100%;height:100%;object-fit:cover}.n{font-size:12px;color:#555}svg{max-width:100%;height:auto;border:1px solid #ccc}@media print{h2{break-after:avoid}svg,table{break-inside:avoid}}</style>
+<h1>ড্রেস ডিজাইন ফাইল: ${esc(S.name)}</h1><p>${new Date().toLocaleDateString('bn-BD')}${S.cat?' · '+esc(S.cat.c+' › '+S.cat.s):''}</p>
+<h2>১. ফাইনাল ডিজাইন</h2><img class="m" src="${snapPng()}">
+<h2>২. কাটিং প্যাটার্ন (গ্রিডের প্রতি ঘর = ১ ইঞ্চি)</h2><div class="g">${hasK?patSVG('kameez','কামিজ: বাম = বডি (ভাঁজে ১টি), ডান = হাতা (২টি)'):''}${hasZ?patSVG('salwar','সালোয়ার: দুই পা আলাদা (২টি)'):''}</div><p class="n">ভেতরের গাঢ় লাইন = সেলাই লাইন, বাইরের ধূসর লাইন = কাটিং লাইন (৩/৪ ইঞ্চি সিম অ্যালাউন্সসহ), হীরা/ত্রিভুজ = ডার্ট, তীর = গ্রেইন লাইন।</p>
+<h2>৩. কাটিংয়ের মাপ (ইঞ্চি)</h2>${hasK?'<h3>কামিজ</h3>'+T(mr(R.kameez),['অংশ','মাপ']):''}${hasZ?'<h3>সালোয়ার</h3>'+T(mr(R.salwar),['অংশ','মাপ']):''}
+<h2>৪. কাপড় ও লেসের হিসাব (কাপড়ের প্রস্থ ${fw}")</h2>${T([...R.F.kameez,...R.F.salwar,...(S.mats.dupatta?[['দোপাট্টা','2.50 গজ (প্রচলিত মাপ)']]:[])],['কী','পরিমাণ'])}
+<h2>৫. কাপড় ও রং</h2><div class="g">${col}</div>
+<h2>৬. ডিজাইনের বিবরণ</h2>${T(opt.concat(pct),['বিষয়','মান'])}
+<p class="n">নোট: মাপগুলো আনুমানিক। আসল শরীরের মাপ ও ফিটিং যাচাই করে দর্জিকে চূড়ান্ত প্যাটার্ন করতে হবে।</p><script type="application/json" id="proj">${JSON.stringify({app:'ai-dress-studio',version:1,project:S}).replace(/</g,'\\u003c')}<\/script>${noPrint?'':'<script>onload=()=>setTimeout(()=>print(),500)<\/script>'}`};
+function dlFile(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([techHTML(true)],{type:'text/html'}));a.download=(S.name||'design')+'-file.html';a.click()}
+const bb=document.createElement('button');bb.className='b p';bb.textContent='ডিজাইন ফাইল (.html)';bb.onclick=dlFile;$('#tkPdf').after(bb);
+/* ৮. কামিজ পেজ: আগের এডিটর (ডিফল্ট) + টেনে কাটিং */
+{const ek=$('#ek'),tg=document.createElement('div'),sty=document.createElement('style');let tab='edit';
+sty.textContent='#ek.dgm>*:not(.pnt):not(#dgW){display:none!important}#ek.dsm>*:not(.pnt):not(#dvW){display:none!important}#ek.stm>*:not(.pnt):not(#stW){display:none!important}#ek.pgm>*:not(.pnt):not(#ptW){display:none!important}.pnt{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}';document.head.append(sty);
+tg.className='pnt';tg.innerHTML=[['edit','আগের এডিটর'],['drag','✂ টেনে কাটিং'],['dress','👗 ড্রেস দেখুন'],['pattern','📐 প্যাটার্ন'],['studio','🧵 কাপড় স্টুডিও']].map(([k,t])=>`<button class="b${k==tab?' on':''}" data-pv="${k}">${t}</button>`).join('');
+tg.insertAdjacentHTML('beforeend','<button class="b" data-pf="1" style="margin-left:auto">⛶ ফুল স্ক্রিন</button>');ek.prepend(tg);
+const dv=document.createElement('div');dv.id='dvW';dv.style.display='none';ek.append(dv);
+const pw=document.createElement('div');pw.id='ptW';pw.style.display='none';pw.append($('#pattern .pt'),$('#pSvgDl').parentElement);ek.append(pw);$('#pattern').remove();
+function dressSVG(){const k=S.kameez,g=n=>(k.set[n]??100)/100,X=210,y0=90,nd=45*g('neck'),c=80*g('wid'),sh=70*g('sh'),sl=190*g('sl'),ww=2*42*g('sw')*.8,m=p=>[2*X-p[0],p[1]],T=tplPaths('kameez'),N=T.neck[0].length,body=T.body,defs=[],
+ fk=S.mats.kameez?'kameez':S.mats.main?'main':'',sk=S.mats.sleevef?'sleevef':fk,
+ fillOf=q=>{if(!q)return'#EBDDF5';const col=S.cols&&S.cols[q],u=S.mats[q];if(col&&u.startsWith('data:image/png'))return col;const id='dv'+q;if(!defs.some(x=>x.includes(id)))defs.push(`<pattern id="${id}" patternUnits="userSpaceOnUse" width="120" height="120"><image href="${u}" width="120" height="120" preserveAspectRatio="xMidYMid slice"/></pattern>`);return`url(#${id})`},
+ d=p=>'M'+p.map(v=>v[0].toFixed(1)+' '+v[1].toFixed(1)).join('L')+'Z',
+ nw=Math.abs(body[N-1][0]-X),ndB=Math.min(nd*.3,20),a=cu([X,y0+ndB],[X-nw*.5,y0+ndB],[X-nw,y0+ndB*.5],[X-nw,y0],N-1),
+ back=[...a,...body.slice(N,body.length-N),...a.map(m).reverse()],
+ tip=[X-sh,y0+18],ab=[X-c,y0+115],W1=[X-c-sl*.14,y0+18+sl],W2=[W1[0]+ww,W1[1]],sv=[tip,W1,W2,ab],
+ x0=W1[0],w=2*X-2*W1[0],ym=Math.max(...body.map(p=>p[1]))+20,
+ view=(poly,dx,t)=>`<g transform="translate(${dx} 0)" stroke="#5b4a6b" stroke-width="2" stroke-linejoin="round"><path d="${d(sv)}" fill="${fillOf(sk)}"/><path d="${d(sv.map(m))}" fill="${fillOf(sk)}"/><path d="${d(poly)}" fill="${fillOf(fk)}"/><text x="${X}" y="${ym+22}" font-size="20" text-anchor="middle" stroke="none" fill="#333">${t}</text></g>`;
+ return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${(x0-10).toFixed(0)} ${y0-20} ${(2*w+50).toFixed(0)} ${(ym-y0+60).toFixed(0)}" style="width:100%;max-width:620px;display:block;margin:0 auto;background:#fff;border:1px solid #ddd" font-family="Hind Siliguri,sans-serif"><defs>${defs.join('')}</defs>${view(body,0,'সামনে')}${view(back,w+30,'পেছনে')}</svg>`}
+const PAL=['#E8E1D0','#FFFFFF','#111111','#7B2FA0','#C2185B','#E53935','#EF6C00','#F9A825','#2E7D32','#00897B','#1565C0','#283593','#6D4C41','#9E9E9E','#F48FB1','#CE93D8','#80DEEA','#C9A227'],
+LCOL=['#C9A227','#C0C0C0','#FFFFFF','#111111','#E53935','#7B2FA0'],BGS=['#FFFFFF','#F4EFE8','#FCE4EC','#E3F2FD','#E8F5E9','#2A2330'],
+PTS=[['bd','বডি','#E8E1D0'],['yk','যোক','#7B2FA0'],['hb','নিচের বর্ডার','#7B2FA0'],['sv','হাতা','#E8E1D0'],['cf','হাতার কাফ','#7B2FA0'],['nb','গলার ব্যান্ড','#7B2FA0'],['pn','মাঝের প্যানেল','#C2185B'],['bl','বেল্ট','#C9A227'],['sz','সালোয়ার','#D9CFBC']],
+FB=[['dot','ডট','<circle cx="15" cy="15" r="5.5" fill="{i}"/><circle cx="45" cy="45" r="5.5" fill="{i}"/>'],['str','ডোরা','<rect x="8" width="9" height="60" fill="{i}"/><rect x="38" width="9" height="60" fill="{i}"/>'],['hst','আড়াআড়ি','<rect y="8" width="60" height="9" fill="{i}"/><rect y="38" width="60" height="9" fill="{i}"/>'],['chk','চেক','<rect width="30" height="30" fill="{i}"/><rect x="30" y="30" width="30" height="30" fill="{i}"/>'],['gng','গিংহাম','<rect width="60" height="30" fill="{i}" opacity=".35"/><rect width="30" height="60" fill="{i}" opacity=".35"/>'],
+['flr','ফুল','<g fill="{i}">'+[0,72,144,216,288].map(a=>`<ellipse cx="30" cy="20" rx="5" ry="9" transform="rotate(${a} 30 30)"/>`).join('')+'</g><circle cx="30" cy="30" r="4" fill="#fff" opacity=".85"/>'],['lf','পাতা','<g fill="{i}"><ellipse cx="18" cy="18" rx="4.5" ry="11" transform="rotate(45 18 18)"/><ellipse cx="44" cy="44" rx="4.5" ry="11" transform="rotate(-45 44 44)"/></g>'],['pai','কল্কা','<path d="M30 8C46 12 50 34 34 46C24 53 12 45 17 35C20 29 29 30 28 23C27 18 24 15 30 8Z" fill="{i}"/>'],['dia','ডায়মন্ড','<path d="M30 5L55 30L30 55L5 30Z" fill="none" stroke="{i}" stroke-width="3"/><path d="M30 19L41 30L30 41L19 30Z" fill="{i}"/>'],['chv','শেভরন','<path d="M0 12L30 32L60 12M0 42L30 62L60 42" fill="none" stroke="{i}" stroke-width="6"/>'],['star','তারা','<path d="M30 8l5.5 15h15.5l-12.5 9.5 5 15.5-13.5-10-13.5 10 5-15.5-12.5-9.5h15.5z" fill="{i}"/>'],['wav','ঢেউ','<path d="M0 20Q15 6 30 20T60 20M0 46Q15 32 30 46T60 46" fill="none" stroke="{i}" stroke-width="4"/>'],['bat','বাটিক','<circle cx="14" cy="18" r="12" fill="{i}" opacity=".35"/><circle cx="42" cy="42" r="16" fill="{i}" opacity=".3"/><circle cx="48" cy="10" r="7" fill="{i}" opacity=".5"/>'],['jam','জামদানি','<path d="M0 30h60M30 0v60" stroke="{i}" stroke-width="1.5" opacity=".6"/><path d="M30 24l6 6-6 6-6-6z" fill="{i}"/>']],
+LB=[['sc','স্ক্যালপ','<path d="M0 4Q7 18 14 4Q21 18 28 4" fill="none" stroke="{i}" stroke-width="2.2"/>'],['pr','মুক্তা','<path d="M0 2H28M0 18H28" stroke="{i}" stroke-width="1.2"/><circle cx="14" cy="10" r="4" fill="{i}"/>'],['zg','জিগজ্যাগ','<path d="M0 16L7 4L14 16L21 4L28 16" fill="none" stroke="{i}" stroke-width="2.4"/>'],['dm','ডায়মন্ড','<path d="M14 2L24 10L14 18L4 10Z" fill="{i}"/><path d="M0 10H4M24 10H28" stroke="{i}" stroke-width="1.5"/>'],['jr','জরি','<rect y="3" width="28" height="3" fill="{i}"/><rect y="9" width="28" height="2" fill="{i}"/><rect y="14" width="28" height="3" fill="{i}"/>'],['fl','ফুল','<path d="M0 10H28" stroke="{i}" stroke-width=".9"/><g fill="{i}"><circle cx="14" cy="4.5" r="2.8"/><circle cx="14" cy="15.5" r="2.8"/><circle cx="8.5" cy="10" r="2.8"/><circle cx="19.5" cy="10" r="2.8"/></g><circle cx="14" cy="10" r="1.6" fill="#fff"/>'],['wv','ঢেউ','<path d="M0 10Q7 1 14 10T28 10" fill="none" stroke="{i}" stroke-width="2.4"/>'],['cs','ক্রস-স্টিচ','<path d="M3 5l8 10m0-10l-8 10M17 5l8 10m0-10l-8 10" stroke="{i}" stroke-width="2" fill="none"/>'],['gt','গোটা','<path d="M0 2.5H28" stroke="{i}" stroke-width="1.6"/><circle cx="7" cy="11" r="3.6" fill="{i}"/><circle cx="21" cy="11" r="3.6" fill="{i}"/>'],['rb','ফিতা','<rect y="2" width="28" height="16" fill="{i}"/><path d="M0 10H28" stroke="#fff" stroke-opacity=".5"/>']],
+NKL=[['','এডিটরের'],['round','গোল'],['v','V শেপ'],['dv','গভীর V'],['boat','বোট'],['sq','চৌকা'],['u','ইউ'],['heart','হার্ট'],['key','কি-হোল'],['col','কলার']],
+SVL=[['','এডিটরের'],['cap','ক্যাপ'],['short','হাফ'],['three','থ্রি-কোয়ার্টার'],['full','ফুল'],['bell','ঘণ্টা'],['puff','পাফ'],['bishop','বিশপ'],['flutter','ফ্লাটার'],['none','হাতাকাটা']],
+HVL=[['','এডিটরের'],['st','সোজা'],['cv','বাঁকা'],['rd','গোল'],['vc','ভি-ঘের'],['sc','স্ক্যালপ'],['as','তির্যক'],['sl','সাইড স্লিট']],
+SVP={cap:[60,66,0,0],short:[115,62,0,0],three:[175,60,0,0],full:[250,52,0,0],bell:[190,115,0,0],puff:[115,48,34,0],bishop:[255,46,30,0],flutter:[75,92,0,1]};
+let dstyle='flare',dside='f',dtab='c',dps='bd',dlp='nk',dz={z:1,x:0,y:0};
+const gp=k=>{const d=S.dc&&S.dc.p&&S.dc.p[k]||{},df=PTS.find(a=>a[0]==k);return{c:d.c||df[2],i:d.i||'#7B2FA0',f:d.f,s:+d.s||1,x:+d.x||0,y:+d.y||0,r:+d.r||0,h:!!d.h}},
+ q2=(a,c,b,n=10)=>[...Array(n+1)].map((_,k)=>{const t=k/n,u=1-t;return[u*u*a[0]+2*u*t*c[0]+t*t*b[0],u*u*a[1]+2*u*t*c[1]+t*t*b[1]]}),
+ setP=(k,v)=>{const a=k.split('.');S.dc=S.dc||{};let o=S.dc;a.slice(0,-1).forEach(x=>o=o[x]=o[x]||{});o[a[a.length-1]]=v};
+function flare(bk){const kz=S.kameez,D=S.dc||{},g=n=>(kz.set[n]??100)/100,X=210,y0=90,pl=S.place,
+ F=a=>a.toFixed(1),O=a=>'M'+a.map(p=>F(p[0])+' '+F(p[1])).join('L'),Z=a=>O(a)+'Z',mir=p=>[2*X-p[0],p[1]],rv=a=>a.slice().reverse(),
+ bx=a=>{const x=a.map(p=>p[0]),y=a.map(p=>p[1]);return[Math.min(...x),Math.min(...y),Math.max(...x),Math.max(...y)]},
+ T=tplPaths('kameez'),Tz=tplPaths('salwar'),N=T.neck[0].length,dg=S.drag&&S.drag.f,
+ kL=+($('#tkL')||{}).value||40,sL=+($('#tsL')||{}).value||38,u=kL/430*2.54,lowN=p=>[p[0],y0+(p[1]-y0)*.3],
+ nk=D.nk,nw=32*g('nw'),nd=45*g('neck'),E=(w,d,yo=0,n=10)=>[...Array(n+1)].map((_,k)=>{const a=k/n*Math.PI/2;return[X-w*Math.cos(a),y0+yo+d*Math.sin(a)]}),
+ NKS={round:()=>E(nw,nd),v:()=>[[X-nw,y0],[X,y0+nd*1.25]],dv:()=>[[X-nw*1.1,y0],[X,y0+nd*2.1]],boat:()=>E(nw*1.6,nd*.4),sq:()=>[[X-nw,y0],[X-nw,y0+nd],[X,y0+nd]],u:()=>[[X-nw*.95,y0],...E(nw*.95,nd*.62,nd*.45)],heart:()=>[[X-nw*1.05,y0],[X-nw*.95,y0+nd*.55],[X-nw*.7,y0+nd*.92],[X-nw*.4,y0+nd*.98],[X-nw*.18,y0+nd*.8],[X,y0+nd*.6]],key:()=>E(nw,nd*.55),col:()=>E(nw*.95,nd*.4)},
+ hv=D.hv,mkHem=(xl,xr,y)=>{const H={st:()=>[[xl,y],[xr,y]],cv:()=>q2([xl,y],[X,y+32],[xr,y],12),sl:()=>q2([xl,y],[X,y+32],[xr,y],12),rd:()=>q2([xl,y],[X,y+68],[xr,y],12),vc:()=>[[xl,y],[X,y+36],[xr,y]],as:()=>[[xl,y-45],[xr,y+25]],sc:()=>{const o=[];for(let k=0;k<8;k++){const a=xl+(xr-xl)*k/8,b=xl+(xr-xl)*(k+1)/8,s=q2([a,y],[(a+b)/2,y+22],[b,y],5);o.push(...(k?s.slice(1):s))}return o}}[hv];return H?H():null};
+ let body,neck,tip,ab,hem,L=nk&&NKS[nk]?NKS[nk]():null;if(L&&bk)L=L.map(lowN);
+ if(dg){const fl=nd2=>{const o=[nd2[0]];for(let i=1;i<nd2.length;i++){const p=nd2[i],q=nd2[i-1];if(p.c)for(let t=1;t<=8;t++){const a=t/8,b=1-a;o.push({x:b*b*q.x+2*a*b*p.c[0]+a*a*p.x,y:b*b*q.y+2*a*b*p.c[1]+a*a*p.y})}else o.push(p)}return o};
+  let d2=(bk&&S.drag.b?S.drag.b:S.drag.f).n;if(bk&&!S.drag.b){d2=JSON.parse(JSON.stringify(d2));d2[0].y=Math.min(d2[0].y*.3,5.6)}
+  const cv=p=>[X+p.x/u,y0+p.y/u],Nn=d2[1].c?9:2;let R=fl(d2).map(cv);tip=mir(cv(d2[2]));ab=mir(cv(d2[3]||d2[2]));
+  if(L){R=[...rv(L.map(mir)),...R.slice(Nn)];neck=[...L,...rv(L.map(mir))]}else neck=[...rv(R.slice(0,Nn).map(mir)),...R.slice(1,Nn)];
+  const my=Math.max(...R.map(p=>p[1])),h4=R.filter(p=>Math.abs(p[1]-my)<.5).sort((a,b)=>b[0]-a[0])[0],k=R.indexOf(h4),nh=mkHem(2*X-h4[0],h4[0],h4[1]);hem=nh||[mir(h4),h4];
+  body=nh?[...R.slice(0,k),...rv(nh),...rv(R.slice(0,k).map(mir))]:[...R,...rv(R.map(mir))]}
+ else{body=T.body.map((p,i)=>bk&&(i<N||i>=T.body.length-N)?lowN(p):p);neck=[...T.neck[0],...rv(T.neck[1])];if(bk)neck=neck.map(lowN);tip=[X-70*g('sh'),y0+18];ab=[X-80*g('wid'),y0+115];hem=T.hem[0];
+  const nh=mkHem(hem[0][0],hem[hem.length-1][0],hem[0][1]);if(nh){const lb=(body.length-hem.length)/2;body=[...body.slice(0,lb),...nh,...body.slice(lb+hem.length)];hem=nh}
+  if(L){body=[...rv(L),...body.slice(N,body.length-N),...L.map(mir)];neck=[...L,...rv(L.map(mir))]}}
+ const sv=D.sv,sp=SVP[sv]||[190,0,0,0],none=sv=='none',cap=42*g('sw'),sk=kz.set.st||'straight',sl=sp[0]*(sv&&SVP[sv]?1:1)*g('sl'),ww=sv&&SVP[sv]?sp[1]*g('sw'):2*cap*(sk=='bell'?1.3:sk=='tight'?.5:.8),bg=sp[2],
+ W1=[ab[0]-sl*.14,tip[1]+sl],W2=[W1[0]+ww,W1[1]],c1=[tip[0]-cap*.5-bg,tip[1]+sl*.12],c2=[W1[0]-bg,W1[1]-sl*.3],
+ hw=sp[3]?[...Array(13)].map((_,k)=>[W1[0]+ww*k/12,W1[1]+Math.sin(k/12*6*Math.PI)*5]):[W1,W2],
+ SP=m=>{if(none)return'M0 0';const a=m(tip),b=m(c1),c=m(c2),d=m(W1),e=m(W2),f=m([X,W2[1]]),h=m([X,tip[1]]);return`M${F(a[0])} ${F(a[1])}C${F(b[0])} ${F(b[1])} ${F(c[0])} ${F(c[1])} ${F(d[0])} ${F(d[1])}${hw.slice(1).map(q=>{const r=m(q);return'L'+F(r[0])+' '+F(r[1])}).join('')}L${F(f[0])} ${F(f[1])}L${F(h[0])} ${F(h[1])}Z`},id=p=>p,
+ fs=(430/kL)/(570/sL),wy=y0+240,tp=p=>[X+(p[0]-300)*fs,wy+(p[1]-100)*fs],legs=[...Tz[2],...Tz[4],...Tz[6],...Tz[1],...rv(Tz[7]),...rv(Tz[5]),...rv(Tz[3])].map(tp),
+ kb=bx(body),zb=bx(legs),BB=bx([...body,...legs,tip,W1,W2,c1,mir(W1),mir(W2),mir(c1)]),vx=BB[0]-34,vy=BB[1]-30,vw=BB[2]-BB[0]+68,vh=BB[3]-BB[1]+84,Bc=X-ab[0],
+ defs=[],have={},fc={},LW=+D.lw||14,LC=D.lc||'#C9A227',
+ fillP=k=>{const p=gp(k),box=k=='sz'?zb:kb,dfl={bd:['kameez','main'],sv:['sleevef','kameez','main'],sz:['salwar','main']};let f=p.f;if(f===undefined&&dfl[k]){const m=dfl[k].find(x=>S.mats[x]);if(m)f='up:'+m}
+  if(f&&f.startsWith('up:')){const m=f.slice(3);if(!S.mats[m])return p.c;const mine=pl.area==(k=='sz'?'salwar':'kameez'),q=mine?pl:{sc:60,rot:0,x:0,y:0},tw=300*q.sc/100,im=imgs[m],th=im&&im.naturalWidth?tw*im.naturalHeight/im.naturalWidth:tw;defs.push(`<pattern id="fp${k}" patternUnits="userSpaceOnUse" width="${F(tw)}" height="${F(th)}" patternTransform="translate(${F(box[0]+q.x+p.x)} ${F(box[1]+q.y+p.y)}) rotate(${q.rot+p.r})"><image href="${S.mats[m]}" width="${F(tw)}" height="${F(th)}" preserveAspectRatio="none"/></pattern>`);return`url(#fp${k})`}
+  const m=FB.find(a=>a[0]==f);if(!m)return p.c;const s=60*p.s;defs.push(`<pattern id="fp${k}" patternUnits="userSpaceOnUse" width="${F(s)}" height="${F(s)}" viewBox="0 0 60 60" patternTransform="translate(${F(box[0]+p.x)} ${F(box[1]+p.y)}) rotate(${p.r})"><rect width="60" height="60" fill="${p.c}"/>${m[2].replace(/\{i\}/g,p.i)}</pattern>`);return`url(#fp${k})`},
+ FP=k=>fc[k]||(fc[k]=fillP(k)),
+ rs=(a,st)=>{const o=[a[0]];let acc=0;for(let i=1;i<a.length;i++){const d=Math.hypot(a[i][0]-a[i-1][0],a[i][1]-a[i-1][1]);acc+=d;if(acc>=st||i==a.length-1){o.push(a[i]);acc=0}}return o},
+ LSt=(id,pts,dy)=>{if(!id)return'';const m=LB.find(a=>a[0]==id);if(!m)return'';if(!have['l'+id]){have['l'+id]=1;defs.push(`<pattern id="lc${id}" patternUnits="userSpaceOnUse" width="${F(LW*1.4)}" height="${LW}" viewBox="0 0 28 20" preserveAspectRatio="none" patternTransform="translate(0 ${-LW/2})"><rect width="28" height="20" fill="${LC}" opacity=".13"/>${m[2].replace(/\{i\}/g,LC)}</pattern>`)}
+  const a=rs(pts,9);let o='';for(let i=1;i<a.length;i++){const dx=a[i][0]-a[i-1][0],dy2=a[i][1]-a[i-1][1],ln=Math.hypot(dx,dy2);if(ln<.5)continue;o+=`<rect transform="translate(${F(a[i-1][0])} ${F(a[i-1][1]+dy)}) rotate(${F(Math.atan2(dy2,dx)*180/Math.PI)})" y="${-LW/2}" width="${F(ln+1.5)}" height="${LW}" fill="url(#lc${id})"/>`}return o},
+ G=(i0,b,s)=>`<linearGradient id="${i0}" gradientUnits="userSpaceOnUse" x1="${F(b[0])}" y1="0" x2="${F(b[2])}" y2="0">${s}</linearGradient>`,
+ edge='<stop offset="0" stop-color="#000" stop-opacity=".3"/><stop offset=".15" stop-color="#000" stop-opacity="0"/><stop offset=".85" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/>',
+ sheen='<stop offset=".18" stop-color="#fff" stop-opacity="0"/><stop offset=".38" stop-color="#fff" stop-opacity=".2"/><stop offset=".58" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".08"/>',
+ R4=b=>`x="${F(b[0])}" y="${F(b[1])}" width="${F(b[2]-b[0])}" height="${F(b[3]-b[1])}"`,kw=kb[2]-kb[0],L0=D.l||{},
+ yh=+D.yh||0,ys=D.ys||'s',yb=y0+yh,bw=Bc*.95,yp=ys=='u'?[[X-500,yb],...q2([X-bw,yb],[X,yb+60],[X+bw,yb],10),[X+500,yb]]:ys=='v'?[[X-500,yb],[X-bw,yb],[X,yb+70],[X+bw,yb],[X+500,yb]]:[[X-500,yb],[X+500,yb]],
+ hbh=+D.hb||0,htp=hem.map(p=>[p[0],p[1]-hbh]),bot=kb[3]+70,
+ reg=(yh?`<path d="${Z([[X-500,y0-70],[X+500,y0-70],...rv(yp)])}" fill="${FP('yk')}"/>`:'')+(hbh?`<path d="${Z([[X-500,htp[0][1]],...htp,[X+500,htp[htp.length-1][1]],[X+500,bot],[X-500,bot]])}" fill="${FP('hb')}"/>`:''),
+ pn=+D.pn||0,pnR=pn==1?`<rect x="${F(X-27)}" y="${y0}" width="54" height="${F(bot-y0)}" fill="${FP('pn')}"/>`:pn==2?[-1,1].map(s=>`<rect x="${F(X+s*Bc*.6-15)}" y="${y0}" width="30" height="${F(bot-y0)}" fill="${FP('pn')}"/>`).join(''):'',
+ seam=[yh?`<path d="${O(yp)}" fill="none" stroke="#000" stroke-opacity=".28" stroke-dasharray="3 3"/>`:'',hbh?`<path d="${O(htp)}" fill="none" stroke="#000" stroke-opacity=".28" stroke-dasharray="3 3"/>`:''].join(''),
+ lcs=LSt(L0.nk,neck,LW*.55+(D.nb?9:0))+LSt(L0.hm,hem,-LW*.55)+(yh?LSt(L0.yk,yp,0):''),
+ nbS=D.nb?`<path d="${O(neck)}" fill="none" stroke="${FP('nb')}" stroke-width="18" stroke-linejoin="round"/><path d="${O(neck)}" transform="translate(0 9)" fill="none" stroke="#000" stroke-opacity=".25" stroke-dasharray="3 3"/>`:'',
+ belt=D.bl?`<rect x="${F(kb[0])}" y="${wy-8}" width="${F(kw)}" height="20" fill="${FP('bl')}"/><path d="M${F(kb[0])} ${wy-8}H${F(kb[2])}M${F(kb[0])} ${wy+12}H${F(kb[2])}" stroke="#000" stroke-opacity=".3"/>`:'',
+ btn=D.bt?[0,1,2,3,4,5].map(k=>{const yy=y0+nd+(nk=='v'?nd*.4:0)+34+k*30;return yy<wy-14?`<circle cx="${X}" cy="${F(yy)}" r="5" fill="#C9A227" stroke="#000" stroke-opacity=".35"/><circle cx="${X-1.5}" cy="${F(yy-1.5)}" r="1.6" fill="#fff" opacity=".7"/>`:''}).join('')+`<path d="M${X} ${y0+nd+10}V${wy-10}" stroke="#000" stroke-opacity=".12"/>`:'',
+ folds=[...Array(9)].map((_,i)=>{const t=i-4;return`<path d="M${F(X+t*kw*.07)} ${y0+250}Q${F(X+t*kw*.1)} ${F((y0+250+kb[3])/2)} ${F(X+t*kw*.15)} ${F(kb[3])}" stroke="${i%2?'#fff':'#000'}" stroke-opacity="${i%2?.15:.09}" stroke-width="10" fill="none" filter="url(#dfb)"/>`}).join(''),
+ cb=+D.cb||0,sleeves=none?'':[id,mir].map(m=>`<path d="${SP(m)}" fill="${FP('sv')}" filter="url(#dds2)"/>`).join(''),
+ cuffy=W1[1],sleeveFx=none?'':`<g clip-path="url(#dsc)"><rect ${R4(BB)} fill="url(#dsl)"/>${cb?`<rect x="${F(BB[0])}" y="${F(cuffy-cb)}" width="${F(BB[2]-BB[0])}" height="${cb+20}" fill="${FP('cf')}"/><path d="M${F(BB[0])} ${F(cuffy-cb)}H${F(BB[2])}" stroke="#000" stroke-opacity=".28" stroke-dasharray="3 3"/>`:''}${[id,mir].map(m=>LSt(L0.cf,hw.map(m),-LW*.55)).join('')}${[id,mir].map(m=>`<path d="${O(hw.map(m))}" transform="translate(0 -7)" stroke="#000" stroke-opacity=".2" stroke-dasharray="3 3" fill="none"/>`).join('')}<rect ${R4(BB)} filter="url(#dfg)" opacity=".14" style="mix-blend-mode:multiply"/></g>`,
+ ln2=[...neck,...rv(neck.map(lowN))],lining=bk?'':`<path d="${Z(ln2)}" fill="${gp('bd').c}"/><path d="${Z(ln2)}" fill="#000" opacity=".32"/>`,
+ collar=nk=='col'&&!bk?`<path d="${Z([...neck,...rv(neck.map(p=>[p[0],p[1]-22]))])}" fill="${FP('nb')}" stroke="#000" stroke-opacity=".3"/><circle cx="${X}" cy="${y0+nd*.4-8}" r="3.5" fill="#C9A227"/>`:'',
+ keyh=nk=='key'&&!bk?`<path d="M${X-6} ${F(y0+nd*.55)}L${X} ${F(y0+nd*.55+46)}L${X+6} ${F(y0+nd*.55)}Z" fill="#000" opacity=".45"/>`:'',
+ slit=hv=='sl'?[hem[0],hem[hem.length-1]].map((p,i)=>`<path d="M${F(p[0]+(i?-3:3))} ${F(p[1])}V${F(p[1]-80)}" stroke="#000" stroke-opacity=".4" stroke-width="2"/>`).join(''):'',
+ zip=bk?`<path d="M${X} ${y0+4}V${y0+210}" stroke="#2b2430" stroke-width="3"/><path d="M${X} ${y0+4}V${y0+210}" stroke="#d8d0de" stroke-width="1.2" stroke-dasharray="2 2"/>`:'',
+ pp=D.pipe?`<g fill="none" stroke="#17141C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="${O(neck)}"/><path d="${O(hem)}"/>${none?'':[id,mir].map(m=>`<path d="${O(hw.map(m))}"/>`).join('')}</g>`:'',
+ zf=FP('sz'),kf=FP('bd');
+ return`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${F(vx)} ${F(vy)} ${F(vw)} ${F(vh)}"><defs>
+<filter id="dds" x="-15%" y="-8%" width="130%" height="125%"><feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#000" flood-opacity=".22"/></filter>
+<filter id="dds2" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity=".3"/></filter>
+<filter id="dfb"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="dfg" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4"/><feColorMatrix type="saturate" values="0"/></filter>
+${G('dek',kb,edge)}${G('dsk',kb,sheen)}${G('dez',zb,edge)}${G('dsz',zb,sheen)}
+<linearGradient id="dvk" gradientUnits="userSpaceOnUse" x1="0" y1="${F(kb[1])}" x2="0" y2="${F(kb[3])}"><stop offset="0" stop-color="#fff" stop-opacity=".08"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".16"/></linearGradient>
+<linearGradient id="dsl" gradientUnits="userSpaceOnUse" x1="0" y1="${F(tip[1])}" x2="0" y2="${F(W1[1])}"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
+<clipPath id="dcp"><path d="${Z(body)}"/></clipPath><clipPath id="dpz"><path d="${Z(legs)}"/></clipPath><clipPath id="dsc"><path d="${SP(id)}"/><path d="${SP(mir)}"/></clipPath>${defs.join('')}</defs>
+<path d="${Z(legs)}" fill="#fff" filter="url(#dds)"/><g clip-path="url(#dpz)"><rect ${R4(zb)} fill="${zf}"/><rect ${R4(zb)} fill="url(#dsz)"/><rect ${R4(zb)} fill="url(#dez)"/><rect ${R4(zb)} filter="url(#dfg)" opacity=".14" style="mix-blend-mode:multiply"/></g>
+${sleeves}${sleeveFx}${lining}<path d="${Z(body)}" fill="#fff" filter="url(#dds)"/>
+<g clip-path="url(#dcp)"><rect ${R4(kb)} fill="${kf}"/>${pnR}${reg}${seam}${folds}<rect ${R4(kb)} fill="url(#dvk)"/><rect ${R4(kb)} fill="url(#dsk)"/><rect ${R4(kb)} fill="url(#dek)"/>${nbS}${belt}${lcs}${btn}
+<path d="${O(hem)}" transform="translate(0 -9)" stroke="#000" stroke-opacity=".2" stroke-dasharray="3 3" fill="none"/><rect ${R4(kb)} filter="url(#dfg)" opacity=".14" style="mix-blend-mode:multiply"/></g>
+${collar}${keyh}${slit}${zip}${pp}<path d="${Z(body)}" fill="none" stroke="#000" stroke-opacity=".16" stroke-width="1"/></svg>`}
+const dvDraw=()=>{const h=$('#dvS',dv);if(!h)return;h.style.background=(S.dc&&S.dc.bg)||'#fff';h.innerHTML=dstyle=='flare'?flare(dside=='b'):dressSVG();dvApply(1)};
+function dvApply(fresh){const s=$('#dvS svg',dv);if(!s)return;if(fresh||!s.dataset.v)s.dataset.v=s.getAttribute('viewBox');const[a,b,w,h]=s.dataset.v.split(' ').map(Number),z=dz.z,vw=w/z,vh=h/z;dz.x=Math.max(-w/2,Math.min(w/2,dz.x));dz.y=Math.max(-h/2,Math.min(h/2,dz.y));s.setAttribute('viewBox',`${a+w/2-vw/2+dz.x} ${b+h/2-vh/2+dz.y} ${vw} ${vh}`);s.setAttribute('style','width:100%;height:100%;display:block');const l=$('#dvZ',dv);if(l)l.textContent=Math.round(z*100)+'%'}
+function dvGest(){const el=$('#dvS',dv),P=new Map();let d0=0,z0=1;el.onpointerdown=e=>{el.setPointerCapture(e.pointerId);P.set(e.pointerId,[e.clientX,e.clientY]);if(P.size==2){const[a,b]=[...P.values()];d0=Math.hypot(a[0]-b[0],a[1]-b[1]);z0=dz.z}};
+ el.onpointermove=e=>{if(!P.has(e.pointerId))return;const o=P.get(e.pointerId),n=[e.clientX,e.clientY];P.set(e.pointerId,n);const s=$('svg',el);if(!s||!s.dataset.v)return;const r=el.getBoundingClientRect(),[,,w,h]=s.dataset.v.split(' ').map(Number),k=1/Math.min(r.width/(w/dz.z),r.height/(h/dz.z));if(P.size==2){const[a,b]=[...P.values()];dz.z=Math.max(.5,Math.min(5,z0*Math.hypot(a[0]-b[0],a[1]-b[1])/d0))}else if(dz.z>1){dz.x-=(n[0]-o[0])*k;dz.y-=(n[1]-o[1])*k}dvApply()};
+ el.onpointerup=el.onpointercancel=e=>P.delete(e.pointerId);el.onwheel=e=>{e.preventDefault();dz.z=Math.max(.5,Math.min(5,dz.z*Math.exp(-e.deltaY*.002)));dvApply()}}
+function dvOpt(){const D=S.dc||{},cur=gp(dps),get=k=>k.split('.').reduce((o,x)=>o&&o[x],D),on=(a,b)=>String(a??'')==String(b)?' on':'',
+ ch=(k,l)=>`<div class="pnt">${l.map(a=>`<button class="b${on(get(k),a[0])}" data-dv="${k}=${a[0]}">${a[1]}</button>`).join('')}</div>`,
+ h=t=>`<p class="mu" style="margin:12px 0 4px"><b>${t}</b></p>`,
+ pal=(a,at,v)=>`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">${a.map(c=>`<button ${at}="${c}" style="width:30px;height:30px;border-radius:50%;padding:0;background:${c};border:${String(v).toLowerCase()==c.toLowerCase()?'3px solid #7B2FA0':'1px solid #bbb'}"></button>`).join('')}</div>`,
+ inp=(at,v)=>`<input type="color" ${at} value="${v}" style="height:36px;width:70px;padding:2px;margin-top:6px">`,
+ sw=(mot,b,i,vb,w,hh)=>`<svg viewBox="${vb}" style="width:${w};height:${hh};display:block;border-radius:8px"><rect width="100%" height="100%" fill="${b}"/>${mot.replace(/\{i\}/g,i)}</svg>`,
+ grid=(n,items)=>`<div style="display:grid;grid-template-columns:repeat(${n},1fr);gap:8px">${items.join('')}</div>`,
+ fabs=[['','প্লেইন',''],...FB,...['kameez','main','sleevef','salwar'].filter(m=>S.mats[m]).map(m=>['up:'+m,'আমার ছবি','<image href="'+S.mats[m]+'" width="60" height="60" preserveAspectRatio="xMidYMid slice"/>'])],
+ cf=get('p.'+dps+'.f'),cfv=cf===undefined?'':cf,
+ tabs=[['c','🎨 রং-কাপড়'],['l','🪡 লেস'],['n','👗 গলা'],['s','💪 হাতা'],['h','✨ ঘের-ডিটেইল']],bt=(k,v,l)=>`<button class="b${on(get(k)||0,v)}" data-dv="${k}=${v}">${l}</button>`;
+ let o='';
+ if(dtab=='c')o=h('কোন অংশ বদলাবেন')+`<div class="pnt">${PTS.map(a=>`<button class="b${on(dps,a[0])}" data-dp="${a[0]}">${a[1]}</button>`).join('')}</div>`+(['yk','hb','cf','nb','pn','bl'].includes(dps)?`<p class="mu">এই অংশটা দেখতে "✨ ঘের-ডিটেইল"/"👗 গলা"/"💪 হাতা" ট্যাব থেকে চালু করুন।</p>`:'')+h('কাপড় / নকশা')+grid(4,fabs.map(a=>`<button data-dv="p.${dps}.f=${a[0]}" style="padding:3px;border-radius:10px;background:none;border:${cfv==a[0]?'3px solid #7B2FA0':'1px solid #ccc'}">${sw(a[2],cur.c,cur.i,'0 0 60 60','100%','46px')}<span style="font-size:11px">${a[1]}</span></button>`))+h('মূল রং')+pal(PAL,'data-pc',cur.c)+inp('data-pcc',cur.c)+h('নকশার রং')+pal(PAL,'data-pi',cur.i)+inp('data-pic',cur.i)+h('নকশার সাইজ')+`<input type="range" min="40" max="250" value="${cur.s*100}" data-ps style="width:100%">`;
+ if(dtab=='l')o=h('কোথায় লেস বসাবেন')+`<div class="pnt">${[['nk','গলা'],['hm','ঘের'],['cf','হাতার প্রান্ত'],['yk','যোক লাইন']].map(a=>`<button class="b${on(dlp,a[0])}" data-lp="${a[0]}">${a[1]}</button>`).join('')}</div>`+h('লেসের ডিজাইন')+grid(3,[['','নেই','']].concat(LB).map(a=>`<button data-dv="l.${dlp}=${a[0]}" style="padding:3px;border-radius:10px;background:none;border:${(D.l&&D.l[dlp]||'')==a[0]?'3px solid #7B2FA0':'1px solid #ccc'}">${a[2]?`<svg viewBox="0 0 56 20" style="width:100%;height:28px;display:block;background:#6b5a7a;border-radius:6px"><g>${a[2].replace(/\{i\}/g,D.lc||'#C9A227')}</g><g transform="translate(28)">${a[2].replace(/\{i\}/g,D.lc||'#C9A227')}</g></svg>`:'<div style="height:28px"></div>'}<span style="font-size:11px">${a[1]}</span></button>`))+h('লেসের রং')+pal(LCOL,'data-lcl',D.lc||'#C9A227')+inp('data-lcc',D.lc||'#C9A227')+h('লেসের চওড়া')+`<input type="range" min="6" max="30" value="${D.lw||14}" data-lw style="width:100%">`;
+ if(dtab=='n')o=h('গলার ডিজাইন')+ch('nk',NKL)+h('গলার ব্যান্ড (পাইপিং-পট্টি)')+`<div class="pnt">${bt('nb',0,'নেই')}${bt('nb',1,'আছে')}</div><p class="mu">ব্যান্ডের রং ও কাপড় "🎨 রং-কাপড়" ট্যাবে "গলার ব্যান্ড" বেছে বদলান। কলারের রংও সেখান থেকেই।</p>`;
+ if(dtab=='s')o=h('হাতার ডিজাইন')+ch('sv',SVL)+h('হাতার কাফ (প্রান্তের পট্টি)')+`<div class="pnt">${bt('cb',0,'নেই')}${bt('cb',24,'চিকন')}${bt('cb',40,'চওড়া')}</div>`;
+ if(dtab=='h')o=h('ঘেরের ডিজাইন')+ch('hv',HVL)+h('যোক (উপরের অংশ)')+`<div class="pnt">${[[0,'নেই'],[70,'ছোট'],[110,'মাঝারি'],[160,'লম্বা']].map(a=>bt('yh',a[0],a[1])).join('')}</div>`+h('যোকের আকার')+ch('ys',[['s','সোজা'],['u','গোল U'],['v','V']])+h('নিচের বর্ডার')+`<div class="pnt">${[[0,'নেই'],[30,'চিকন'],[55,'মাঝারি'],[90,'চওড়া']].map(a=>bt('hb',a[0],a[1])).join('')}</div>`+h('মাঝের প্যানেল')+`<div class="pnt">${[[0,'নেই'],[1,'মাঝে'],[2,'দুই পাশে']].map(a=>bt('pn',a[0],a[1])).join('')}</div>`+h('বেল্ট / বোতাম / পাইপিং')+`<div class="pnt">${bt('bl',1,'বেল্ট')}${bt('bl',0,'বেল্ট নেই')}${bt('bt',1,'বোতাম')}${bt('bt',0,'বোতাম নেই')}${bt('pipe',1,'পাইপিং')}${bt('pipe',0,'পাইপিং নেই')}</div>`+h('পেছনের রং')+pal(BGS,'data-bg',D.bg||'#FFFFFF')+`<div class="tb" style="margin-top:12px"><button class="b" data-d="r">সব রিসেট</button></div>`;
+ $('#dvTb',dv).innerHTML=tabs.map(a=>`<button class="b${on(dtab,a[0])}" data-tab="${a[0]}">${a[1]}</button>`).join('');
+ $('#dvT',dv).innerHTML=[['f','সামনে',dstyle=='flare'&&dside=='f'],['b','পেছনে',dstyle=='flare'&&dside=='b'],['k','কামিজ ভিউ',dstyle=='kameez']].map(a=>`<button class="b${a[2]?' on':''}" data-d="${a[0]}">${a[1]}</button>`).join('');
+ $('#dvO',dv).innerHTML=o}
+function dvBuild(){dv.innerHTML=`<div id="dvWrap" style="position:sticky;top:0;z-index:6;background:var(--bg);padding:4px 0"><div id="dvT" class="pnt"></div><div style="position:relative"><div id="dvS" style="height:min(40vh,380px);border-radius:16px;overflow:hidden;touch-action:none;border:1px solid var(--ln)"></div><div style="position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:6px"><button class="b" data-zm="in">＋</button><button class="b" data-zm="out">－</button><button class="b" data-zm="rs" id="dvZ">100%</button></div></div></div><div class="pnt" id="dvTb" style="margin-top:8px"></div><div id="dvO"></div>`;dvGest();dvOpt();dvDraw()}
+dv.onclick=e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+ if(d.dv){const i=d.dv.indexOf('=');let v=d.dv.slice(i+1);const k=d.dv.slice(0,i);setP(k,v)}else if(d.dp)dps=d.dp;else if(d.lp)dlp=d.lp;else if(d.tab)dtab=d.tab;else if(d.pc)setP('p.'+dps+'.c',d.pc);else if(d.pi)setP('p.'+dps+'.i',d.pi);else if(d.lcl)setP('lc',d.lcl);else if(d.bg)setP('bg',d.bg);
+ else if(d.zm){dz.z=d.zm=='in'?Math.min(5,dz.z*1.25):d.zm=='out'?Math.max(.5,dz.z/1.25):1;if(d.zm=='rs')dz.x=dz.y=0;dvApply();return}
+ else if(d.d){const v=d.d;if(v=='r')S.dc=null;else if(v=='k')dstyle='kameez';else{dstyle='flare';dside=v}}else return;
+ dvOpt();dvDraw()};
+dv.oninput=e=>{const t=e.target,d=t.dataset;if(d.pcc!==undefined)setP('p.'+dps+'.c',t.value);else if(d.pic!==undefined)setP('p.'+dps+'.i',t.value);else if(d.ps!==undefined)setP('p.'+dps+'.s',t.value/100);else if(d.lcc!==undefined)setP('lc',t.value);else if(d.lw!==undefined)setP('lw',t.value);else return;dvDraw()};
+
+/* ===== কাপড় স্টুডিও ===== */
+const stW=document.createElement('div');stW.id='stW';stW.style.display='none';ek.append(stW);
+{const t=document.createElement('style');t.textContent=`.stW{border-radius:22px;overflow:hidden;background:#F6F1EC;border:1px solid var(--ln);box-shadow:0 8px 22px rgba(11,29,69,.14);margin-top:6px}
+.stTop{display:flex;background:#0B2A5B;padding:5px 3px}.stTop button{flex:1;min-width:0;border:0;background:transparent;color:#fff;font:inherit;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:10px;cursor:pointer}.stTop button.ok{background:#1E7B63}.stTop button.on{background:rgba(255,255,255,.18)}
+.stW svg.ic{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.stMid{display:grid;grid-template-columns:minmax(0,1fr) 132px;height:min(62vh,520px)}.stCv{position:relative;min-width:0;background:#FBF8F4}#stS{position:absolute;inset:0;touch-action:none}
+.stRail{position:absolute;left:6px;top:8px;z-index:2;display:flex;flex-direction:column;gap:4px;background:rgba(255,255,255,.88);border-radius:14px;padding:5px;box-shadow:0 4px 12px rgba(11,29,69,.15)}.stRail button{width:46px;border:0;border-radius:11px;background:transparent;color:#2A3A5C;font:inherit;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;cursor:pointer}.stRail button.on{background:#0B2A5B;color:#fff}
+.stSd{position:absolute;right:6px;top:8px;z-index:2;border:1px solid var(--ln);background:rgba(255,255,255,.9);border-radius:999px;padding:4px 12px;font:inherit;font-size:12px;cursor:pointer}
+.stLy{background:#fff;overflow-y:auto;padding:8px 6px;border-left:1px solid var(--ln)}.stLy h4{margin:0 0 6px 4px;font-size:15px;color:#0B2A5B}
+.ly{display:flex;align-items:center;gap:6px;padding:5px;border:1px solid var(--ln);border-radius:12px;background:#fff;margin-bottom:6px;font-size:12px;cursor:pointer;color:var(--fg)}.ly.on{background:#EEF2FA;border-color:#0B2A5B}.ly.off .th2,.ly.off span{opacity:.4}.ly .th2{flex:0 0 28px;height:28px;border-radius:8px;overflow:hidden}.ly .th2 svg{width:100%;height:100%;display:block}.ly span{flex:1;min-width:0;line-height:1.2}.ly b{flex:0 0 26px;height:26px;display:grid;place-items:center;color:#6A6076}.ly b svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.stBt{background:#0B2A5B;border-radius:18px 18px 0 0}.stTabs{display:flex;padding:6px 10px 0}.stTabs button{border:0;background:transparent;color:#C9D5EE;font:inherit;font-weight:600;padding:9px 18px;cursor:pointer;border-radius:12px 12px 0 0}.stTabs button.on{background:#fff;color:#0B2A5B}
+.stSw{display:flex;gap:10px;overflow-x:auto;padding:12px;background:#fff;margin:0 8px 8px;border-radius:0 14px 14px 14px;align-items:flex-start}.stSw.col{flex-wrap:wrap;max-height:190px;overflow-y:auto}.stSw .stLb{flex:0 0 100%;margin:4px 0 0;font-size:12px;color:var(--mu)}
+.sc{flex:0 0 74px;border:0;background:none;padding:0;font:inherit;font-size:11px;color:var(--fg);cursor:pointer;text-align:center}.sc svg,.sc .ph{border:2px solid transparent;border-radius:14px}.sc.on svg,.sc.on .ph{border-color:#7B2FA0}.sc .ph{width:74px;height:74px;display:grid;place-items:center;border:2px dashed #9AA6C0;color:#6A7BA0;font-size:26px}
+.stChips{flex:0 0 100%;display:flex;gap:6px;flex-wrap:wrap}.dotc{width:30px;height:30px;border-radius:50%;padding:0;border:1px solid #bbb;cursor:pointer}.dotc.on{border:3px solid #7B2FA0}
+.stW.pv .stRail,.stW.pv .stLy,.stW.pv .stBt{display:none}.stW.pv .stMid{grid-template-columns:1fr;height:min(72vh,620px)}`;document.head.append(t)}
+let stTool='sel',stSide='f',stLay='bd',stBt='f',stLp='nk',stInk='#7B2FA0',stZ={z:1,x:0,y:0},stH=[],stF=[],stS0=null,stSl=0;
+const stI=d=>`<svg class="ic" viewBox="0 0 24 24">${d}</svg>`,
+STI={undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',redo:'<path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/>',save:'<path d="M5 3h12l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/>',zi:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5M11 8v6M8 11h6"/>',zo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5M8 11h6"/>',pv:'<circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4z"/>',ok:'<path d="M5 12l5 5 9-10"/>',sel:'<path d="M5 3l14 8-6 2-2 6z"/>',draw:'<path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/>',move:'<path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/>',rot:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',lay:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',eoff:'<path d="M3 3l18 18M10.6 5.1A9.7 9.7 0 0 1 12 5c6 0 10 7 10 7a17 17 0 0 1-3.2 3.9M6.6 6.6A17 17 0 0 0 2 12s4 7 10 7a9.6 9.6 0 0 0 4.4-1"/>'},
+STL=[['bd','কামিজ বডি'],['sv','হাতা'],['cf','হাতার কাফ'],['nb','গলার ব্যান্ড'],['yk','যোক'],['hb','নিচের বর্ডার'],['pn','মাঝের প্যানেল'],['bl','বেল্ট'],['sz','সালোয়ার'],['lc','লেস']],
+STEN={yk:['yh','110'],hb:['hb','55'],cf:['cb','24'],nb:['nb','1'],pn:['pn','1'],bl:['bl','1']},STMAP={nb:'nb',cf:'cb',yk:'yh',hb:'hb',pn:'pn',bl:'bl'},
+STLP=[['nk','গলা'],['hm','ঘের'],['cf','হাতার প্রান্ত'],['yk','যোক লাইন']],
+stSnap=()=>{stH.push(JSON.stringify([S.dc||null,S.hid||{},S.draw||{f:[],b:[]}]));if(stH.length>60)stH.shift();stF=[]},
+stRestore=j=>{const a=JSON.parse(j);S.dc=a[0];S.hid=a[1];S.draw=a[2]},
+stOn=k=>{const H=S.hid=S.hid||{};delete H[k];const e=STEN[k];if(e&&!(S.dc&&S.dc[e[0]]))setP(e[0],e[1])},
+stSvg=()=>{const bak=S.dc,d=JSON.parse(JSON.stringify(bak||{})),H=S.hid||{};['bd','sv','sz'].forEach(k=>{if(H[k]){d.p=d.p||{};d.p[k]=Object.assign({},d.p[k],{c:'rgba(0,0,0,0)',f:''})}});Object.keys(STMAP).forEach(k=>{if(H[k])d[STMAP[k]]=0});if(H.lc)d.l={};S.dc=d;try{return flare(stSide=='b')}finally{S.dc=bak}},
+stDraw=()=>{const h=$('#stS');if(!h)return;h.style.background=(S.dc&&S.dc.bg)||'#FBF8F4';const dr=(S.draw&&S.draw[stSide])||[];h.innerHTML=stSvg().replace(/<\/svg>\s*$/,`<g id="stDr" fill="none" stroke-linecap="round" stroke-linejoin="round">${dr.map(a=>`<path d="${a.d}" stroke="${a.c}" stroke-width="${a.w}"/>`).join('')}</g></svg>`);stApply(1)},
+stApply=fresh=>{const s=$('#stS svg');if(!s)return;if(fresh||!s.dataset.v)s.dataset.v=s.getAttribute('viewBox');const[a,b,w,h]=s.dataset.v.split(' ').map(Number),z=stZ.z,vw=w/z,vh=h/z;stZ.x=Math.max(-w/2,Math.min(w/2,stZ.x));stZ.y=Math.max(-h/2,Math.min(h/2,stZ.y));s.setAttribute('viewBox',`${a+w/2-vw/2+stZ.x} ${b+h/2-vh/2+stZ.y} ${vw} ${vh}`);s.setAttribute('style','width:100%;height:100%;display:block')},
+stMot=(k)=>{const p=gp(k),dfl={bd:['kameez','main'],sv:['sleevef','kameez','main'],sz:['salwar','main']};let f=p.f;if(f===undefined&&dfl[k]){const m=dfl[k].find(x=>S.mats[x]);if(m)f='up:'+m}let mot='';if(f&&f.startsWith('up:')&&S.mats[f.slice(3)])mot=`<image href="${S.mats[f.slice(3)]}" width="60" height="60" preserveAspectRatio="xMidYMid slice"/>`;else{const m=FB.find(a=>a[0]==f);if(m)mot=m[2].replace(/\{i\}/g,p.i)}return`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="${p.c}"/>${mot}</svg>`},
+stTh=k=>{if(k=='lc'){const D=S.dc||{},id=D.l&&Object.values(D.l).find(Boolean),m=LB.find(a=>a[0]==id);return`<svg viewBox="0 0 28 20" preserveAspectRatio="none"><rect width="28" height="20" fill="#6b5a7a"/>${m?m[2].replace(/\{i\}/g,D.lc||'#C9A227'):''}</svg>`}return stMot(k)},
+stFabs=()=>[['','প্লেইন',''],...FB,...Object.keys(S.mats).map(m=>['up:'+m,'আমার ছবি','<image href="'+S.mats[m]+'" width="60" height="60" preserveAspectRatio="xMidYMid slice"/>'])],
+stUI=()=>{const D=S.dc||{},H=S.hid||{},cur=gp(stLay==='lc'?'bd':stLay),on=(a,b)=>a==b?' on':'',B=(a,i,l,c='')=>`<button type="button" data-st-act="${a}" class="${c}">${stI(STI[i])}<span>${l}</span></button>`;
+$('#stTop').innerHTML=B('undo','undo','আনডু')+B('redo','redo','রিডু')+B('save','save','সেভ')+B('zi','zi','জুম +')+B('zo','zo','জুম −')+B('pv','pv','প্রিভিউ',stW.classList.contains('pv')?'on':'')+B('ok','ok','অনুমোদন','ok');
+$('#stRail').innerHTML=[['sel','সিলেক্ট'],['draw','আঁকুন'],['move','সরান'],['rot','ঘোরান']].map(a=>`<button type="button" data-st-tool="${a[0]}" class="${stTool==a[0]?'on':''}">${stI(STI[a[0]])}<span>${a[1]}</span></button>`).join('')+`<button type="button" data-st-act="lay">${stI(STI.lay)}<span>লেয়ার</span></button>`;
+$('#stSd').textContent=stSide=='f'?'সামনে':'পেছনে';
+$('#stLy').innerHTML='<h4>লেয়ার</h4>'+STL.map(a=>`<div class="ly${stLay==a[0]?' on':''}${H[a[0]]?' off':''}" data-st-lay="${a[0]}"><div class="th2">${stTh(a[0])}</div><span>${a[1]}</span><b data-st-eye="${a[0]}">${stI(H[a[0]]?STI.eoff:STI.eye)}</b></div>`).join('');
+$('#stTabs').innerHTML=[['f','কাপড়'],['l','লেস'],['c','রং']].map(a=>`<button type="button" data-st-bt="${a[0]}" class="${stBt==a[0]?'on':''}">${a[1]}</button>`).join('');
+const sw=$('#stSw'),pal=(at,v)=>PAL.map(c=>`<button type="button" ${at}="${c}" class="dotc${String(v).toLowerCase()==c.toLowerCase()?' on':''}" style="background:${c}"></button>`).join('');sw.className='stSw'+(stBt=='c'?' col':'');
+if(stBt=='f'){const cf=cur.f===undefined?'':cur.f;sw.innerHTML=stFabs().map(a=>`<button type="button" class="sc${cf==a[0]?' on':''}" data-st-fab="${a[0]}"><svg viewBox="0 0 60 60" style="width:74px;height:74px;display:block"><rect width="60" height="60" fill="${cur.c}"/>${a[2].replace(/\{i\}/g,cur.i)}</svg>${a[1]}</button>`).join('')+`<button type="button" class="sc" data-st-add="1"><div class="ph">+</div>নতুন ছবি</button>`}
+else if(stBt=='l'){const cl=D.l&&D.l[stLp]||'';sw.innerHTML=`<div class="stChips">${STLP.map(a=>`<button type="button" class="b${on(stLp,a[0])}" data-st-lp="${a[0]}">${a[1]}</button>`).join('')}</div>`+[['','নেই','']].concat(LB).map(a=>`<button type="button" class="sc${cl==a[0]?' on':''}" data-st-lace="${a[0]}"><svg viewBox="0 0 56 20" style="width:74px;height:40px;display:block;background:#6b5a7a"><g>${a[2].replace(/\{i\}/g,D.lc||'#C9A227')}</g><g transform="translate(28)">${a[2].replace(/\{i\}/g,D.lc||'#C9A227')}</g></svg>${a[1]}</button>`).join('')}
+else sw.innerHTML=`<p class="stLb">${stLay=='lc'?'লেয়ার:':'মূল রং ('+STL.find(a=>a[0]==stLay)[1]+')'}</p>`+(stLay=='lc'?`<p class="stLb">লেসের রং</p>${LCOL.map(c=>`<button type="button" data-st-lc="${c}" class="dotc${(D.lc||'#C9A227')==c?' on':''}" style="background:${c}"></button>`).join('')}`:pal('data-st-c',cur.c)+`<input type="color" data-st-cc value="${cur.c}" style="width:50px;height:30px;padding:1px">`+`<p class="stLb">নকশার রং</p>`+pal('data-st-i',cur.i)+`<p class="stLb">নকশার সাইজ</p><input type="range" min="40" max="250" value="${cur.s*100}" data-st-sz style="width:100%">`)+`<p class="stLb">আঁকার রং</p>`+pal('data-st-ink',stInk)};
+const stGo=()=>{stUI();stDraw()},
+stOpenFn=()=>{if(S!==stS0){stS0=S;stH=[];stF=[]}if(!stW.firstChild)stBuild();stGo()},
+stBuild=()=>{stW.className='stW';stW.innerHTML='<div class="stTop" id="stTop"></div><div class="stMid"><div class="stCv"><div id="stS"></div><div class="stRail" id="stRail"></div><button type="button" class="stSd" id="stSd" data-st-act="side"></button></div><div class="stLy" id="stLy"></div></div><div class="stBt"><div class="stTabs" id="stTabs"></div><div class="stSw" id="stSw"></div></div><input type="file" accept="image/*" id="stFile" hidden>';stEv()},
+stEv=()=>{const el=$('#stS'),P=new Map(),NS='http://www.w3.org/2000/svg';let pz=null,act=null,raf=0;
+const pt=e=>{const s=$('svg',el),q=s.createSVGPoint();q.x=e.clientX;q.y=e.clientY;return q.matrixTransform(s.getScreenCTM().inverse())},
+pd=a=>'M'+a.map(p=>p.x.toFixed(1)+' '+p.y.toFixed(1)).join('L')+(a.length<2?'l.1 0':''),
+bump=(k,v)=>{const p=gp(stLay);setP('p.'+stLay+'.'+k,(+p[k]||0)+v);if(!raf)raf=requestAnimationFrame(()=>{raf=0;stDraw()})},
+fabOk=()=>{if(stLay=='lc'){toast('লেসের জন্য "লেস" ট্যাব ব্যবহার করুন');return false}if((S.hid||{})[stLay]){toast('লেয়ারটি লুকানো, আগে চালু করুন');return false}return true};
+el.onpointerdown=e=>{el.setPointerCapture(e.pointerId);P.set(e.pointerId,[e.clientX,e.clientY]);if(P.size==2){const[a,b]=[...P.values()];pz={d:Math.hypot(a[0]-b[0],a[1]-b[1]),z:stZ.z};act=null;return}const s=$('svg',el);if(!s)return;
+ if(stTool=='draw'){stSnap();const q=pt(e),p=document.createElementNS(NS,'path');p.setAttribute('stroke',stInk);p.setAttribute('stroke-width',3);p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');p.setAttribute('d',pd([q]));let g=$('#stDr',el);if(g)g.append(p);act={t:'d',pts:[q],el:p}}
+ else if(stTool=='move'||stTool=='rot'){if(!fabOk())return;stSnap();stOn(stLay);act={t:stTool}}else act={t:'pan'}};
+el.onpointermove=e=>{if(!P.has(e.pointerId))return;const o=P.get(e.pointerId),n=[e.clientX,e.clientY];P.set(e.pointerId,n);
+ if(P.size==2&&pz){const[a,b]=[...P.values()];stZ.z=Math.max(.5,Math.min(5,pz.z*Math.hypot(a[0]-b[0],a[1]-b[1])/pz.d));stApply();return}
+ if(!act)return;const s=$('svg',el);if(!s)return;const sc=s.getScreenCTM().a||1;
+ if(act.t=='d'){act.pts.push(pt(e));act.el.setAttribute('d',pd(act.pts))}
+ else if(act.t=='move'){bump('x',(n[0]-o[0])/sc);bump('y',(n[1]-o[1])/sc)}
+ else if(act.t=='rot')bump('r',(n[0]-o[0])*.4)
+ else if(act.t=='pan'&&stZ.z>1){stZ.x-=(n[0]-o[0])/sc;stZ.y-=(n[1]-o[1])/sc;stApply()}};
+el.onpointerup=el.onpointercancel=e=>{P.delete(e.pointerId);if(P.size<2)pz=null;if(act&&act.t=='d'){S.draw=S.draw||{f:[],b:[]};(S.draw[stSide]=S.draw[stSide]||[]).push({d:pd(act.pts),c:stInk,w:3})}if(act&&act.t!='pan')stUI();act=null};
+el.onwheel=e=>{e.preventDefault();stZ.z=Math.max(.5,Math.min(5,stZ.z*Math.exp(-e.deltaY*.002)));stApply()};
+$('#stFile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const k=document.createElement('canvas'),m=Math.min(1,600/Math.max(i.width,i.height));k.width=Math.round(i.width*m);k.height=Math.round(i.height*m);k.getContext('2d').drawImage(i,0,0,k.width,k.height);const u=k.toDataURL('image/jpeg',.82),id='u'+Date.now().toString(36);S.mats[id]=u;const im=new Image();im.src=u;imgs[id]=im;stSnap();if(stLay!='lc'){stOn(stLay);setP('p.'+stLay+'.f','up:'+id)}stGo();toast('কাপড় যোগ হয়েছে')};i.src=r.result};r.readAsDataURL(f)};
+stW.onclick=e=>{const g=a=>e.target.closest('['+a+']'),d=(a,x)=>x.getAttribute(a);let b;
+ if(b=g('data-st-act')){const a=d('data-st-act',b);
+  if(a=='undo'){if(!stH.length)return toast('আনডু করার কিছু নেই');stF.push(JSON.stringify([S.dc||null,S.hid||{},S.draw||{f:[],b:[]}]));stRestore(stH.pop());stGo()}
+  else if(a=='redo'){if(!stF.length)return toast('রিডু করার কিছু নেই');stH.push(JSON.stringify([S.dc||null,S.hid||{},S.draw||{f:[],b:[]}]));stRestore(stF.pop());stGo()}
+  else if(a=='save')$('#saveP').click();
+  else if(a=='zi'){stZ.z=Math.min(5,stZ.z*1.25);stApply()}else if(a=='zo'){stZ.z=Math.max(.5,stZ.z/1.25);stApply()}
+  else if(a=='pv'){stW.classList.toggle('pv');stUI();setTimeout(stDraw,30)}
+  else if(a=='ok')go('ai');
+  else if(a=='lay'){stW.classList.remove('pv');$('#stLy').scrollIntoView({block:'nearest'})}
+  else if(a=='side'){stSide=stSide=='f'?'b':'f';stGo()}return}
+ if(b=g('data-st-tool')){stTool=d('data-st-tool',b);stUI();return}
+ if(b=g('data-st-eye')){const k=d('data-st-eye',b);stSnap();S.hid=S.hid||{};if(S.hid[k])delete S.hid[k];else S.hid[k]=1;stGo();return}
+ if(b=g('data-st-lay')){stLay=d('data-st-lay',b);if(stLay=='lc')stBt='l';else if(stBt=='l')stBt='f';stUI();return}
+ if(b=g('data-st-bt')){stBt=d('data-st-bt',b);stUI();return}
+ if(b=g('data-st-fab')){if(!fabOk())return;stSnap();stOn(stLay);setP('p.'+stLay+'.f',d('data-st-fab',b));stGo();return}
+ if(b=g('data-st-add')){$('#stFile').click();return}
+ if(b=g('data-st-lp')){stLp=d('data-st-lp',b);stUI();return}
+ if(b=g('data-st-lace')){stSnap();setP('l.'+stLp,d('data-st-lace',b));if(S.hid)delete S.hid.lc;stGo();return}
+ if(b=g('data-st-c')){if(!fabOk())return;stSnap();stOn(stLay);setP('p.'+stLay+'.c',d('data-st-c',b));stGo();return}
+ if(b=g('data-st-i')){if(!fabOk())return;stSnap();stOn(stLay);setP('p.'+stLay+'.i',d('data-st-i',b));stGo();return}
+ if(b=g('data-st-lc')){stSnap();setP('lc',d('data-st-lc',b));stGo();return}
+ if(b=g('data-st-ink')){stInk=d('data-st-ink',b);stUI()}};
+stW.oninput=e=>{const t=e.target;if(t.dataset.stCc===undefined&&t.dataset.stSz===undefined)return;if(!fabOk())return;if(!stSl){stSnap();stSl=1}stOn(stLay);if(t.dataset.stCc!==undefined)setP('p.'+stLay+'.c',t.value);else setP('p.'+stLay+'.s',t.value/100);stDraw()};
+stW.onchange=()=>{stSl=0;stUI()}};
+window.stOpen=()=>stOpenFn();
+
+const stOpen=()=>window.stOpen();
+const ref=()=>{if(!ek.offsetParent&&!ek.classList.contains('full'))return;const dgw=$('#dgW'),dgo=tab=='drag',dso=tab=='dress',pgo=tab=='pattern',sto=tab=='studio';ek.classList.toggle('stm',sto);stW.style.display=sto?'':'none';if(sto)stOpen();ek.classList.toggle('pgm',pgo);pw.style.display=pgo?'':'none';if(pgo&&window.pRender)window.pRender();ek.classList.toggle('dgm',dgo);ek.classList.toggle('dsm',dso);dv.style.display=dso?'':'none';if(dso){pget();dvBuild()}if(dgw)dgw.style.display=dgo?'':'none';if(dgo){if(!window.dgOn){window.dgOn=1;window.dgRender&&window.dgRender()}}else window.dgOn=0};
+{const t=document.createElement('style');t.textContent=`#ek.full{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;padding:calc(8px + env(safe-area-inset-top,0px)) 10px calc(14px + env(safe-area-inset-bottom,0px))}#ek.full>.pnt:first-child{position:sticky;top:-1px;z-index:5;background:var(--bg);padding:4px 0 6px}#ek.full .stMid{height:calc(100dvh - 340px)}#ek.full #dvS{height:52vh!important}`;document.head.append(t)}
+const fsSet=on=>{ek.classList.toggle('full',on);document.documentElement.style.overflow=on?'hidden':'';const q=$('[data-pf]',tg);if(q)q.textContent=on?'✕ ছোট করুন':'⛶ ফুল স্ক্রিন';if(on)ek.scrollTop=0;setTimeout(()=>{window.dispatchEvent(new Event('resize'));if(tab=='studio')stDraw()},60)};
+tg.onclick=e=>{if(e.target.closest('[data-pf]')){fsSet(!ek.classList.contains('full'));return}const b=e.target.closest('[data-pv]');if(!b)return;tab=b.dataset.pv;tg.querySelectorAll('[data-pv]').forEach(x=>x.classList.toggle('on',x===b));ref();if(tab=='edit'){fsSet(false);setTimeout(()=>{E.kameez.fit();const q=$('#ek .stage [data-fs]');if(q&&!$('#ek .stage.fs'))q.click()},60)}else fsSet(true)};
+const _g3=go;go=function(id){if(id!='kameez')fsSet(false);_g3(id);if(id=='kameez')setTimeout(ref,60)};
+}
+/* ৯. টেনে কাটিং: পয়েন্ট টেনে প্যাটার্ন আঁকা (সেমি) */
+{const NM={f:'সামনের অংশ',b:'পেছনের অংশ',s:'হাতা (২টি)',z:'পায়ের অংশ (২টি)'},GR={k:['f','b','s'],z:['z']},ek=$('#ek'),W2=document.createElement('div');
+const gg=n=>(S.kameez.set[n]??100)/100,gz=n=>(S.salwar.set[n]??100)/100;
+function def(k){const kL=+$('#tkL').value||40,sL=+$('#tsL').value||38,c=2.54,u=kL/430*c,v=sL/570*c;
+ if(k=='f'||k=='b'){const L=430*gg('len')*u,B=80*gg('wid')*u,H=B*(.7+.5*gg('flare')),sh=70*gg('sh')*u,nw=32*gg('nw')*u,ty=18*u,ad=115*u,nd=k=='f'?45*gg('neck')*u:Math.min(45*gg('neck')*u*.3,5.6)*gg('neckb');
+  return{n:[{x:0,y:nd},{x:nw,y:0,c:[nw*.8,nd*.95]},{x:sh,y:ty},{x:B,y:ad,c:[B,ty+(ad-ty)*.12]},{x:H,y:L},{x:0,y:L}]}}
+ if(k=='s'){const w1=84*gg('sw')*u,w2=w1*.62,l=190*gg('sl')*u;return{n:[{x:0,y:4},{x:w1,y:4,c:[w1/2,-4]},{x:(w1+w2)/2,y:l},{x:(w1-w2)/2,y:l}]}}
+ const Wt=2*90*gz('wid')*v,Wb=2*(30+40*gz('flare'))*v,L=570*gz('len')*v;return{n:[{x:0,y:0},{x:Wt,y:0},{x:(Wt+Wb)/2,y:L},{x:(Wt-Wb)/2,y:L}]}}
+let grp='k',cur='f',mode='drag',hist=[],drag=null,V={s:1,x:0,y:0};
+const P=()=>{const d=(S.drag=S.drag||{});return d[cur]||(d[cur]=def(cur))},cp=o=>JSON.parse(JSON.stringify(o)),push=()=>{hist.push(cp(P()));if(hist.length>60)hist.shift()};
+W2.id='dgW';W2.style.display='none';
+W2.innerHTML=`<div class="pnt" id="dgG"><button class="b on" data-g="k">কামিজ</button><button class="b" data-g="z">সালোয়ার</button></div><div class="pnt" id="dgP"></div><div class="pnt" id="dgT">${[['drag','☝ টানুন'],['add','＋ পয়েন্ট'],['curve','〰 বাঁকা/সোজা'],['del','🗑 মুছুন']].map(a=>`<button class="b${a[0]=='drag'?' on':''}" data-m="${a[0]}">${a[1]}</button>`).join('')}<button class="b" data-m="undo">↶ Undo</button></div><div class="cv" style="width:min(100%,calc(66vh*.75))"><canvas id="dgC"></canvas></div><p class="mu">বেগুনি বিন্দু টেনে দাগ বদলান (সাদা বিন্দু = বাঁকা রেখা)। "＋ পয়েন্ট" চেপে দাগের ওপর ট্যাপ করলে নতুন বিন্দু বসে। মাপ সেমিতে।</p><div class="f"><label>চওড়া (সেমি)<input type="number" step=".5" id="dgIw"></label><label>লম্বা (সেমি)<input type="number" step=".5" id="dgIh"></label></div><div class="tb" style="margin-top:8px"><button class="b" id="dgRst">আগের মাপে ফিরুন</button><button class="b p" id="dgOk">✓ ঠিক আছে</button></div>`;
+ek.append(W2);const cv=$('#dgC'),c2=cv.getContext('2d'),sx=x=>x*V.s+V.x,sy=y=>y*V.s+V.y,D=()=>devicePixelRatio||1;
+const bbN=()=>{const n=P().n,x=n.map(p=>p.x),y=n.map(p=>p.y);return[Math.min(...x),Math.min(...y),Math.max(...x),Math.max(...y)]};
+function dims(){const[a,b,c,d]=bbN();$('#dgIw').value=(c-a).toFixed(1);$('#dgIh').value=(d-b).toFixed(1)}
+function fit(){const r=cv.parentElement.getBoundingClientRect();if(!r.width)return;const d=D();cv.width=r.width*d;cv.height=r.height*d;const xs=[],ys=[];P().n.forEach(n=>{xs.push(n.x);ys.push(n.y);if(n.c){xs.push(n.c[0]);ys.push(n.c[1])}});const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),m=44*d;V.s=Math.min((cv.width-2*m)/(x1-x0||1),(cv.height-2*m)/(y1-y0||1));V.x=(cv.width-V.s*(x1+x0))/2;V.y=(cv.height-V.s*(y1+y0))/2;dims();draw()}
+function draw(){const d=D(),n=P().n,N=n.length;c2.setTransform(1,0,0,1,0,0);c2.fillStyle='#fff';c2.fillRect(0,0,cv.width,cv.height);c2.strokeStyle='#ececf2';c2.lineWidth=d;
+ for(let g=Math.floor(-V.x/V.s/5)*5;sx(g)<cv.width;g+=5){c2.beginPath();c2.moveTo(sx(g),0);c2.lineTo(sx(g),cv.height);c2.stroke()}for(let g=Math.floor(-V.y/V.s/5)*5;sy(g)<cv.height;g+=5){c2.beginPath();c2.moveTo(0,sy(g));c2.lineTo(cv.width,sy(g));c2.stroke()}
+ c2.beginPath();c2.moveTo(sx(n[0].x),sy(n[0].y));for(let i=1;i<=N;i++){const p=n[i%N];p.c&&(i<N||1)?c2.quadraticCurveTo(sx(p.c[0]),sy(p.c[1]),sx(p.x),sy(p.y)):c2.lineTo(sx(p.x),sy(p.y))}
+ c2.fillStyle='rgba(123,47,160,.07)';c2.fill();c2.strokeStyle='#1C1526';c2.lineWidth=2.5*d;c2.lineJoin='round';c2.stroke();
+ c2.setLineDash([5*d,4*d]);c2.lineWidth=1.2*d;c2.strokeStyle='#7B2FA0';n.forEach((p,i)=>{if(!p.c)return;const q=n[(i+N-1)%N];c2.beginPath();c2.moveTo(sx(q.x),sy(q.y));c2.lineTo(sx(p.c[0]),sy(p.c[1]));c2.lineTo(sx(p.x),sy(p.y));c2.stroke()});c2.setLineDash([]);
+ n.forEach(p=>{if(p.c){c2.beginPath();c2.arc(sx(p.c[0]),sy(p.c[1]),8*d,0,7);c2.fillStyle='#fff';c2.fill();c2.lineWidth=2*d;c2.stroke()}});
+ n.forEach(p=>{c2.beginPath();c2.arc(sx(p.x),sy(p.y),9*d,0,7);c2.fillStyle='#7B2FA0';c2.fill()})}
+const pt=e=>{const r=cv.getBoundingClientRect(),d=cv.width/r.width;return[(e.clientX-r.left)*d,(e.clientY-r.top)*d]},wd=p=>[(p[0]-V.x)/V.s,(p[1]-V.y)/V.s];
+const at=(i,t)=>{const n=P().n,a=n[(i+n.length-1)%n.length],b=n[i],c=b.c,u=1-t;return c?[u*u*a.x+2*u*t*c[0]+t*t*b.x,u*u*a.y+2*u*t*c[1]+t*t*b.y]:[a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t]};
+function hitPt(p){const d=D(),n=P().n;let best=null,bd=26*d;n.forEach((q,i)=>{let e=Math.hypot(sx(q.x)-p[0],sy(q.y)-p[1]);if(e<bd){bd=e;best={k:'n',i}}if(q.c){e=Math.hypot(sx(q.c[0])-p[0],sy(q.c[1])-p[1]);if(e<bd){bd=e;best={k:'c',i}}}});return best}
+function hitSeg(p){const d=D(),n=P().n;let best=null,bd=20*d;n.forEach((q,i)=>{for(let j=1;j<24;j++){const t=j/24,m=at(i,t),e=Math.hypot(sx(m[0])-p[0],sy(m[1])-p[1]);if(e<bd){bd=e;best={i,t}}}});return best}
+cv.onpointerdown=e=>{const p=pt(e),n=P().n;cv.setPointerCapture(e.pointerId);
+ if(mode=='drag'){const h=hitPt(p);if(h){push();drag=h}}
+ else if(mode=='del'){const h=hitPt(p);if(h&&h.k=='n'&&n.length>3){push();const nx=n[(h.i+1)%n.length];delete nx.c;n.splice(h.i,1);draw();dims()}}
+ else{const h=hitSeg(p);if(!h)return;push();const i=h.i,a=n[(i+n.length-1)%n.length],b=n[i];
+  if(mode=='curve'){if(b.c)delete b.c;else{const dx=b.x-a.x,dy=b.y-a.y,l=Math.hypot(dx,dy)||1;b.c=[(a.x+b.x)/2-dy/l*l*.18,(a.y+b.y)/2+dx/l*l*.18]}}
+  else{const t=h.t,L=(p1,p2)=>[p1[0]+(p2[0]-p1[0])*t,p1[1]+(p2[1]-p1[1])*t],A=[a.x,a.y],B2=[b.x,b.y],m=at(i,t);let nn={x:m[0],y:m[1]};if(b.c){const q0=L(A,b.c),q1=L(b.c,B2);nn.c=q0;b.c=q1}n.splice(i,0,nn)}
+  draw();dims()}};
+cv.onpointermove=e=>{if(!drag)return;const w=wd(pt(e)),q=P().n[drag.i];if(drag.k=='n'){q.x=w[0];q.y=w[1]}else q.c=[w[0],w[1]];draw()};
+cv.onpointerup=cv.onpointercancel=()=>{if(drag){drag=null;dims()}};
+function build(){$('#dgG').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.g==grp));$('#dgP').innerHTML=GR[grp].map(k=>`<button class="b${k==cur?' on':''}" data-p="${k}">${NM[k]}</button>`).join('')}
+W2.onclick=e=>{const b=e.target.closest('button');if(!b)return;const D2=b.dataset;
+ if(D2.g){grp=D2.g;cur=GR[grp][0];hist=[];build();fit()}
+ else if(D2.p){cur=D2.p;hist=[];build();fit()}
+ else if(D2.m=='undo'){const h=hist.pop();if(h){S.drag[cur]=h;fit()}}
+ else if(D2.m){mode=D2.m;$('#dgT').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.m==mode))}
+ else if(b.id=='dgRst'){push();S.drag[cur]=def(cur);fit();toast('আগের মাপে ফিরেছে')}
+ else if(b.id=='dgOk'){const l=GR[grp],i=l.indexOf(cur);toast(NM[cur]+' ঠিক আছে');if(i<l.length-1){cur=l[i+1];hist=[];build();fit()}}};
+W2.onchange=e=>{const t=e.target;if(t.id!='dgIw'&&t.id!='dgIh')return;const[a,b,c,d]=bbN(),n=P().n,w=c-a||1,h=d-b||1,fx=t.id=='dgIw'?(+t.value||w)/w:1,fy=t.id=='dgIh'?(+t.value||h)/h:1;push();n.forEach(p=>{p.x=a+(p.x-a)*fx;p.y=b+(p.y-b)*fy;if(p.c)p.c=[a+(p.c[0]-a)*fx,b+(p.c[1]-b)*fy]});fit()};
+window.dgRender=()=>{build();setTimeout(fit,40)};
+/* ডিজাইন ফাইলে যোগ */
+const dsvg=k=>{const n=S.drag[k].n,s=8,xs=n.flatMap(p=>p.c?[p.x,p.c[0]]:[p.x]),ys=n.flatMap(p=>p.c?[p.y,p.c[1]]:[p.y]),x0=Math.min(...xs)-2,y0=Math.min(...ys)-2,w=Math.max(...xs)+2-x0,h=Math.max(...ys)+2-y0,f=v=>v.toFixed(1),d='M'+f(n[0].x)+' '+f(n[0].y)+n.slice(1).map(p=>p.c?`Q${f(p.c[0])} ${f(p.c[1])} ${f(p.x)} ${f(p.y)}`:`L${f(p.x)} ${f(p.y)}`).join('')+(n[0].c?`Q${f(n[0].c[0])} ${f(n[0].c[1])} ${f(n[0].x)} ${f(n[0].y)}`:'Z'),xx=n.map(p=>p.x),yy=n.map(p=>p.y);
+ return`<div style="margin:8px 0"><b>${NM[k]}</b> · ${f(Math.max(...xx)-Math.min(...xx))} × ${f(Math.max(...yy)-Math.min(...yy))} সেমি<br><svg viewBox="${f(x0)} ${f(y0)} ${f(w)} ${f(h)}" width="${Math.round(w*s)}" fill="none" stroke="#1C1526" stroke-width=".25"><path d="${d}"/></svg></div>`};
+const _th2=techHTML;techHTML=function(n){let r=_th2(n);const ks=Object.keys(S.drag||{}).filter(k=>NM[k]);return ks.length?r.replace('<h2>৩.','<h2>টেনে আঁকা প্যাটার্ন (সেমি)</h2>'+ks.map(dsvg).join('')+'<h2>৩.'):r};
+}
+updMeas();
+window.calc=calc;window.dlFile=dlFile;
+})();
+
+</script>
+<script>
+/* ===== হোম, মাপ প্রোফাইল, ফাইনাল ===== */
+const MS={XS:[32,26,34,13,40,16.5,13],S:[34,28,36,13.5,41,17,13.5],M:[36,30,38,14,42,18,14],L:[38,32,40,14.5,43,18.5,14.5],XL:[40,34,42,15,44,19,15],XXL:[42,36,44,15.5,45,19.5,15.5]};
+const MF=['বুক (Bust)','কোমর (Waist)','হিপ (Hip)','কাঁধ (Shoulder)','কামিজের দৈর্ঘ্য','হাতার দৈর্ঘ্য','গলার প্রস্থ'];
+const mget=()=>S.meas||(S.meas={size:'M',v:MS.M.slice(),saved:false});
+const PF=()=>ls.get('ads_prof',[]);
+function mChips(){const m=mget();$('#mSizes').innerHTML=['XS','S','M','L','XL','XXL','Custom'].map(z=>`<button class="b ${m.size==z?'on':''}" data-z="${z}">${z=='Custom'?'কাস্টম':z}</button>`).join('')}
+function mRender(){const m=mget();mChips();$('#mFields').innerHTML=MF.map((f,i)=>`<label class="mrow"><span>${f}</span><span class="mi"><input type="number" step="0.5" min="0" data-m="${i}" value="${m.v[i]}"><em>in</em></span></label>`).join('');mProf()}
+function mProf(){const l=PF(),h=$('#mList');h.innerHTML=l.length?'':'<p class="mu">কোনো সংরক্ষিত প্রোফাইল নেই।</p>';l.forEach((p,i)=>{const d=document.createElement('div');d.className='card';d.innerHTML=`<b></b> <span class="mu"></span><div class="tb" style="margin-top:8px"><button class="b p" data-l>ব্যবহার করুন</button><button class="b" data-x>মুছুন</button></div>`;$('b',d).textContent=p.name;$('span',d).textContent='সাইজ '+p.size+' · বুক '+p.v[0]+' · কোমর '+p.v[1]+' · হিপ '+p.v[2];$('[data-l]',d).onclick=()=>{S.meas={size:p.size,v:p.v.slice(),saved:false};mRender();toast('প্রোফাইল লোড হয়েছে, সংরক্ষণ চাপুন')};$('[data-x]',d).onclick=()=>{ls.set('ads_prof',PF().filter((_,j)=>j!=i));mProf()};h.append(d)})}
+$('#measure').addEventListener('click',e=>{const z=e.target.closest('[data-z]');if(!z)return;const m=mget();m.size=z.dataset.z;if(MS[m.size])m.v=MS[m.size].slice();m.saved=false;mRender()});
+$('#measure').addEventListener('input',e=>{const i=e.target.dataset.m;if(i==null)return;const m=mget();m.v[+i]=+e.target.value||0;m.size='Custom';m.saved=false;mChips()});
+$('#mSave').onclick=()=>{const m=mget(),v=m.v,kl=v[4]||42,k=S.kameez.set,cp=n=>Math.max(20,Math.min(400,Math.round(n)));
+ $('#tkL').value=kl;k.len=100;k.sl=cp((v[5]||18)/(190*kl/430)*100);k.sh=cp((v[3]||14)/(140*kl/430)*100);m.saved=true;
+ const nm=$('#mName').value.trim()||('প্রোফাইল '+m.size),l=PF().filter(p=>p.name!=nm);l.unshift({name:nm,size:m.size,v:v.slice()});ls.set('ads_prof',l.slice(0,12));
+ try{E.kameez.sync();E.kameez.render();$('#tkL').dispatchEvent(new Event('input',{bubbles:true}))}catch(e){}
+ mProf();toast('মাপ সংরক্ষিত ও কাটিংয়ে প্রয়োগ হয়েছে')};
+/* কাপড় খরচ */
+function fRows(){const F=calc().F,o=[],yd=s=>parseFloat(s)||0;let dup=S.dup;if(dup==null)dup=(S.cat&&S.cat.s=='থ্রি-পিস')?2.5:0;
+ F.kameez.concat(F.salwar).forEach(x=>{const lace=/লেস/.test(x[0]);o.push({t:x[0],v:lace?yd(x[1])*.9144:yd(x[1]),u:lace?'মিটার':'গজ',lace})});
+ if(dup>0)o.push({t:'ওড়নার কাপড়',v:dup,u:'গজ',lace:false});return o}
+function fRender(){const dv=$('#fDup');if(document.activeElement!==dv)dv.value=S.dup??((S.cat&&S.cat.s=='থ্রি-পিস')?2.5:0);
+ const r=fRows(),h=$('#fTab');if(!r.length){h.innerHTML='<p class="mu">কাস্টম ক্যানভাসে অটো হিসাব নেই। কামিজ বা সালোয়ারের "তৈরি কাটিং দেখান" চাপুন।</p>';return}
+ const fy=r.filter(x=>!x.lace).reduce((a,x)=>a+x.v,0),lm=r.filter(x=>x.lace).reduce((a,x)=>a+x.v,0);
+ h.innerHTML=`<table class="ft"><tr><th>উপাদান</th><th>পরিমাণ</th><th>একক</th></tr>${r.map(x=>`<tr><td>${x.t}</td><td>${x.v.toFixed(2)}</td><td>${x.u}</td></tr>`).join('')}<tr class="tt"><td>মোট কাপড় (প্রায়)</td><td colspan="2">${fy.toFixed(2)} গজ (${(fy*.9144).toFixed(1)} মি)</td></tr><tr class="tt"><td>মোট লেস</td><td colspan="2">${lm.toFixed(2)} মি (${(lm*3.2808).toFixed(1)} ফুট)</td></tr></table>`}
+$('#fDup').oninput=e=>{S.dup=Math.max(0,+e.target.value||0);fRender()};$('#fCalc').onclick=()=>{fRender();toast('হিসাব হালনাগাদ হয়েছে')};
+/* এক্সপোর্ট */
+const XP=[['📄','টেকনিক্যাল ফাইল (PDF)','প্রিন্ট বা PDF করার ফাইল',()=>$('#tkPdf').click()],['✏️','এডিটেবল প্রজেক্ট (.json)','পরে আবার খুলে এডিট করুন',()=>$('#tkJson').click()],['✂️','কাটিং প্যাটার্ন ফাইল (.html)','মাপসহ প্রিন্টযোগ্য প্যাটার্ন',()=>dlFile()],['📊','ম্যাটেরিয়াল লিস্ট (CSV)','কাপড় ও লেসের হিসাব স্প্রেডশিটে',()=>{const r=fRows();if(!r.length)return toast('আগে কাটিং তৈরি করুন');const c='\ufeffউপাদান,পরিমাণ,একক\n'+r.map(x=>'"'+x.t+'",'+x.v.toFixed(2)+','+x.u).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/csv;charset=utf-8'}));a.download=(S.name||'design')+'-materials.csv';a.click()}],['🖼️','মডেল প্রিভিউ ছবি (PNG)','ফাইনাল ডিজাইনের ছবি সেভ করুন',()=>$('#dlPng').click()]];
+$('#xList').innerHTML=XP.map((x,i)=>`<button class="xr" data-x="${i}"><i>${x[0]}</i><div><b>${x[1]}</b><span>${x[2]}</span></div></button>`).join('');
+$('#xList').onclick=e=>{const b=e.target.closest('[data-x]');if(b)XP[+b.dataset.x][3]()};
+/* অ্যাপ্রুভাল */
+const AP=[['সামনের দিক যাচাই হয়েছে'],['পেছনের দিক যাচাই হয়েছে'],['ফেব্রিক বসানো যাচাই','mats','gallery','ফেব্রিক আপলোড করুন'],['লেস বসানো যাচাই'],['মাপ পর্যালোচনা হয়েছে','meas','measure','মাপ প্রোফাইল সংরক্ষণ করুন'],['কাটিং প্যাটার্ন যাচাই','cut','catalog','ক্যাটালগ থেকে স্টাইল নিন'],['কাপড়ের পরিমাণ পর্যালোচনা হয়েছে'],['সাইজ প্রোফাইল নিশ্চিত','meas','measure','মাপ প্রোফাইল সংরক্ষণ করুন']];
+const apA=()=>S.appr||(S.appr={c:[],done:false});
+function apOk(i){const t=AP[i][1];if(t=='mats')return!!(S.mats&&(S.mats.main||S.mats.kameez||S.mats.salwar));if(t=='meas')return!!(S.meas&&S.meas.saved);if(t=='cut')return!!(S.cat||S.kameez.strokes.length||S.salwar.strokes.length);return!!apA().c[i]}
+function aRender(){const a=apA(),all=AP.every((_,i)=>apOk(i));$('#aList').innerHTML=AP.map((x,i)=>{const ok=apOk(i);return`<div class="ar ${x[1]?'auto':''}" data-i="${i}"><span class="ck ${ok?'on':''}">✓</span><div>${x[0]}${x[1]&&!ok?`<small data-go="${x[2]}" style="cursor:pointer;text-decoration:underline">${x[3]}</small>`:''}</div></div>`}).join('');
+ const b=$('#aOk');b.disabled=!all;b.textContent=a.done?'✓ অনুমোদিত':'ফাইনাল ডিজাইন অনুমোদন'}
+$('#aList').onclick=e=>{const r=e.target.closest('.ar');if(!r||r.classList.contains('auto')||e.target.closest('[data-go]'))return;const a=apA(),i=+r.dataset.i;a.c[i]=!a.c[i];a.done=false;aRender()};
+$('#aOk').onclick=()=>{const a=apA();a.done=true;S.status='approved';$('#saveP').click();aRender();toast('ডিজাইন অনুমোদিত')};
+$('#aBack').onclick=()=>{const a=apA();a.done=false;if(S.status=='approved')S.status='progress';go('kameez')};
+{const sp=$('#saveP').onclick;$('#saveP').onclick=()=>{if(S.status!='approved')S.status='progress';sp()}}
+/* হোম: সাম্প্রতিক প্রজেক্ট */
+recent=function(){const r=$('#recent');r.innerHTML='';const l=L();if(!l.length){r.innerHTML='<p class="mu">এখনো কোনো প্রজেক্ট নেই।</p>';return}
+ const ST={draft:['খসড়া','#B4500A','#FDEBD9'],progress:['চলমান','#1565C0','#E3EEFB'],approved:['অনুমোদিত','#17703F','#DDF3E6']};
+ l.slice(0,4).forEach(o=>{const s=ST[o.data.status||'draft'],c=o.data.cat;let ic='<span style="font-size:24px">👗</span>';if(c)CAT.forEach((cc,ci)=>cc[2].forEach(x=>{if(x[0]==c.s&&cc[0]==c.c)ic=dIcon(ci,x[3],x[2],x[0])}));
+  const b=document.createElement('button');b.className='rp';b.innerHTML=`<span class="ri">${ic}</span><span class="rt"><b></b><span class="s1"></span><span class="s2"></span></span><span class="bd" style="color:${s[1]};background:${s[2]}">${s[0]}</span>`;
+  $('b',b).textContent=o.name;$('.s1',b).textContent=c?c.s:'কাস্টম ডিজাইন';$('.s2',b).textContent=o.date;
+  b.onclick=()=>{S=JSON.parse(JSON.stringify(o.data));S.id=o.id;sync();go('kameez')};r.append(b)})};
+recent();
+/* পেজ হুক */
+{const g0=go;go=function(id){g0(id);if(id=='measure')mRender();if(id=='final'){fRender();aRender()}}}
+</script>
+<script>
+/* কাটিং রুম: সাইড টুল ডক (মেইন বোতামে খোলে/বন্ধ হয়) */
+(function(){
+const MAP={shape:['↔','আকার'],pan:['✋','প্যান'],draw:['✏️','আঁকুন'],erase:['🧽','মুছুন'],undo:['↶','Undo'],redo:['↷','Redo'],clr:['🗑️','Clear'],zi:['＋','জুম +'],zo:['－','জুম −'],fs:['⛶','বড় পর্দা'],cfg:['🎚️','সেটিং'],save:['💾','সেভ'],load:['📂','লোড'],svg:['⬇️','SVG'],tpl:['👁️','কাটিং'],rst:['⟲','রিসেট'],cnv:['✍️','স্ট্রোক']};
+const GRP=[['cfg'],['shape','pan','draw','erase'],['undo','redo','clr'],['zi','zo','fs'],['save','load','svg'],['tpl','rst','cnv']];
+[['#ek','kameez'],['#es','salwar']].forEach(([sel,key])=>{
+ const host=$(sel),cvw=host&&$('.cv',host);if(!cvw)return;
+ const btn={};host.querySelectorAll('.g4 button,.tb button').forEach(b=>{const k=b.dataset.t||b.dataset.a;if(MAP[k]&&!btn[k])btn[k]=b});
+ const stage=document.createElement('div'),rail=document.createElement('div'),main=document.createElement('button'),tools=document.createElement('div'),x=document.createElement('button');
+ stage.className='stage';rail.className='rail';tools.className='rtools';
+ main.className='rmain';main.type='button';main.setAttribute('aria-expanded','false');main.innerHTML='<i>✂</i><span>টুলস</span>';
+ x.className='fsx';x.type='button';x.textContent='✕ ছোট করুন';
+ GRP.forEach((g,gi)=>{if(gi)tools.append(document.createElement('hr'));g.forEach(k=>{let b=btn[k];if(k=='fs'||k=='cfg'){b=document.createElement('button');b.dataset[k]='1'}if(!b)return;const on=b.classList.contains('on');b.className=on?'on':'';b.type='button';b.title=MAP[k][1];b.innerHTML='<i>'+MAP[k][0]+'</i><span>'+MAP[k][1]+'</span>';tools.append(b)})});
+ [...host.children].forEach(c=>{if((c.matches('.g4')||c.matches('.tb'))&&!c.children.length)c.remove()});
+ const sp=document.createElement('div'),sb=document.createElement('div');sp.className='spanel';sp.innerHTML='<div class="sph"><b>কাটিং সেটিং</b><button type="button" class="spx">✕</button></div>';sb.className='spb';
+ [...host.children].filter(c=>c.matches('.f')||c.matches('p.mu')).forEach(c=>sb.append(c));sp.append(sb);
+ cvw.before(stage);rail.append(main,tools);stage.append(rail,cvw,sp,x);
+ main.onclick=()=>{const o=rail.classList.toggle('open');main.setAttribute('aria-expanded',o);main.firstChild.textContent=o?'✕':'✂'};
+ const fs=on=>{stage.classList.toggle('fs',on);document.documentElement.style.overflow=on?'hidden':'';setTimeout(()=>E[key].fit(),60)};
+ const cb=tools.querySelector('[data-cfg]'),cs=on=>{sp.classList.toggle('show',on);cb.classList.toggle('on',on)};cb.onclick=()=>cs(!sp.classList.contains('show'));$('.spx',sp).onclick=()=>cs(false);
+ tools.addEventListener('click',e=>{if(e.target.closest('[data-fs]'))fs(true)});x.onclick=()=>fs(false);
+});
+const g1=go;go=function(id){document.querySelectorAll('.stage.fs').forEach(s=>s.classList.remove('fs'));document.documentElement.style.overflow='';g1(id)};
+})();
+</script>
+<script>
+/* প্যাটার্ন লেআউট: পিস টেনে সাজানো */
+(function(){
+const TY={front:'Front',back:'Back',sleeve:'Sleeve',salwar:'Salwar',custom:'New Piece'},SA=[.25,.5,.75,1,1.5,2];
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),R1=n=>Math.round(n*10)/10;
+let sel=null,hist=[],drag=null;
+const pat=()=>S.pat||(S.pat=pInit()),cur=()=>pat().pieces.find(p=>p.id==sel),U=()=>pat().unit=='cm'?2.54:1,un=()=>pat().unit=='cm'?'cm':'in',f=n=>(n*U()).toFixed(1).replace(/\.0$/,'');
+const snap=()=>{hist.push(JSON.stringify(pat().pieces));if(hist.length>40)hist.shift()};
+function dims(){const kL=+$('#tkL').value||40,sL=+$('#tsL').value||38,k=S.kameez.set,z=S.salwar.set,g=(s,n)=>(s[n]??100)/100;
+ return{front:[R1(160*g(k,'wid')/430*kL),R1(kL*g(k,'len'))],back:[R1(160*g(k,'wid')/430*kL),R1(kL*g(k,'len'))],sleeve:[R1(84*g(k,'sw')/430*kL),R1(190*g(k,'sl')/430*kL)],salwar:[R1(180*g(z,'wid')/570*sL),R1(sL*g(z,'len'))]}}
+const bb=p=>{const sw=p.rot%180?p.len:p.wid,sh=p.rot%180?p.wid:p.len,cx=p.x+p.wid/2,cy=p.y+p.len/2;return{x0:cx-sw/2,y0:cy-sh/2,x1:cx+sw/2,y1:cy+sh/2,cx,cy,sw,sh}};
+function arrange(P){let x=2,y=2,rh=0;P.forEach(p=>{const b=bb(p);if(x+b.sw>58&&x>2){x=2;y+=rh+4;rh=0}p.x=x+b.sw/2-p.wid/2;p.y=y+b.sh/2-p.len/2;x+=b.sw+4;rh=Math.max(rh,b.sh)})}
+function pInit(){const d=dims(),mk=(t,i)=>({id:'p'+Date.now().toString(36)+i,name:TY[t],type:t,x:0,y:0,wid:d[t][0],len:d[t][1],qty:t=='sleeve'||t=='salwar'?2:1,sa:1,grain:true,notch:true,dart:t=='front'||t=='back',rot:0,mir:false}),o={unit:'in',auto:true,sa:1,pieces:['front','back','sleeve','salwar'].map(mk)};arrange(o.pieces);return o}
+function shape(p){const w=p.wid,l=p.len,t=p.type;
+ if(t=='front'||t=='back'){const nd=t=='front'?.26:.1;return`M${.3*w} 0Q${.5*w} ${nd*l} ${.7*w} 0L${.94*w} ${.04*l}Q${.82*w} ${.17*l} ${w} ${.3*l}L${w} ${l}L0 ${l}L0 ${.3*l}Q${.18*w} ${.17*l} ${.06*w} ${.04*l}Z`}
+ if(t=='sleeve')return`M0 ${.22*l}Q${.5*w} ${-.22*l} ${w} ${.22*l}L${.86*w} ${l}L${.14*w} ${l}Z`;
+ if(t=='salwar')return`M0 0H${w}L${.9*w} ${l}H${.28*w}L${.24*w} ${.42*l}Q${.04*w} ${.28*l} 0 0Z`;
+ return`M0 0H${w}V${l}H0Z`}
+function pieceSVG(p,on){const w=p.wid,l=p.len,d=shape(p),b=bb(p),fs=Math.max(1.6,Math.min(2.6,Math.min(b.sw,b.sh)/5));let g='';
+ if(p.dart){const xs=(p.type=='front'||p.type=='back')?[.26*w,.74*w]:[.26*w];g+=xs.map(x=>`<path d="M${x} ${.3*l}L${x-.8} ${.45*l}L${x} ${.62*l}L${x+.8} ${.45*l}Z" fill="none" stroke="#1F4E9C" stroke-width="1.5" vector-effect="non-scaling-stroke"/>`).join('')}
+ if(p.notch)g+=`<path d="M0 ${.5*l}h1.1M${w} ${.5*l}h-1.1M${.5*w} ${l}v-1.1" stroke="#1F4E9C" stroke-width="2" fill="none" vector-effect="non-scaling-stroke"/>`;
+ if(p.grain){const x=.5*w,a=.18*l,z=.82*l;g+=`<path d="M${x} ${a}V${z}M${x-.7} ${a+1.4}L${x} ${a}L${x+.7} ${a+1.4}M${x-.7} ${z-1.4}L${x} ${z}L${x+.7} ${z-1.4}" stroke="#1F4E9C" stroke-width="1.2" fill="none" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/>`}
+ return`<g data-pid="${p.id}" style="cursor:grab"><g transform="translate(${p.x} ${p.y}) rotate(${p.rot} ${w/2} ${l/2}) ${p.mir?`translate(${w} 0) scale(-1 1)`:''}"><path d="${d}" fill="none" stroke="#7FA8E8" stroke-opacity=".4" stroke-width="${2*p.sa}" stroke-linejoin="round"/><path d="${d}" fill="${on?'#DCE8FB':'#E8EFFB'}" stroke="${on?'#E0408A':'#1F4E9C'}" stroke-width="${on?3:2}" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>${g}</g><text x="${b.cx}" y="${b.cy}" text-anchor="middle" font-size="${fs}" fill="#1F4E9C" font-weight="600" style="pointer-events:none">${esc(p.name)}<tspan x="${b.cx}" dy="${fs*1.15}" font-size="${fs*.8}">${p.qty>1?'×'+p.qty:''}</tspan></text></g>`}
+function pVB(){const P=pat().pieces;if(!P.length)return[0,0,60,80];let a=1e9,c=1e9,z=-1e9,y=-1e9;P.forEach(p=>{const b=bb(p),m=p.sa;a=Math.min(a,b.x0-m);c=Math.min(c,b.y0-m);z=Math.max(z,b.x1+m);y=Math.max(y,b.y1+m)});const m=3;let w=z-a+2*m,h=y-c+2*m;const r=.75;if(w/h<r){const nw=h*r;a-=(nw-w)/2;w=nw}else{const nh=w/r;c-=(nh-h)/2;h=nh}return[a-m,c-m,w,h]}
+function pDraw(vb){const P=pat().pieces;$('#pSvg').setAttribute('viewBox',(vb||pVB()).join(' '));$('#pg').innerHTML=P.map(p=>pieceSVG(p,p.id==sel)).join('')}
+const ST=(v,mn,mx,st,suf)=>{const a=[];for(let x=mn;x<=mx+1e-9;x+=st)a.push(R1(x));const c=R1(v);if(!a.includes(c)){a.push(c);a.sort((m,n)=>m-n)}return a.map(x=>`<option value="${x}" ${x==c?'selected':''}>${x}${suf}</option>`).join('')};
+function pDet(){const p=cur(),h=$('#pDet');if(!p){h.innerHTML='<div class="pdh">Pattern Details</div><p class="mu" style="padding:10px 14px">No pieces. Tap "Add Piece".</p>';return}
+ const cm=pat().unit=='cm',sf=' '+un(),q=[1,2,3,4,5,6,8,10];if(!q.includes(p.qty)){q.push(p.qty);q.sort((m,n)=>m-n)}
+ const rg=v=>cm?ST(+f(v),2,200,1,sf):ST(+f(v),1,80,.5,sf);
+ h.innerHTML=`<div class="pdh">Pattern Details<small></small></div><div class="pdb"><label>Length<span class="sl"><select data-f="len">${rg(p.len)}</select></span></label><label>Width<span class="sl"><select data-f="wid">${rg(p.wid)}</select></span></label><label>Cut Quantity<span class="sl"><select data-f="qty">${q.map(n=>`<option ${n==p.qty?'selected':''}>${n}</option>`).join('')}</select></span></label><label>Seam Allowance<span class="sl"><select data-f="sa">${SA.map(v=>`<option value="${v}" ${v==p.sa?'selected':''}>${(v*U()).toFixed(1)}${sf}</option>`).join('')}</select></span></label><label class="sw"><input type="checkbox" data-f="grain" ${p.grain?'checked':''}><i></i>Grainline</label><label class="sw"><input type="checkbox" data-f="notch" ${p.notch?'checked':''}><i></i>Notches</label><label class="sw"><input type="checkbox" data-f="dart" ${p.dart?'checked':''}><i></i>Dart</label></div>`;
+ $('small',h).textContent='· '+p.name}
+function pBar(){$('#pAuto').checked=!!pat().auto;document.querySelectorAll('#pUnit [data-u]').forEach(b=>b.classList.toggle('on',b.dataset.u==pat().unit))}
+function pMeas(){const P=pat().pieces,h=$('#ptM');h.innerHTML=`<table class="ft"><tr><th>Piece</th><th>Length (${un()})</th><th>Width (${un()})</th><th>Qty</th></tr>${P.map((p,i)=>`<tr><td>${esc(p.name)}</td><td><input type="number" step="0.5" min="1" data-mi="${i}" data-mf="len" value="${f(p.len)}"></td><td><input type="number" step="0.5" min="1" data-mi="${i}" data-mf="wid" value="${f(p.wid)}"></td><td><input type="number" min="1" max="20" data-mi="${i}" data-mf="qty" value="${p.qty}"></td></tr>`).join('')}<tr class="tt"><td>Total pieces</td><td colspan="3">${P.reduce((a,p)=>a+p.qty,0)}</td></tr></table><button class="b wide" id="pSync">Sync from design</button><p class="note" style="margin-top:8px">এটি ভিজ্যুয়াল লেআউট। সেলাইয়ের আগে দর্জির মাপ ও ফিটিং যাচাই করুন।</p>`}
+function pRender(){const pt=pat();if(!pt.pieces.find(p=>p.id==sel))sel=pt.pieces[0]&&pt.pieces[0].id;pDraw();pDet();pBar();pMeas()}
+const P_=d=>`<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+const RAIL=[['sel','Select / Move',P_('<path d="M5 3l14 8-6 2-2 6z"/>')],['rot','Rotate',P_('<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>')],['mir','Mirror',P_('<path d="M12 3v18"/><path d="M8 7L3 17h5zM16 7l5 10h-5z"/>')],['dup','Copy',P_('<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>')],['del','Delete',P_('<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>')],['arr','Auto arrange',P_('<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/>')],['und','Undo',P_('<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>')],['ren','Rename',P_('<path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/>')]];
+$('#pRail').innerHTML=RAIL.map(r=>`<button type="button" data-r="${r[0]}" title="${r[1]}" aria-label="${r[1]}"${r[0]=='sel'?' class="on"':''}>${r[2]}</button>`).join('');
+$('#pRail').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;const a=b.dataset.r,pt=pat(),p=cur();
+ if(a=='sel')return;
+ if(a=='und'){if(!hist.length)return toast('Nothing to undo');pt.pieces=JSON.parse(hist.pop());pRender();return}
+ if(a=='arr'){snap();arrange(pt.pieces);pDraw();return}
+ if(!p)return toast('Select a piece first');
+ snap();
+ if(a=='rot')p.rot=(p.rot+90)%360;
+ if(a=='mir')p.mir=!p.mir;
+ if(a=='dup'){const n=JSON.parse(JSON.stringify(p));n.id='p'+Date.now().toString(36);n.name+=' (copy)';n.x+=3;n.y+=3;pt.pieces.push(n);sel=n.id}
+ if(a=='ren'){const n=prompt('Piece name',p.name);if(n)p.name=n.trim()||p.name}
+ if(a=='del'){pt.pieces=pt.pieces.filter(x=>x.id!=p.id);sel=pt.pieces[0]&&pt.pieces[0].id}
+ pRender()};
+const svg=$('#pSvg'),spt=e=>{const q=svg.createSVGPoint();q.x=e.clientX;q.y=e.clientY;return q.matrixTransform(svg.getScreenCTM().inverse())};
+svg.addEventListener('pointerdown',e=>{const g=e.target.closest('[data-pid]');if(!g)return;sel=g.dataset.pid;drag={pt:spt(e),vb:pVB(),moved:false};svg.setPointerCapture(e.pointerId);pDraw(drag.vb);pDet()});
+svg.addEventListener('pointermove',e=>{if(!drag)return;const p=cur(),q=spt(e);if(!p)return;if(!drag.moved){snap();drag.moved=true}p.x+=q.x-drag.pt.x;p.y+=q.y-drag.pt.y;drag.pt=q;pDraw(drag.vb)});
+const up=()=>{if(drag){drag=null;pDraw()}};svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up);
+$('#pDet').addEventListener('change',e=>{const k=e.target.dataset.f,p=cur();if(!k||!p)return;snap();const v=e.target.type=='checkbox'?e.target.checked:+e.target.value;
+ if(k=='len'||k=='wid')p[k]=Math.max(1,Math.round(v/U()*100)/100);else if(k=='qty')p.qty=v;else if(k=='sa'){p.sa=v;if(pat().auto){pat().sa=v;pat().pieces.forEach(x=>x.sa=v)}}else p[k]=v;pDraw();if(k=='sa')pDet();pMeas()});
+$('#ptM').addEventListener('change',e=>{const i=e.target.dataset.mi,k=e.target.dataset.mf;if(i==null)return;snap();const p=pat().pieces[+i],v=+e.target.value||1;p[k]=k=='qty'?Math.max(1,Math.round(v)):Math.max(1,Math.round(v/U()*100)/100);pDraw();pDet();pMeas()});
+$('#ptM').addEventListener('click',e=>{if(!e.target.closest('#pSync'))return;snap();const d=dims();pat().pieces.forEach(p=>{if(d[p.type]){p.wid=d[p.type][0];p.len=d[p.type][1]}});pRender();toast('Measurements synced from design')});
+document.querySelectorAll('.ptabs [data-pt]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.ptabs [data-pt]').forEach(x=>x.classList.toggle('on',x==b));$('#ptP').hidden=b.dataset.pt!='p';$('#ptM').hidden=b.dataset.pt!='m';if(b.dataset.pt=='m')pMeas();else pDraw()});
+$('#pAdd').onclick=()=>{const pt=pat();snap();let y=0,x=2;pt.pieces.forEach(p=>{const b=bb(p);y=Math.max(y,b.y1)});const n={id:'p'+Date.now().toString(36),name:TY.custom,type:'custom',x:x,y:y+4,wid:12,len:18,qty:1,sa:pt.sa||1,grain:true,notch:true,dart:false,rot:0,mir:false};pt.pieces.push(n);sel=n.id;pRender()};
+$('#pAuto').onchange=e=>{const pt=pat();pt.auto=e.target.checked;if(pt.auto){const p=cur();if(p){snap();pt.sa=p.sa;pt.pieces.forEach(x=>x.sa=p.sa);pDraw();pDet()}}};
+$('#pUnit').onclick=e=>{const b=e.target.closest('[data-u]');if(!b)return;pat().unit=b.dataset.u;pBar();pDet();pMeas()};
+$('#pSvgDl').onclick=()=>{pDraw();const s=new XMLSerializer().serializeToString(svg),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([s],{type:'image/svg+xml'}));a.download=(S.name||'pattern')+'-pattern.svg';a.click()};
+window.pRender=pRender;
+})();
+</script>
+
+
+</body></html>
