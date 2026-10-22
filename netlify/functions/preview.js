@@ -19,12 +19,31 @@ const part = (url) => {
   return m ? { inlineData: { mimeType: m[1], data: m[2] } } : null;
 };
 
+
+// FREE fallback: text-only (does NOT see the cutting design), anonymous Pollinations tier
+async function freeImage(b) {
+  const prompt =
+    'Realistic fashion photo of a woman model wearing a Bangladeshi salwar kameez, full body, studio light. ' +
+    (b.instruction ? b.instruction + '. ' : '');
+  const url =
+    'https://image.pollinations.ai/prompt/' + encodeURIComponent(prompt.slice(0, 700)) +
+    '?width=768&height=1024&nologo=true&model=flux';
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('Free service HTTP ' + r.status);
+  const buf = Buffer.from(await r.arrayBuffer());
+  const type = r.headers.get('content-type') || 'image/jpeg';
+  return `data:${type};base64,${buf.toString('base64')}`;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS, body: '' };
   if (event.httpMethod !== 'POST') return json(405, { error: 'POST only' });
 
   const key = process.env.GEMINI_API_KEY;
-  if (!key) return json(500, { error: 'GEMINI_API_KEY not set' });
+  if (!key) {
+    try { return json(200, { image: await freeImage(JSON.parse(event.body || '{}')) }); }
+    catch (e) { return json(502, { error: String(e) }); }
+  }
   const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash-image';
 
   let b;
@@ -60,7 +79,13 @@ exports.handler = async (event) => {
       }
     );
     const j = await r.json();
-    if (!r.ok) return json(502, { error: j.error?.message || 'Gemini error' });
+    if (!r.ok) {
+      if (r.status === 429 || /quota/i.test(j.error?.message || '')) {
+        try { return json(200, { image: await freeImage(b) }); }
+        catch (e) { return json(502, { error: 'Gemini quota + free fallback failed: ' + e }); }
+      }
+      return json(502, { error: j.error?.message || 'Gemini error' });
+    }
     const img = (j.candidates?.[0]?.content?.parts || []).find((p) => p.inlineData || p.inline_data);
     const id = img && (img.inlineData || img.inline_data);
     if (!id) return json(502, { error: 'No image returned' });
